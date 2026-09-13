@@ -311,6 +311,9 @@ async function initDatabase() {
     db.run('CREATE INDEX IF NOT EXISTS idx_models_parent_id ON models(parent_id)');
     db.run('CREATE INDEX IF NOT EXISTS idx_models_updated_at ON models(updated_at)');
     db.run('CREATE INDEX IF NOT EXISTS idx_models_created_at ON models(created_at)');
+    db.run('CREATE INDEX IF NOT EXISTS idx_files_library_path ON files(library_path)');
+    db.run('CREATE INDEX IF NOT EXISTS idx_files_file_size ON files(file_size)');
+    db.run('CREATE INDEX IF NOT EXISTS idx_files_thumbnail ON files(thumbnail)');
     db.run('CREATE INDEX IF NOT EXISTS idx_models_name ON models(name)');
   } catch (e) { console.error('Migration failed:', e); }
 

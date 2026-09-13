@@ -94,7 +94,7 @@ const App = {
   },
 
   checkWhatsNew() {
-    const CURRENT_VERSION = '2.0.1';
+    const CURRENT_VERSION = '2.0.2';
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const seenVersion = localStorage.getItem('gv_last_seen_version');
     
@@ -2576,7 +2576,7 @@ const App = {
               </div>
             </div>`;
         } else if (tab === 'about') {
-          content.innerHTML = UI.aboutSection({ currentVersion: '2.0.1' });
+          content.innerHTML = UI.aboutSection({ currentVersion: '2.0.2' });
         }
       } catch (e) { console.error(e); }
     };

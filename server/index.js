@@ -13,6 +13,25 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const crypto = require('crypto');
+const logger = require('./utils/logger');
+
+// Global unhandled error logging for Docker / Unraid visibility
+process.on('uncaughtException', (err) => {
+  logger.error('CRASH', 'Uncaught Exception:', err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('CRASH', 'Unhandled Promise Rejection at:', promise, 'reason:', reason);
+});
+
+function hashFileStream(filePath) {
+  return new Promise((resolve, reject) => {
+    const hash = crypto.createHash('sha256');
+    const stream = fs.createReadStream(filePath, { highWaterMark: 64 * 1024 });
+    stream.on('data', chunk => hash.update(chunk));
+    stream.on('end', () => resolve(hash.digest('hex')));
+    stream.on('error', err => reject(err));
+  });
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -107,6 +126,7 @@ app.use(helmet({
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
+app.use(logger.requestLogger);
 
 app.use((req, res, next) => {
   // Always permit public auth, public config, public release notes, static assets, and public shares
@@ -2109,13 +2129,22 @@ app.get('/api/browse', authenticate, (req, res) => {
     const supportedExts = ['.stl', '.gcode', '.bgcode', '.3mf', '.step', '.stp', '.f3d', '.obj'];
     const imageExts = ['.png', '.jpg', '.jpeg', '.webp', '.gif'];
     
-    const dbThumbs = all('SELECT library_path, thumbnail FROM files WHERE thumbnail IS NOT NULL AND library_path IS NOT NULL');
-    const thumbMap = new Map();
-    for (const row of dbThumbs) thumbMap.set(row.library_path, row.thumbnail);
-
-    const dbFilesList = all('SELECT id, model_id, library_path, metadata, thumbnail FROM files WHERE library_path IS NOT NULL');
+    // High-performance metadata lookup only for files inside this directory (not entire database)
+    const normFullPath = fullPath.replace(/\\/g, '/');
+    const dbDirFiles = all(
+      `SELECT id, model_id, library_path, metadata, thumbnail FROM files 
+       WHERE (library_path LIKE ? || '/%' OR library_path LIKE ? || '\\\\%') 
+         AND library_path NOT LIKE ? || '/%/%' 
+         AND library_path NOT LIKE ? || '\\\\%\\\\%'`,
+      [normFullPath, fullPath, normFullPath, fullPath]
+    );
     const dbFileMap = new Map();
-    for (const row of dbFilesList) dbFileMap.set(row.library_path, row);
+    for (const row of dbDirFiles) {
+      if (row.library_path) {
+        dbFileMap.set(row.library_path, row);
+        dbFileMap.set(row.library_path.replace(/\\/g, '/'), row);
+      }
+    }
 
     const { parseGcodeMetadata } = require('./utils/gcode');
     const folders = [];
@@ -2125,28 +2154,33 @@ app.get('/api/browse', authenticate, (req, res) => {
       if (item.name.startsWith('.')) continue; // skip hidden files
       
       if (item.isDirectory()) {
-        // count how many items are inside (non-recursive, just immediate children)
         let itemCount = 0;
-        try {
-          itemCount = fs.readdirSync(path.join(fullPath, item.name)).filter(f => !f.startsWith('.')).length;
-        } catch(e) { /* permission error, just show 0 */ }
-        let folderThumbs = [];
         const folderFullPath = path.join(fullPath, item.name);
+        try {
+          itemCount = fs.readdirSync(folderFullPath).filter(f => !f.startsWith('.')).length;
+        } catch(e) { /* permission error, just show 0 */ }
         
+        let folderThumbs = [];
         const folderModel = get('SELECT id, thumbnail FROM models WHERE library_path = ?', [folderFullPath]);
         if (folderModel && folderModel.thumbnail) {
           folderThumbs.push(getThumbUrl(folderModel.thumbnail, folderFullPath));
         }
         
-        const folderPrefix = (folderFullPath + '/').replace(/\\/g, '/');
-        for (const [libPath, thumb] of thumbMap.entries()) {
-          const normalizedLibPath = libPath.replace(/\\/g, '/');
-          if (normalizedLibPath.startsWith(folderPrefix)) {
-            const url = getThumbUrl(thumb, path.dirname(libPath));
-            if (!folderThumbs.includes(url)) {
-              folderThumbs.push(url);
-              if (folderThumbs.length >= 4) break;
-            }
+        // Fast indexed SQLite query for up to 4 child thumbnails (sub-millisecond via idx_files_library_path)
+        const fNorm = (folderFullPath + '/').replace(/\\/g, '/');
+        const fWin = (folderFullPath + '\\');
+        const thumbRows = all(
+          `SELECT thumbnail, library_path FROM files 
+           WHERE (library_path LIKE ? || '%' OR library_path LIKE ? || '%') 
+             AND thumbnail IS NOT NULL 
+           LIMIT 4`,
+          [fNorm, fWin]
+        );
+        for (const tr of thumbRows) {
+          const url = getThumbUrl(tr.thumbnail, path.dirname(tr.library_path));
+          if (!folderThumbs.includes(url)) {
+            folderThumbs.push(url);
+            if (folderThumbs.length >= 4) break;
           }
         }
         
@@ -2161,6 +2195,7 @@ app.get('/api/browse', authenticate, (req, res) => {
         const ext = path.extname(item.name).toLowerCase();
         if (supportedExts.includes(ext) || imageExts.includes(ext)) {
           const filePath = path.join(fullPath, item.name);
+          const normFilePath = filePath.replace(/\\/g, '/');
           const stat = fs.statSync(filePath);
           const relPath = path.relative(LIBRARY_PATH, filePath).replace(/\\/g, '/');
           const encodedUrl = '/library-files/' + relPath.split('/').map(s => encodeURIComponent(s)).join('/');
@@ -2175,10 +2210,9 @@ app.get('/api/browse', authenticate, (req, res) => {
           else if (imageExts.includes(ext)) fileType = 'image';
           
           let thumbnailUrl = null;
-          const dbFile = dbFileMap.get(filePath);
-          const thumb = dbFile?.thumbnail || thumbMap.get(filePath);
-          if (thumb) {
-            thumbnailUrl = getThumbUrl(thumb, path.dirname(filePath));
+          const dbFile = dbFileMap.get(filePath) || dbFileMap.get(normFilePath) || get('SELECT id, model_id, library_path, metadata, thumbnail FROM files WHERE library_path = ? OR library_path = ?', [filePath, normFilePath]);
+          if (dbFile && dbFile.thumbnail) {
+            thumbnailUrl = getThumbUrl(dbFile.thumbnail, path.dirname(filePath));
           }
 
           let metadata = null;
@@ -2404,37 +2438,58 @@ app.post('/api/system/unblock-ip', authenticate, (req, res) => {
   res.json({ success: true, message: `IP ${ip} unblocked successfully` });
 });
 
-app.get('/api/system/duplicates', authenticate, (req, res) => {
+app.get('/api/system/duplicates', authenticate, async (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).json({ error: 'Forbidden' });
+  const startTime = Date.now();
   try {
-    const crypto = require('crypto');
-    const files = all(`
-      SELECT f.id, f.filename, f.original_name, f.file_size, f.file_type, f.library_path, f.model_id, m.name as model_name
-      FROM files f
-      LEFT JOIN models m ON f.model_id = m.id
-      WHERE f.file_size > 0
-    `);
+    logger.info('Duplicates', 'Starting scan for duplicate files...');
+    
+    // Efficiently query only file sizes that appear 2 or more times (using SQLite index)
+    const duplicateSizes = all(`
+      SELECT file_size 
+      FROM files 
+      WHERE file_size > 0 
+      GROUP BY file_size 
+      HAVING COUNT(*) > 1
+    `).map(r => r.file_size);
 
-    const sizeGroups = {};
-    for (const f of files) {
-      if (!sizeGroups[f.file_size]) sizeGroups[f.file_size] = [];
-      sizeGroups[f.file_size].push(f);
+    if (duplicateSizes.length === 0) {
+      logger.info('Duplicates', 'Duplicate scan complete: no candidate files share identical file sizes.');
+      return res.json({ success: true, duplicatesCount: 0, groups: [] });
     }
 
+    logger.info('Duplicates', `Found ${duplicateSizes.length} file size groups with potential duplicates. Hashing candidate files...`);
+
     const duplicateGroups = [];
-    for (const [size, candidateFiles] of Object.entries(sizeGroups)) {
+    let totalHashed = 0;
+
+    for (const size of duplicateSizes) {
+      const candidateFiles = all(`
+        SELECT f.id, f.filename, f.original_name, f.file_size, f.file_type, f.library_path, f.model_id, m.name as model_name
+        FROM files f
+        LEFT JOIN models m ON f.model_id = m.id
+        WHERE f.file_size = ?
+      `, [size]);
+
       if (candidateFiles.length < 2) continue;
 
       const hashGroups = {};
       for (const f of candidateFiles) {
         const filePath = f.library_path || path.join(UPLOADS_DIR, f.filename);
         if (!fs.existsSync(filePath)) continue;
+
         try {
-          const fileBuffer = fs.readFileSync(filePath);
-          const hash = crypto.createHash('sha256').update(fileBuffer).digest('hex');
+          // Stream-based SHA256 hashing (memory-safe: uses 64KB chunks instead of loading multi-GB buffers)
+          const hash = await hashFileStream(filePath);
+          totalHashed++;
           if (!hashGroups[hash]) hashGroups[hash] = [];
           hashGroups[hash].push(f);
-        } catch (e) {}
+        } catch (err) {
+          logger.warn('Duplicates', `Failed to hash ${filePath}: ${err.message}`);
+        }
+
+        // Cooperative yield to keep event loop and HTTP server responsive
+        await new Promise(resolve => setImmediate(resolve));
       }
 
       for (const [hash, matchingFiles] of Object.entries(hashGroups)) {
@@ -2448,9 +2503,12 @@ app.get('/api/system/duplicates', authenticate, (req, res) => {
       }
     }
 
+    const duration = Date.now() - startTime;
+    logger.info('Duplicates', `Duplicate scan completed in ${duration}ms. Hashed ${totalHashed} files, found ${duplicateGroups.length} duplicate groups.`);
+
     res.json({ success: true, duplicatesCount: duplicateGroups.length, groups: duplicateGroups });
   } catch (e) {
-    console.error('Duplicate scan error:', e);
+    logger.error('Duplicates', 'Duplicate scan error:', e);
     res.status(500).json({ error: 'Failed to scan for duplicate files' });
   }
 });
@@ -2588,7 +2646,10 @@ app.get('/uploads/:filename', (req, res) => {
 // ─── SPA Fallback & Error Handler ─────────────────────────────────────────
 
 app.get('*', (req, res) => { res.sendFile(path.join(__dirname, '..', 'public', 'index.html')); });
-app.use((err, req, res, next) => { console.error(err); res.status(500).json({ error: 'Internal server error' }); });
+app.use((err, req, res, next) => { 
+  logger.error('Server', 'Unhandled route error:', err); 
+  res.status(500).json({ error: 'Internal server error' }); 
+});
 
 // ─── BACKGROUND TASKS ───────────────────────────────────────────────────────
 let scanIntervalId = null;
@@ -2603,21 +2664,21 @@ function setupBackgroundScanner() {
   const hours = setting && setting.value !== undefined ? Number(setting.value) : 24;
   
   if (hours > 0) {
-    console.log(`Starting background library scanner (interval: ${hours} hours)`);
+    logger.info('Scanner', `Starting background library scanner (interval: ${hours} hours)`);
     scanIntervalId = setInterval(() => {
-      console.log('[Scanner] Running scheduled background library scan...');
+      logger.info('Scanner', 'Running scheduled background library scan...');
       try {
         const { startScanAsync } = require('./utils/library');
         const res = startScanAsync(LIBRARY_PATH);
         if (res.alreadyRunning) {
-          console.log('[Scanner] Scheduled scan skipped: another scan is already active.');
+          logger.info('Scanner', 'Scheduled scan skipped: another scan is already active.');
         }
       } catch (e) {
-        console.error('Scheduled library scan launch failed:', e);
+        logger.error('Scanner', 'Scheduled library scan launch failed:', e);
       }
     }, hours * 3600 * 1000);
   } else {
-    console.log('Background library scanner is disabled.');
+    logger.info('Scanner', 'Background library scanner is disabled.');
   }
 }
 
@@ -2630,7 +2691,7 @@ function setupBackgroundScanner() {
   // Graceful shutdown to save DB before process exit
   const { saveDb } = require('./database');
   const shutdown = () => {
-    console.log('\nShutting down server, saving database...');
+    logger.info('System', 'Shutting down server, saving database...');
     saveDb(true);
     process.exit(0);
   };
@@ -2639,17 +2700,19 @@ function setupBackgroundScanner() {
   process.on('SIGUSR2', shutdown); // nodemon restart signal
 
   const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log(`GyroidVault running on http://0.0.0.0:${PORT}`);
+    logger.info('System', `GyroidVault running on http://0.0.0.0:${PORT}`);
+    logger.info('System', `Active library storage path: ${LIBRARY_PATH}`);
     setupBackgroundScanner();
   });
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.log(`0.0.0.0:${PORT} in use, binding to 127.0.0.1:${PORT}...`);
+      logger.warn('System', `0.0.0.0:${PORT} in use, binding to 127.0.0.1:${PORT}...`);
       app.listen(PORT, '127.0.0.1', () => {
-        console.log(`GyroidVault running on http://localhost:${PORT}`);
+        logger.info('System', `GyroidVault running on http://localhost:${PORT}`);
         setupBackgroundScanner();
       });
     } else {
+      logger.error('System', 'Server listen error:', err);
       throw err;
     }
   });
