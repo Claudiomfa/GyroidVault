@@ -573,7 +573,8 @@ const UI = {
       const slicerLinks = {
         'orcaslicer': { name: 'OrcaSlicer', url: `orcaslicer://open?file=${encodeURI(window.location.origin + '/api/files/' + f.id + '/download/model.' + f.file_type)}` },
         'elegooslicer': { name: 'Elegoo Slicer', url: `elegooslicer://open?file=${encodeURI(window.location.origin + '/api/files/' + f.id + '/download/model.' + f.file_type)}` },
-        'cura': { name: 'Ultimaker Cura', url: `cura://open?file=${encodeURI(window.location.origin + '/api/files/' + f.id + '/download/model.' + f.file_type)}` }
+        'cura': { name: 'Ultimaker Cura', url: `cura://open?file=${encodeURI(window.location.origin + '/api/files/' + f.id + '/download/model.' + f.file_type)}` },
+        'bambustudio': { name: 'Bambu Studio', url: `bambustudio://open?file=${encodeURI(window.location.origin + '/api/files/' + f.id + '/3mf/model.3mf')}` }
       };
       const pref = App.currentUser?.preferred_slicer;
 
@@ -1467,6 +1468,7 @@ const UI = {
               <option value="orcaslicer" ${user.preferred_slicer === 'orcaslicer' ? 'selected' : ''}>OrcaSlicer</option>
               <option value="elegooslicer" ${user.preferred_slicer === 'elegooslicer' ? 'selected' : ''}>Elegoo Slicer</option>
               <option value="cura" ${user.preferred_slicer === 'cura' ? 'selected' : ''}>Ultimaker Cura</option>
+              <option value="bambustudio" ${user.preferred_slicer === 'bambustudio' ? 'selected' : ''}>Bambu Studio</option>
             </select>
           </div>
           <div style="margin-top:20px">
