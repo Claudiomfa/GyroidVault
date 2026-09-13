@@ -2029,7 +2029,7 @@ const App = {
       const model = await API.getSharedModel(slug);
       this.el.innerHTML = UI.publicModelDetail(model);
       
-      const stlFile = model.files.find(f => f.file_type === 'stl') || model.files.find(f => f.file_type === '3mf');
+      const stlFile = model.files.find(f => f.file_type === 'stl') || model.files.find(f => f.file_type === '3mf') || model.files.find(f => f.file_type === 'step');
       if (stlFile && typeof Viewer !== 'undefined') {
         setTimeout(() => {
           Viewer.create('public-viewer', stlFile.url, stlFile.file_type);
@@ -2071,7 +2071,7 @@ const App = {
         ${UI.modelDetail(model, hasPrinters)}`;
       // Initialize 3D viewer using chosen 3D preview file or first stl/3mf
       const files = model.files || [];
-      const cadFiles = files.filter(f => f.file_type === 'stl' || f.file_type === '3mf');
+      const cadFiles = files.filter(f => f.file_type === 'stl' || f.file_type === '3mf' || f.file_type === 'step');
       const previewCadFile = (model.preview_file_id && cadFiles.find(f => f.id === model.preview_file_id)) ||
         cadFiles[0];
 
@@ -2084,7 +2084,9 @@ const App = {
             modelFiles: cadFiles
           });
           if (v && !model.thumbnail_url && !model.thumbnail) {
-            setTimeout(() => Viewer.takeSnapshot(model.id, v.renderer, v.scene, v.camera), 2500);
+            Promise.resolve(v.ready).then(() => {
+              setTimeout(() => Viewer.takeSnapshot(model.id, v.renderer, v.scene, v.camera), 2500);
+            });
           }
         }, 100);
       }
@@ -2147,7 +2149,7 @@ const App = {
       return;
     }
 
-    const is3D = file.type === 'stl' || file.type === '3mf';
+    const is3D = file.type === 'stl' || file.type === '3mf' || file.type === 'step';
     const isGcode = file.type === 'gcode';
     const meta = file.metadata || {};
 

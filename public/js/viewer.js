@@ -14,6 +14,91 @@ const Viewer = {
     this.activeViewers = [];
   },
 
+  // STEP/STP is B-rep, not a mesh, so it has to be tessellated before three.js
+  // can draw it. occt-import-js (OpenCascade compiled to wasm) does that in a
+  // worker: the ~7.6 MB wasm is fetched here and nowhere else, so it only costs
+  // anything when someone actually opens a STEP file, and a heavy part tying up
+  // OpenCascade for a while does not lock up the tab.
+  loadStepGeometry(url, colorHex = 0x00ccee, onProgress = null) {
+    return new Promise((resolve, reject) => {
+      let worker;
+      try {
+        worker = new Worker('/js/vendor/occt/occt-import-js-worker.js');
+      } catch (e) {
+        reject(new Error('STEP importer failed to start'));
+        return;
+      }
+      let settled = false;
+      const finish = (fn, arg) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        worker.terminate();
+        fn(arg);
+      };
+      const timer = setTimeout(
+        () => finish(reject, new Error('STEP import timed out — the file may be too complex to display')),
+        120000
+      );
+
+      worker.onerror = () => finish(reject, new Error('Could not load the STEP importer'));
+      worker.onmessage = (ev) => {
+        try {
+          const result = ev.data;
+          if (!result || !result.success) throw new Error('This file could not be read as STEP');
+          if (!result.meshes || result.meshes.length === 0) throw new Error('No displayable geometry in this STEP file');
+
+          const inner = new THREE.Group();
+          for (const m of result.meshes) {
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(m.attributes.position.array, 3));
+            if (m.attributes.normal && m.attributes.normal.array) {
+              geometry.setAttribute('normal', new THREE.Float32BufferAttribute(m.attributes.normal.array, 3));
+            }
+            if (m.index && m.index.array) {
+              geometry.setIndex(new THREE.Uint32BufferAttribute(m.index.array, 1));
+            }
+            if (!geometry.attributes.normal) geometry.computeVertexNormals();
+            const color = (m.color && m.color.length === 3)
+              ? new THREE.Color(m.color[0], m.color[1], m.color[2])
+              : new THREE.Color(colorHex);
+            inner.add(new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({
+              color, specular: 0x333355, shininess: 35, flatShading: false, side: THREE.DoubleSide
+            })));
+          }
+
+          // Real-world millimetres, measured before the Z-up → Y-up rotation.
+          const rawSize = new THREE.Vector3();
+          const modelBox = new THREE.Box3().setFromObject(inner);
+          modelBox.getSize(rawSize);
+          inner.position.sub(modelBox.getCenter(new THREE.Vector3()));
+
+          // CAD is Z-up, the viewer world is Y-up.
+          const object = new THREE.Group();
+          object.add(inner);
+          object.rotation.x = -Math.PI / 2;
+
+          finish(resolve, { object, rawSize });
+        } catch (err) {
+          finish(reject, err);
+        }
+      };
+
+      if (onProgress) onProgress('Downloading STEP file…');
+      fetch(url, { credentials: 'same-origin' })
+        .then(r => {
+          if (!r.ok) throw new Error('Could not download the file (HTTP ' + r.status + ')');
+          return r.arrayBuffer();
+        })
+        .then(buffer => {
+          if (settled) return;
+          if (onProgress) onProgress('Tessellating STEP geometry…');
+          worker.postMessage({ format: 'step', buffer: new Uint8Array(buffer), params: null });
+        })
+        .catch(err => finish(reject, err));
+    });
+  },
+
   create(containerId, fileUrl, fileType = null, meta = {}) {
     const container = document.getElementById(containerId);
     if (!container || typeof THREE === 'undefined') return;
@@ -196,7 +281,7 @@ const Viewer = {
     scene.add(grid);
 
     // Multi-part assembly setup
-    const modelFiles = (meta?.modelFiles || []).filter(f => f.file_type === 'stl' || f.file_type === '3mf');
+    const modelFiles = (meta?.modelFiles || []).filter(f => f.file_type === 'stl' || f.file_type === '3mf' || f.file_type === 'step');
     let activePartVal = meta?.activeFileId ? String(meta.activeFileId) : (modelFiles.length > 1 ? 'all' : (modelFiles[0] ? String(modelFiles[0].id) : null));
     const partPalette = [0x00ccee, 0xf97316, 0x10b981, 0x8b5cf6, 0xeab308, 0xec4899, 0x38bdf8, 0xa855f7];
 
@@ -506,8 +591,27 @@ const Viewer = {
       }
     };
 
+    // Viewer status overlay — a load that fails has to say so instead of
+    // leaving an empty canvas behind.
+    const setStatus = (text, isError = false) => {
+      let el = container.querySelector('.viewer-status');
+      if (!text) { if (el) el.remove(); return; }
+      if (!el) {
+        el = document.createElement('div');
+        el.className = 'viewer-status';
+        el.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:16px;pointer-events:none;font-size:.8rem;background:rgba(22,22,37,0.72)';
+        container.appendChild(el);
+      }
+      el.style.color = isError ? 'var(--accent-yellow, #fbbf24)' : 'var(--text-muted, #8b8ba7)';
+      el.textContent = text;
+    };
+
     // Geometry Loader Helper
     const loadGeometryPromise = (url, type, colorHex = 0x00ccee) => {
+      if (type === 'step' || /\.(step|stp)(\?|$)/i.test(url)) {
+        return Viewer.loadStepGeometry(url, colorHex, setStatus)
+          .then(({ object, rawSize }) => ({ object, rawSize, is3MF: false }));
+      }
       return new Promise((resolve, reject) => {
         const is3D3MF = type === '3mf' || url.toLowerCase().includes('.3mf');
         const lClass = is3D3MF ? (THREE.ThreeMFLoader || THREE['3MFLoader'] || THREE.MFLoader) : THREE.STLLoader;
@@ -571,6 +675,7 @@ const Viewer = {
 
       const dimsEl = container.querySelector(`#${containerId}-dims`);
       const footerEl = container.parentElement.querySelector('.detail-stage-footer');
+      setStatus(null);
 
       try {
         if (selection === 'all' && modelFiles.length > 1) {
@@ -591,6 +696,7 @@ const Viewer = {
 
           const validParts = loadedParts.filter(Boolean);
           const count = validParts.length;
+          if (count === 0) throw new Error('None of the parts in this model could be displayed');
 
           if (count > 1) {
             // Wrap each part in an identity container to ensure standard world axis positioning
@@ -765,8 +871,10 @@ const Viewer = {
 
           if (typeof viewer !== 'undefined') viewer.targetObject = targetObject;
         }
+        setStatus(null);
       } catch (err) {
         console.error('Part loading error:', err);
+        setStatus((err && err.message) ? err.message : 'This file could not be displayed', true);
       }
     };
 
@@ -779,10 +887,10 @@ const Viewer = {
     }
 
     // Initial Load
-    renderPartSelection(activePartVal || 'all');
+    const initialLoad = renderPartSelection(activePartVal || 'all');
 
     // Animation loop
-    const viewer = { renderer, controls, animId: null, resizeObserver: null, onKeyDown };
+    const viewer = { renderer, controls, animId: null, resizeObserver: null, onKeyDown, ready: initialLoad };
     window.addEventListener('error', (e) => {
       const msg = e.message || (e.error && e.error.message);
       if (msg && (msg.includes('signalUnknownCredential') || msg.includes('webauthnInterceptor'))) {

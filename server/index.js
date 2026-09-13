@@ -425,6 +425,16 @@ function getThumbUrl(thumbnail, folderPath = null) {
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
+// occt-import-js (the STEP/STP importer) is served straight out of node_modules so
+// the 7.6 MB OpenCascade wasm never has to be committed to the repo. It only ever
+// runs inside a dedicated worker, and a worker takes its CSP from the response that
+// served it — so the eval embind needs is granted here, to that worker alone, rather
+// than by loosening script-src for the whole app.
+app.use('/js/vendor/occt', express.static(path.join(__dirname, '..', 'node_modules', 'occt-import-js', 'dist'), {
+  setHeaders: (res) => {
+    res.setHeader('Content-Security-Policy', "default-src 'none'; script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval'; connect-src 'self'");
+  }
+}));
 app.use('/uploads', express.static(UPLOADS_DIR));
 if (fs.existsSync(LIBRARY_PATH)) {
   app.use('/library-files', express.static(LIBRARY_PATH));

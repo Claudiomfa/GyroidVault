@@ -418,7 +418,7 @@ const UI = {
       : '';
 
     // Find first STL or 3MF file for 3D preview
-    const stlFile = (model.files || []).find(f => f.file_type === 'stl' || f.file_type === '3mf');
+    const stlFile = (model.files || []).find(f => f.file_type === 'stl' || f.file_type === '3mf' || f.file_type === 'step');
     let viewerHtml;
 
     if (stlFile) {
@@ -565,7 +565,7 @@ const UI = {
     const filesHtml = (model.files || []).filter(f => f.file_type !== 'document').map(f => {
       let metaHtml = '';
       const isPreview = Boolean(f.is_preview || f.id === model.preview_file_id);
-      const is3D = f.file_type === 'stl' || f.file_type === '3mf';
+      const is3D = f.file_type === 'stl' || f.file_type === '3mf' || f.file_type === 'step';
       const isImage = f.file_type === 'image';
       const isGcode = f.file_type === 'gcode' || f.file_type === 'bgcode';
       const canBePreview = is3D || isImage;
@@ -1589,7 +1589,7 @@ const UI = {
 
   publicModelDetail(model) {
     // Simplified version of modelDetail for public viewing
-    const stlFile = model.files.find(f => f.file_type === 'stl') || model.files.find(f => f.file_type === '3mf');
+    const stlFile = model.files.find(f => f.file_type === 'stl') || model.files.find(f => f.file_type === '3mf') || model.files.find(f => f.file_type === 'step');
     return `
       <div style="max-width:1000px;margin:0 auto;padding:20px">
         <div class="detail-header">
