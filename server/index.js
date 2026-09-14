@@ -1343,6 +1343,68 @@ app.get('/api/files/:id/download/:filename?', heavyLimiter, (req, res, next) => 
   }
 });
 
+// Serve any STL or 3MF as a 3MF. Bambu Studio's bambustudio:// handler refuses a
+// URL that does not end in .3mf, so a plain STL has to be wrapped server-side.
+app.get('/api/files/:id/3mf/:filename?', heavyLimiter, (req, res) => {
+  const shareSlug = req.query.share;
+  const doConvert = () => {
+    try {
+      const { stlToMesh, meshTo3mf } = require('./utils/3mf');
+      const file = get('SELECT * FROM files WHERE id=?', [Number(req.params.id)]);
+      if (!file) return res.status(404).json({ error: 'File not found' });
+
+      if (shareSlug) {
+        const share = get("SELECT * FROM shares WHERE id=? AND (expires_at IS NULL OR expires_at > datetime('now'))", [shareSlug]);
+        if (!share || file.model_id !== share.model_id) {
+          return res.status(403).json({ error: 'Invalid or expired share link' });
+        }
+      } else {
+        const privateProjects = all('SELECT p.user_id FROM projects p JOIN project_models pm ON p.id=pm.project_id WHERE pm.model_id=? AND p.visibility="private"', [file.model_id]);
+        if (privateProjects.length > 0) {
+          if (!req.user || (req.user.role !== 'admin' && !privateProjects.some(p => p.user_id === req.user.id))) {
+            return res.status(403).json({ error: 'Access denied to private file' });
+          }
+        }
+      }
+
+      if (file.file_type !== 'stl' && file.file_type !== '3mf') {
+        return res.status(415).json({ error: 'Only STL and 3MF files can be served as 3MF' });
+      }
+
+      const p = file.library_path || path.join(UPLOADS_DIR, file.filename);
+      if (!fs.existsSync(p)) return res.status(404).json({ error: 'File not found on disk' });
+
+      const baseDir = file.library_path ? LIBRARY_PATH : UPLOADS_DIR;
+      const confined = validatePathConfinement(baseDir, path.relative(baseDir, p));
+      if (!confined) return res.status(403).json({ error: 'Access denied' });
+
+      const name = String(file.original_name || file.filename).replace(/\.[^.]+$/, '').replace(/[/\\?%*:|"<>]/g, '_');
+      res.setHeader('Content-Type', 'model/3mf');
+      if (file.file_type === '3mf') return res.download(confined, `${name}.3mf`);
+
+      if (fs.statSync(confined).size > 300 * 1024 * 1024) {
+        return res.status(413).json({ error: 'File too large to convert to 3MF' });
+      }
+
+      const mesh = stlToMesh(fs.readFileSync(confined));
+      if (!mesh.tris.length) return res.status(422).json({ error: 'No triangles found in STL' });
+
+      const buffer = meshTo3mf(mesh);
+      res.setHeader('Content-Disposition', `attachment; filename="${name}.3mf"`);
+      res.setHeader('Content-Length', buffer.length);
+      res.send(buffer);
+    } catch (e) { console.error(e); res.status(500).json({ error: 'Failed to build 3MF' }); }
+  };
+
+  if (shareSlug) {
+    doConvert();
+  } else if (getSettingBool('require_login_to_view')) {
+    authenticate(req, res, doConvert);
+  } else {
+    doConvert();
+  }
+});
+
 app.delete('/api/files/:id', authenticate, (req, res) => {
   try {
     if (!req.user || req.user.role === 'viewer') return res.status(403).json({ error: 'Viewer accounts cannot delete data' });
