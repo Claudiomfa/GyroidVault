@@ -1101,6 +1101,9 @@ app.post('/api/upload-slicer', authenticate, upload.single('file'), (req, res) =
     } else if (fileType === '3mf') {
       const { extract3mfThumbnail } = require('./utils/3mf');
       thumbnail = extract3mfThumbnail(finalDest, UPLOADS_DIR);
+    } else if (fileType === 'f3d') {
+      const { extractF3dThumbnail } = require('./utils/f3d');
+      thumbnail = extractF3dThumbnail(finalDest, UPLOADS_DIR);
     }
 
     // Create new model
@@ -1131,6 +1134,7 @@ app.post('/api/models/:id/files', authenticate, upload.array('files', 20), (req,
     if (!req.files?.length) return res.status(400).json({ error: 'No files uploaded' });
     const { parseGcodeMetadata, extractGcodeThumbnail } = require('./utils/gcode');
     const { extract3mfThumbnail } = require('./utils/3mf');
+    const { extractF3dThumbnail } = require('./utils/f3d');
     const uploaded = [];
 
     // Ensure model has a library directory
@@ -1209,6 +1213,12 @@ app.post('/api/models/:id/files', authenticate, upload.array('files', 20), (req,
         }
       } else if (ft === '3mf') {
         fileThumbnail = extract3mfThumbnail(finalDest, UPLOADS_DIR);
+        if (fileThumbnail && !model.thumbnail) {
+          run('UPDATE models SET thumbnail=? WHERE id=?', [fileThumbnail, id]);
+          model.thumbnail = fileThumbnail;
+        }
+      } else if (ft === 'f3d') {
+        fileThumbnail = extractF3dThumbnail(finalDest, UPLOADS_DIR);
         if (fileThumbnail && !model.thumbnail) {
           run('UPDATE models SET thumbnail=? WHERE id=?', [fileThumbnail, id]);
           model.thumbnail = fileThumbnail;

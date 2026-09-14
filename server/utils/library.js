@@ -238,6 +238,17 @@ async function scanLibrary(libraryPath) {
                   model.thumbnail = thumb;
                 }
               }
+            } else if (ft === 'f3d') {
+              const { extractF3dThumbnail } = require('./f3d');
+              const { UPLOADS_DIR } = require('../database');
+              const thumb = extractF3dThumbnail(filePath, UPLOADS_DIR);
+              if (thumb) {
+                fileThumbnail = thumb;
+                if (!model.thumbnail) {
+                  db.run('UPDATE models SET thumbnail = ? WHERE id = ?', [thumb, model.id], true);
+                  model.thumbnail = thumb;
+                }
+              }
             }
 
             if (ft === 'image') {
