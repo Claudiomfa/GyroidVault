@@ -286,7 +286,10 @@ app.post('/api/auth/invite', authenticate, async (req, res) => {
 app.post('/api/auth/login', loginLimiter, async (req, res) => {
   try {
     const { username, password } = req.body;
-    const user = get('SELECT * FROM users WHERE username = ?', [username]);
+    if (!username || !password) return res.status(400).json({ error: 'Missing credentials' });
+
+    const identifier = String(username).trim();
+    const user = get('SELECT * FROM users WHERE LOWER(username) = LOWER(?) OR LOWER(email) = LOWER(?)', [identifier, identifier]);
     if (!user || !(await bcrypt.compare(password, user.password_hash))) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }

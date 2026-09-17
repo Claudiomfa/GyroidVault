@@ -88,3 +88,36 @@
   - Toon de live webcam-stream (MJPEG/WebRTC), temperatuurgrafiek en voortgangsbalk van actieve Klipper (Moonraker) of Bambu Lab printers direct op het GyroidVault-dashboard.
 - [ ] **Printstatistieken & Kostenanalyse**
   - Interactieve grafieken (bijvoorbeeld met Chart.js) die laten zien hoeveel gram filament je per maand verbruikt, het succespercentage van je prints, en een schatting van de totale stroom- en materiaalkosten.
+
+---
+
+## 🏗️ 6. Codebase Architectuur & Technische Kwaliteit (Refactoring)
+*Structurele verbeteringen onder de motorkap om schaalbaarheid, overzicht en samenwerking met externe contributors optimaal te houden.*
+
+- [ ] **Backend Modulariseren (Routes & Controllers)**
+  - Splits de monolithische `server/index.js` (~2.600 regels) op in modulaire Express routers:
+    - `server/routes/auth.js` (authenticatie, sessies, wachtwoorden)
+    - `server/routes/models.js` (CRUD, bewerkingen, queries)
+    - `server/routes/files.js` (downloads, uploads, streams)
+    - `server/routes/tags.js` & `server/routes/projects.js`
+    - `server/routes/settings.js` & status
+  - `server/index.js` blijft licht en overzichtelijk (alleen server initialisatie, middleware mounten en poort luisteren).
+  - Verkleint kans op merge-conflicten bij PR's aanzienlijk.
+
+- [ ] **Frontend Opsplitsen in Modules (`app.js` & `components.js`)**
+  - Splits `public/js/app.js` en `public/js/components.js` op in logische ES modules of deelbestanden (bijv. `components/model-card.js`, `components/upload-modal.js`, `components/filter-bar.js`).
+  - Maakt UI-aanpassingen gerichter en voorkomt dat één wijziging per ongeluk andere schermen beïnvloedt.
+
+- [ ] **Geautomatiseerde Smoke & Integratietests (CI Pipeline)**
+  - Toevoegen van een lichte testsuite (bijv. met Vitest of Jest + Supertest).
+  - Kernzaken afdekken: login/sessie, aanmaken/ophalen van modellen, validatie van ongeldige uploads.
+  - Koppelen aan GitHub Actions zodat PR's van contributors automatisch getest worden vóór het mergen.
+
+- [ ] **Database Schema Migratiesysteem (SQLite Versioning)**
+  - Een gestructureerd migratiesysteem (bijv. `migrations/001_initial.sql`, `migrations/002_add_indexes.sql`).
+  - Zorgt voor betrouwbare en geautomatiseerde upgrades van de SQLite-database tussen releases zonder handmatige ad-hoc runtime queries.
+
+- [ ] **Centrale Config & Environment Validatie**
+  - Eén centraal configuratiebestand (`server/config.js`) dat alle omgevingsvariabelen (`PORT`, `DATA_DIR`, `LOG_LEVEL`, etc.) valideert bij het opstarten.
+  - Geeft direct duidelijke, vriendelijke foutmeldingen in de logs bij verkeerde configuraties in Docker of Unraid.
+

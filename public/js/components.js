@@ -323,6 +323,43 @@ const UI = {
       </form>`;
   },
 
+  collectionSelectForm(projects = [], selectedIds = [], modelId = null) {
+    if (!projects || projects.length === 0) {
+      return `
+        <div style="text-align:center;padding:24px 10px;color:var(--text-muted)">
+          <div style="font-size:1.5rem;margin-bottom:8px">📁</div>
+          <p style="font-size:.9rem;margin-bottom:14px">No collections found.</p>
+          <button type="button" class="btn btn-primary btn-sm" onclick="App.closeModal();App.showCreateProject()">Create Collection</button>
+        </div>`;
+    }
+
+    const items = projects.map(p => {
+      const isChecked = selectedIds.includes(p.id) ? 'checked' : '';
+      return `
+        <label class="collection-checkbox-item" style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:6px;cursor:pointer;user-select:none;transition:background 0.15s ease;">
+          <input type="checkbox" name="project_ids" value="${p.id}" ${isChecked} style="accent-color:var(--accent-primary);width:16px;height:16px;cursor:pointer;">
+          <span style="font-weight:500;font-size:.88rem;color:var(--text-primary);flex:1">${this.escapeHtml(p.name)}</span>
+          ${p.visibility === 'private' ? '<span style="font-size:.7rem;color:var(--text-muted);background:var(--bg-tertiary);padding:2px 6px;border-radius:4px;border:1px solid var(--border)">🔒 Private</span>' : ''}
+        </label>
+      `;
+    }).join('');
+
+    return `
+      <form onsubmit="App.handleCollectionSelectionSubmit(event, ${modelId ? Number(modelId) : 'null'})">
+        <div style="margin-bottom:12px">
+          <input type="text" class="form-input" placeholder="Search collections..." oninput="App.filterCollectionList(this.value)" style="width:100%;font-size:.85rem;padding:8px 12px">
+        </div>
+        <div style="max-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:2px;margin-bottom:18px;border:1px solid var(--border);border-radius:8px;padding:6px;background:var(--bg-secondary)">
+          ${items}
+        </div>
+        <div class="form-actions" style="display:flex;justify-content:flex-end;gap:10px">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Collections</button>
+        </div>
+      </form>`;
+  },
+
+
   bulkBrowseMoveForm() {
     return `
       <form onsubmit="App.handleBulkBrowseMoveSubmit(event)">
@@ -1182,8 +1219,8 @@ const UI = {
     return `
       <form onsubmit="App.handleLogin(event)" class="form-grid">
         <div class="form-group">
-          <label>Username</label>
-          <input type="text" name="username" required placeholder="Enter username" class="form-input">
+          <label>Username or Email</label>
+          <input type="text" name="username" required placeholder="Enter username or email" class="form-input">
         </div>
         <div class="form-group">
           <label>Password</label>
