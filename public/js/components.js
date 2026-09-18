@@ -466,7 +466,7 @@ const UI = {
         </div>
         <div class="panel-body no-pad">
           <div class="viewer-container" id="stl-viewer-${model.id}" data-stl-url="${stlFile.url || '/uploads/'+stlFile.filename}" data-fallback-thumbnail="${model.thumbnail_url || ''}">
-            <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted)">Loading 3D preview...</div>
+            <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted)">Carregando pré-visualização 3D...</div>
           </div>
           <div style="padding:12px 16px;font-size:.7rem;color:var(--text-muted);border-top:1px solid var(--border);background:rgba(0,0,0,0.1)">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Drag to rotate · Scroll to zoom · Right-click to pan
@@ -492,8 +492,8 @@ const UI = {
         <div class="panel-body">
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:350px;color:var(--text-muted);text-align:center">
             <div style="margin-bottom:16px;opacity:.25;color:var(--text-muted)"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
-            <div style="font-size:1.1rem;font-weight:600;color:var(--text-secondary)">No 3D Preview Available</div>
-            <div style="font-size:.85rem;margin-top:6px;max-width:280px">Upload an STL or 3MF file to this model to enable the interactive 3D viewer.</div>
+            <div style="font-size:1.1rem;font-weight:600;color:var(--text-secondary)">Não existe pré-visualização em 3D disponível.</div>
+            <div style="font-size:.85rem;margin-top:6px;max-width:280px">Faça o upload de um ficheiro STL ou 3MF para este modelo para ativar o visualizador 3D interativo.</div>
           </div>
         </div>
       </div>`;
@@ -519,7 +519,7 @@ const UI = {
                     <div style="font-weight:600">${meta.printTime || 'Unknown'}</div>
                   </div>
                   <div style="background:var(--bg-input); padding:8px; border-radius:var(--radius-sm)">
-                    <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Weight</div>
+                    <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Peso</div>
                     <div style="font-weight:600">${meta.weight ? meta.weight + 'g' : 'Unknown'}</div>
                   </div>
                   <div style="background:var(--bg-input); padding:8px; border-radius:var(--radius-sm)">
@@ -527,7 +527,7 @@ const UI = {
                     <div style="font-weight:600">${meta.filamentType || 'Unknown'}</div>
                   </div>
                   <div style="background:var(--bg-input); padding:8px; border-radius:var(--radius-sm)">
-                    <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Layer Height</div>
+                    <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Altura da camada</div>
                     <div style="font-weight:600">${meta.layerHeight ? meta.layerHeight + 'mm' : 'Unknown'}</div>
                   </div>
                   
@@ -536,47 +536,47 @@ const UI = {
                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-size:0.85rem;">
                       ${meta.infill || meta.infillPattern ? `
                       <div style="background:var(--bg-input); padding:8px; border-radius:var(--radius-sm)">
-                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Infill</div>
+                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Preenchimento</div>
                         <div style="font-weight:600">${meta.infill ? meta.infill + (!String(meta.infill).endsWith('%') ? '%' : '') : ''} ${meta.infillPattern ? '(' + meta.infillPattern + ')' : ''}</div>
                       </div>` : ''}
                       ${meta.wallLoops || meta.topBottomLayers ? `
                       <div style="background:var(--bg-input); padding:8px; border-radius:var(--radius-sm)">
-                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Walls & Layers</div>
+                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Paredes e Camadas</div>
                         <div style="font-weight:600">${meta.wallLoops ? meta.wallLoops + ' Walls' : ''} ${meta.topBottomLayers ? (meta.wallLoops ? ' / ' : '') + meta.topBottomLayers + ' Top/Bot' : ''}</div>
                       </div>` : ''}
                       ${meta.tempNozzle ? `
                       <div style="background:var(--bg-input); padding:8px; border-radius:var(--radius-sm)">
-                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Nozzle Temp</div>
+                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Temperatura do bico</div>
                         <div style="font-weight:600">${meta.tempNozzle}</div>
                       </div>` : ''}
                       ${meta.tempBed ? `
                       <div style="background:var(--bg-input); padding:8px; border-radius:var(--radius-sm)">
-                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Bed Temp</div>
+                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Temperatura da cama</div>
                         <div style="font-weight:600">${meta.tempBed}</div>
                       </div>` : ''}
                       ${meta.supports !== undefined ? `
                       <div style="background:var(--bg-input); padding:8px; border-radius:var(--radius-sm)">
-                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Supports</div>
+                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Suportes</div>
                         <div style="font-weight:600">${meta.supports === '1' || meta.supports === 1 || meta.supports === 'true' ? 'Yes' : 'No'}</div>
                       </div>` : ''}
                       ${meta.maxVolumetricSpeed ? `
                       <div style="background:var(--bg-input); padding:8px; border-radius:var(--radius-sm)">
-                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Max Vol. Speed</div>
+                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Velocidade máxima de volume</div>
                         <div style="font-weight:600">${meta.maxVolumetricSpeed} mm³/s</div>
                       </div>` : ''}
                       ${meta.filamentCost ? `
                       <div style="background:var(--bg-input); padding:8px; border-radius:var(--radius-sm)">
-                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Print Cost</div>
+                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Custo de impressão</div>
                         <div style="font-weight:600">${meta.filamentCost}</div>
                       </div>` : ''}
                       ${meta.slicer ? `
                       <div style="background:var(--bg-input); padding:8px; border-radius:var(--radius-sm)">
-                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Slicer</div>
+                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Fatiador</div>
                         <div style="font-weight:600">${meta.slicer}</div>
                       </div>` : ''}
                       ${meta.printerModel ? `
                       <div style="background:var(--bg-input); padding:8px; border-radius:var(--radius-sm)">
-                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Printer</div>
+                        <div style="color:var(--text-muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em">Impressora</div>
                         <div style="font-weight:600">${meta.printerModel}</div>
                       </div>` : ''}
                     </div>
@@ -587,8 +587,8 @@ const UI = {
                   ` : ''}
                 </div>
                 <div style="margin-top:12px; display:flex; gap:8px">
-                  <button class="btn btn-ghost btn-sm" style="color:var(--accent-cyan);border:1px solid rgba(0,212,255,0.4);" onclick="App.previewStl(${model.id}, '${f.url || '/uploads/'+f.filename}', 'gcode')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Preview G-Code</button>
-                  ${hasPrinters ? `<button class="btn btn-primary btn-sm" style="flex:1" onclick="App.sendToPrinter(${f.id})">Send to Printer</button>` : ''}
+                  <button class="btn btn-ghost btn-sm" style="color:var(--accent-cyan);border:1px solid rgba(0,212,255,0.4);" onclick="App.previewStl(${model.id}, '${f.url || '/uploads/'+f.filename}', 'gcode')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Pré-visualizar G-Code</button>
+                  ${hasPrinters ? `<button class="btn btn-primary btn-sm" style="flex:1" onclick="App.sendToPrinter(${f.id})">Enviar para a impressora</button>` : ''}
                   <a href="/api/files/${f.id}/download/${encodeURIComponent(f.filename)}" class="btn btn-secondary btn-sm" download>Download</a>
                 </div>
               </div>
@@ -1170,7 +1170,7 @@ const UI = {
       <div class="panel-header"><div class="panel-title">${iconMap[type] || ''} ${title}</div></div>
       <div class="panel-body">
         ${defaultMatBlock}
-        ${listHtml || '<div style="color:var(--text-muted);font-size:.875rem;padding:8px 0">None yet</div>'}
+        ${listHtml || '<div style="color:var(--text-muted);font-size:.875rem;padding:8px 0">Nenhuns</div>'}
         ${App.currentUser?.role === 'admin' ? `
         <div class="add-inline" style="margin-top:14px">
           <input class="form-input" id="add-${type}-input" placeholder="Add new ${type.slice(0,-1)}...">
@@ -1183,7 +1183,7 @@ const UI = {
 
   // ── Dashboard sections ──
   recentModels(models) {
-    if (!models.length) return '<div style="color:var(--text-muted);padding:8px 0;font-size:.875rem">No models yet</div>';
+    if (!models.length) return '<div style="color:var(--text-muted);padding:8px 0;font-size:.875rem">Ainda não há modelos.</div>';
     return models.map(m => `
       <div class="activity-item" style="cursor:pointer" onclick="App.navigate('/models/${m.id}')">
         <div class="activity-dot" style="background:${m.category_color || 'var(--text-muted)'}"></div>
@@ -1193,7 +1193,7 @@ const UI = {
   },
 
   recentPrints(prints) {
-    if (!prints.length) return '<div style="color:var(--text-muted);padding:8px 0;font-size:.875rem">No prints logged yet</div>';
+    if (!prints.length) return '<div style="color:var(--text-muted);padding:8px 0;font-size:.875rem">Nenhuma impressão registada</div>';
     return prints.map(p => `
       <div class="activity-item" style="cursor:pointer" onclick="App.navigate('/models/${p.model_id}')">
         <div class="print-status ${p.successful ? 'success' : 'failed'}"></div>
@@ -1203,7 +1203,7 @@ const UI = {
   },
 
   materialChart(usage) {
-    if (!usage.length) return '<div style="color:var(--text-muted);padding:8px 0;font-size:.875rem">No data yet</div>';
+    if (!usage.length) return '<div style="color:var(--text-muted);padding:8px 0;font-size:.875rem">Ainda não há dados.</div>';
     const max = Math.max(...usage.map(u => u.count));
     return usage.map(u => `
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
@@ -1220,18 +1220,18 @@ const UI = {
       <form onsubmit="App.handleLogin(event)" class="form-grid">
         <div class="form-group">
           <label>Username or Email</label>
-          <input type="text" name="username" required placeholder="Enter username or email" class="form-input">
+          <input type="text" name="username" required placeholder="Digite o nome de utilizador ou o e-mail." class="form-input">
         </div>
         <div class="form-group">
           <label>Password</label>
-          <input type="password" name="password" required placeholder="Enter password" class="form-input">
+          <input type="password" name="password" required placeholder="Digite a password" class="form-input">
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px">
           <div style="display:flex; flex-direction:column; gap:4px">
-            ${allowRegistration ? `<a href="#" onclick="event.preventDefault();App.showRegister()" style="font-size:.85rem;color:var(--accent-cyan)">No account? Register</a>` : ''}
-            <a href="#" onclick="event.preventDefault();App.showForgotPassword()" style="font-size:.75rem;color:var(--text-muted)">Forgot password?</a>
+            ${allowRegistration ? `<a href="#" onclick="event.preventDefault();App.showRegister()" style="font-size:.85rem;color:var(--accent-cyan)">Não tem conta? Registe-se</a>` : ''}
+            <a href="#" onclick="event.preventDefault();App.showForgotPassword()" style="font-size:.75rem;color:var(--text-muted)">Esqueceu a password?</a>
           </div>
-          <button type="submit" class="btn btn-primary">Login</button>
+          <button type="submit" class="btn btn-primary">Iniciar sessão</button>
         </div>
       </form>`;
   },
@@ -1242,19 +1242,19 @@ const UI = {
         <input type="hidden" name="token" value="${token}">
         <div class="form-group">
           <label>Username</label>
-          <input type="text" name="username" required placeholder="Choose username" class="form-input">
+          <input type="text" name="username" required placeholder="Digite o username" class="form-input">
         </div>
         <div class="form-group">
           <label>Email</label>
-          <input type="email" name="email" required placeholder="Your email address" class="form-input">
+          <input type="email" name="email" required placeholder="O seu endereço de email" class="form-input">
         </div>
         <div class="form-group">
           <label>Password</label>
-          <input type="password" name="password" required placeholder="Choose password" class="form-input">
+          <input type="password" name="password" required placeholder="Digite a password" class="form-input">
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px">
-          <a href="#" onclick="event.preventDefault();App.showLogin()" style="font-size:.85rem;color:var(--accent-cyan)">Already have an account? Login</a>
-          <button type="submit" class="btn btn-primary">Register</button>
+          <a href="#" onclick="event.preventDefault();App.showLogin()" style="font-size:.85rem;color:var(--accent-cyan)">Já tem conta? Iniciar sessão</a>
+          <button type="submit" class="btn btn-primary">Registar</button>
         </div>
       </form>`;
   },
@@ -1262,14 +1262,14 @@ const UI = {
   forgotPasswordForm() {
     return `
       <form onsubmit="App.handleForgotPassword(event)" class="form-grid">
-        <p style="color:var(--text-secondary);font-size:.85rem;margin-bottom:16px">Enter your email and we'll send you a reset link.</p>
+        <p style="color:var(--text-secondary);font-size:.85rem;margin-bottom:16px">Insira o seu e-mail e enviaremos um link para redefinir a sua palavra-passe.</p>
         <div class="form-group">
           <label>Email</label>
-          <input type="email" name="email" required placeholder="Your email address" class="form-input">
+          <input type="email" name="email" required placeholder="O seu endereço de email" class="form-input">
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px">
-          <a href="#" onclick="event.preventDefault();App.showLogin()" style="font-size:.85rem;color:var(--accent-cyan)">Back to Login</a>
-          <button type="submit" class="btn btn-primary">Send Link</button>
+          <a href="#" onclick="event.preventDefault();App.showLogin()" style="font-size:.85rem;color:var(--accent-cyan)">Voltar ao login</a>
+          <button type="submit" class="btn btn-primary">Enviar Link</button>
         </div>
       </form>`;
   },
@@ -1279,12 +1279,12 @@ const UI = {
       <form onsubmit="App.handleResetPassword(event)" class="form-grid">
         <input type="hidden" name="token" value="${token}">
         <div class="form-group">
-          <label>New Password</label>
-          <input type="password" name="password" required placeholder="Enter new password" class="form-input">
+          <label>Nova Password</label>
+          <input type="password" name="password" required placeholder="Digite a nova password" class="form-input">
         </div>
         <div class="form-group">
           <label>Confirm Password</label>
-          <input type="password" name="confirm" required placeholder="Confirm new password" class="form-input">
+          <input type="password" name="confirm" required placeholder="Confirme a nova password" class="form-input">
         </div>
         <div style="display:flex;justify-content:flex-end;margin-top:20px">
           <button type="submit" class="btn btn-primary">Reset Password</button>
@@ -1299,28 +1299,28 @@ const UI = {
           <div style="font-weight:500">${p.name}</div>
           <div style="font-size:0.8rem;color:var(--text-muted);display:flex;align-items:center;gap:4px">${p.url} ${p.api_key ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent-yellow)" title="API Key Configured"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3M18.5 4.5l3 3"/></svg>' : ''}</div>
         </div>
-        <button class="btn btn-danger btn-sm" onclick="App.deletePrinter('${p.id}')">Delete</button>
+        <button class="btn btn-danger btn-sm" onclick="App.deletePrinter('${p.id}')">Apagar</button>
       </div>
     `).join('');
     
     return `
-      ${list || '<div style="color:var(--text-muted);font-size:.875rem;padding:8px 0">No printers configured</div>'}
+      ${list || '<div style="color:var(--text-muted);font-size:.875rem;padding:8px 0">Nenhuma impressora configurada</div>'}
       <form onsubmit="App.handleAddPrinter(event)" class="form-grid" style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
-        <h4>Add Moonraker / Klipper Printer</h4>
+        <h4>Adicionar Moonraker / Klipper Printer</h4>
         <div class="form-group">
-          <label>Printer Name</label>
+          <label>Nome da impressora</label>
           <input type="text" name="name" required class="form-input" placeholder="e.g. Voron 2.4">
         </div>
         <div class="form-group">
-          <label>Printer URL</label>
+          <label>URL da impressora</label>
           <input type="url" name="url" required class="form-input" placeholder="e.g. http://192.168.1.100">
         </div>
         <div class="form-group">
-          <label>API Key (Optional)</label>
-          <input type="password" name="api_key" class="form-input" placeholder="If required by Moonraker">
+          <label>Chave API (opcional)</label>
+          <input type="password" name="api_key" class="form-input" placeholder="Se exigido por Moonraker">
         </div>
         <div>
-          <button type="submit" class="btn btn-primary">Add Printer</button>
+          <button type="submit" class="btn btn-primary">Adicionar impressora</button>
         </div>
       </form>
     `;
@@ -1331,14 +1331,14 @@ const UI = {
     return `
       <form onsubmit="App.handleSendToPrinter(event, ${fileId})">
         <div class="form-group">
-          <label class="form-label">Select Printer</label>
+          <label class="form-label">Selecione a impressora</label>
           <select class="form-select" name="printer_id">
             ${options}
           </select>
         </div>
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Send to Printer</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Enviar para a impressora</button>
         </div>
       </form>`;
   },
@@ -1347,12 +1347,12 @@ const UI = {
     config = config || {};
     return `
       <form onsubmit="App.handleSaveSystemSettings(event)" class="form-grid">
-        <h3 style="grid-column: 1 / -1; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">General Settings</h3>
+        <h3 style="grid-column: 1 / -1; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Configurações gerais</h3>
         <div class="form-group" style="grid-column: 1 / -1">
-          <label style="font-weight:600">Default Library View Mode</label>
+          <label style="font-weight:600">Modo de visualização padrão da biblioteca</label>
           <select name="library_view_mode" class="form-input" style="max-width:420px;margin-bottom:12px">
-            <option value="grid" ${(config.library_view_mode || 'grid') === 'grid' ? 'selected' : ''}>All Models (Flat Grid Gallery)</option>
-            <option value="folder" ${config.library_view_mode === 'folder' ? 'selected' : ''}>Folder View (Disk Directory Hierarchy)</option>
+            <option value="grid" ${(config.library_view_mode || 'grid') === 'grid' ? 'selected' : ''}>Todos os modelos (Galeria em grelha plana)</option>
+            <option value="folder" ${config.library_view_mode === 'folder' ? 'selected' : ''}>Visualização de pastas (Hierarquia de diretórios do disco)</option>
           </select>
           <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;margin-top:4px">
             <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start">
@@ -1360,8 +1360,8 @@ const UI = {
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
               </div>
               <div>
-                <div style="font-weight:600;font-size:0.875rem;color:var(--text-primary);margin-bottom:3px">All Models (Flat Grid Gallery)</div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.4">Displays all indexed 3D models across subfolders in a single unified gallery. Best for fast global searching, tag filtering, and print status tracking.</div>
+                <div style="font-weight:600;font-size:0.875rem;color:var(--text-primary);margin-bottom:3px">Todos os modelos (Galeria em grelha plana)</div>
+                <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.4">Apresenta todos os modelos 3D indexados em subpastas numa única galeria unificada. Ideal para pesquisas globais rápidas, filtragem por tags e acompanhamento do estado de impressão.</div>
               </div>
             </div>
             <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start">
@@ -1369,8 +1369,8 @@ const UI = {
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
               </div>
               <div>
-                <div style="font-weight:600;font-size:0.875rem;color:var(--text-primary);margin-bottom:3px">Folder View (Directory Hierarchy)</div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.4">Mirrors your exact storage directory layout on disk. Browse and drill down through nested folders and collections just like a file manager.</div>
+                <div style="font-weight:600;font-size:0.875rem;color:var(--text-primary);margin-bottom:3px">Visualização de pastas (Hierarquia de diretórios)</div>
+                <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.4">Espelha exatamente o layout do diretório de armazenamento no disco. Navegue e explore pastas e coleções aninhadas como num gestor de ficheiros.</div>
               </div>
             </div>
           </div>
@@ -1378,11 +1378,11 @@ const UI = {
         <div class="form-group">
           <label>Auto-Scan Interval (Hours)</label>
           <input type="number" name="auto_scan_interval" value="${config.auto_scan_interval !== undefined ? config.auto_scan_interval : 24}" min="0" max="168" class="form-input">
-          <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Set to 0 to disable background scanning. Default is 24.</p>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Defina para 0 para desativar a verificação em segundo plano. O valor predefinido é 24.</p>
         </div>
 
         <div style="grid-column: 1 / -1; margin-top:20px">
-          <button type="submit" class="btn btn-primary">Save General Settings</button>
+          <button type="submit" class="btn btn-primary">Guardar configurações gerais</button>
         </div>
       </form>`;
   },
@@ -1394,8 +1394,8 @@ const UI = {
         <div style="display:flex;flex-direction:column;gap:14px">
           <label class="toggle-item">
             <div>
-              <div style="font-weight:600;font-size:0.95rem;color:var(--text-primary)">Enable Open Registration</div>
-              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px">Allows anyone to register an account without needing an invite code.</div>
+              <div style="font-weight:600;font-size:0.95rem;color:var(--text-primary)">Ativar o Registro Aberto</div>
+              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px">Permite que qualquer pessoa crie uma conta sem precisar de um código de convite.</div>
             </div>
             <input type="checkbox" name="open_registration" value="true" ${config.open_registration === 'true' ? 'checked' : ''}>
             <span class="toggle-switch"></span>
@@ -1403,8 +1403,8 @@ const UI = {
 
           <label class="toggle-item">
             <div>
-              <div style="font-weight:600;font-size:0.95rem;color:var(--text-primary)">Private Instance Mode</div>
-              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px">Forces all guests to log in before viewing any models or library files.</div>
+              <div style="font-weight:600;font-size:0.95rem;color:var(--text-primary)">Modo de instância privada</div>
+              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px">Obriga todos os visitantes a iniciar sessão antes de visualizarem quaisquer modelos ou ficheiros da biblioteca.</div>
             </div>
             <input type="checkbox" name="require_login_to_view" value="true" ${config.require_login_to_view === 'true' ? 'checked' : ''}>
             <span class="toggle-switch"></span>
@@ -1412,7 +1412,7 @@ const UI = {
         </div>
 
         <div>
-          <button type="submit" class="btn btn-primary">Save Security Settings</button>
+          <button type="submit" class="btn btn-primary">Guardar as configurações de segurança</button>
         </div>
       </form>
 
@@ -1420,8 +1420,8 @@ const UI = {
         <h3 style="margin-bottom:12px; font-size:1.1rem; color:var(--text-primary); display:flex; align-items:center; gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent-purple)"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Blocked IP Addresses</h3>
         <div id="blocked-ips-container">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-            <button type="button" class="btn btn-secondary btn-sm" onclick="App.loadBlockedIps()">Refresh Blocked IPs</button>
-            <span style="font-size:0.75rem;color:var(--text-muted)">Unblock IP addresses flagged for failed login attempts.</span>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="App.loadBlockedIps()">Atualizar IPs bloqueados</button>
+            <span style="font-size:0.75rem;color:var(--text-muted)">Desbloquear endereços IP sinalizados por tentativas de login falhadas.</span>
           </div>
           <div id="blocked-ips-list"></div>
         </div>
@@ -1432,9 +1432,9 @@ const UI = {
     return `
       <div style="display:flex;flex-direction:column;gap:24px">
         <div>
-          <h3 style="margin-bottom:8px; font-size:1.1rem; color:var(--text-primary); display:flex; align-items:center; gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent-cyan)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Duplicate File Finder</h3>
-          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px">Scans your library using SHA-256 file hashes to find identical 3D model files across different folders or models.</p>
-          <button type="button" class="btn btn-primary btn-sm" onclick="App.scanForDuplicates()">Scan for Duplicate Files</button>
+          <h3 style="margin-bottom:8px; font-size:1.1rem; color:var(--text-primary); display:flex; align-items:center; gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent-cyan)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Localizador de Ficheiros Duplicados</h3>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px">Analisa a sua biblioteca utilizando hashes de ficheiros SHA-256 para encontrar ficheiros de modelos 3D idênticos em diferentes pastas ou modelos.</p>
+          <button type="button" class="btn btn-primary btn-sm" onclick="App.scanForDuplicates()">Verificar ficheiros duplicados</button>
           <div id="duplicates-results" style="margin-top:16px"></div>
         </div>
       </div>`;
@@ -1472,8 +1472,8 @@ const UI = {
           </select>
         </div>
         <div style="margin-top:20px; display:flex; gap:10px;">
-          <button type="submit" class="btn btn-primary">Save SMTP Settings</button>
-          <button type="button" class="btn btn-secondary" onclick="App.testSMTP(event)">Send Test Email</button>
+          <button type="submit" class="btn btn-primary">Guardar configurações SMTP</button>
+          <button type="button" class="btn btn-secondary" onclick="App.testSMTP(event)">Enviar Email de teste</button>
         </div>
       </form>`;
   },
@@ -1481,7 +1481,7 @@ const UI = {
   profilePage(user) {
     return `
       <div class="page-header">
-        <div><h1 class="page-title">My Profile</h1><p class="page-subtitle">Manage your account settings</p></div>
+        <div><h1 class="page-title">My Profile</h1><p class="page-subtitle">Gerir as configurações da sua conta</p></div>
       </div>
       <div class="card" style="max-width:600px">
         <form onsubmit="App.handleUpdateProfile(event)" class="form-grid">
@@ -1496,20 +1496,20 @@ const UI = {
           <div class="form-group">
             <label>New Password (leave blank to keep current)</label>
             <input type="password" name="password" placeholder="••••••••" class="form-input">
-            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Must be at least 8 characters and contain both letters and numbers.</p>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Deve ter no mínimo 8 caracteres e conter letras e números.</p>
           </div>
           <div class="form-group">
-            <label>Preferred Slicer</label>
+            <label>Fatiador preferido</label>
             <select name="preferred_slicer" class="form-input">
-              <option value="" ${!user.preferred_slicer ? 'selected' : ''}>None (Ask every time)</option>
+              <option value="" ${!user.preferred_slicer ? 'selected' : ''}>Nenhum (Pergunte sempre)</option>
+              <option value="bambustudio" ${user.preferred_slicer === 'bambustudio' ? 'selected' : ''}>Bambu Studio</option>
               <option value="orcaslicer" ${user.preferred_slicer === 'orcaslicer' ? 'selected' : ''}>OrcaSlicer</option>
               <option value="elegooslicer" ${user.preferred_slicer === 'elegooslicer' ? 'selected' : ''}>Elegoo Slicer</option>
               <option value="cura" ${user.preferred_slicer === 'cura' ? 'selected' : ''}>Ultimaker Cura</option>
-              <option value="bambustudio" ${user.preferred_slicer === 'bambustudio' ? 'selected' : ''}>Bambu Studio</option>
             </select>
           </div>
           <div style="margin-top:20px">
-            <button type="submit" class="btn btn-primary">Update Profile</button>
+            <button type="submit" class="btn btn-primary">Atualizar perfil</button>
           </div>
         </form>
       </div>`;
@@ -1519,11 +1519,11 @@ const UI = {
     const list = projects.map(p => this.projectCard(p)).join('');
     return `
       <div class="page-header">
-        <div><h1 class="page-title">Collections</h1><p class="page-subtitle">Group models into collections</p></div>
+        <div><h1 class="page-title">Collections</h1><p class="page-subtitle">Agrupe os modelos em coleções.</p></div>
         ${App.currentUser?.role !== 'viewer' ? '<button class="btn btn-primary" onclick="App.showCreateProject()">+ New Collection</button>' : ''}
       </div>
       <div class="model-grid">
-        ${list || '<div class="empty-state" style="grid-column: 1/-1">No collections yet</div>'}
+        ${list || '<div class="empty-state" style="grid-column: 1/-1">Ainda não há coleções.</div>'}
       </div>`;
   },
 
@@ -1546,17 +1546,17 @@ const UI = {
       <div class="page-header">
         <div>
           <div class="breadcrumbs" style="margin-bottom:8px">
-            <a href="#/collections"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Back to Collections</a>
+            <a href="#/collections"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Voltar às coleções</a>
           </div>
           <h1 class="page-title">${project.visibility === 'private' ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;color:var(--accent-purple)"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' : ''}${project.name}</h1>
           <p class="page-subtitle">${project.description || 'No description'}</p>
         </div>
         <div style="display:flex;gap:8px">
-          <button class="btn btn-danger btn-sm" onclick="App.deleteProject(${project.id})" style="display:inline-flex;align-items:center;gap:4px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>
+          <button class="btn btn-danger btn-sm" onclick="App.deleteProject(${project.id})" style="display:inline-flex;align-items:center;gap:4px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Apagar</button>
         </div>
       </div>
       <div class="model-grid">
-        ${models || '<div class="empty-state" style="grid-column: 1/-1">No models in this collection yet</div>'}
+        ${models || '<div class="empty-state" style="grid-column: 1/-1">Ainda não existem modelos nesta coleção.</div>'}
       </div>`;
   },
 
@@ -1564,22 +1564,22 @@ const UI = {
     return `
       <form onsubmit="App.handleProjectSubmit(event, ${project?.id || 'null'})" class="form-grid">
         <div class="form-group">
-          <label>Collection Name</label>
+          <label>Nome da coleção</label>
           <input type="text" name="name" value="${project?.name || ''}" required class="form-input" placeholder="e.g. Iron Man Helm">
         </div>
         <div class="form-group">
-          <label>Description</label>
+          <label>Descrição</label>
           <textarea name="description" class="form-textarea" placeholder="What is this collection about?">${project?.description || ''}</textarea>
         </div>
         <div class="form-group">
-          <label>Visibility</label>
+          <label>Visibilidade</label>
           <select name="visibility" class="form-input">
-            <option value="public" ${project?.visibility === 'public' ? 'selected' : ''}>Public (Visible to everyone)</option>
-            <option value="private" ${project?.visibility === 'private' ? 'selected' : ''}>Private (Only you can see this)</option>
+            <option value="public" ${project?.visibility === 'public' ? 'selected' : ''}>Público (Visível a todos)</option>
+            <option value="private" ${project?.visibility === 'private' ? 'selected' : ''}>Privado (Só você pode ver isto)</option>
           </select>
         </div>
         <div style="margin-top:20px;display:flex;justify-content:flex-end;gap:8px">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
           <button type="submit" class="btn btn-primary">${project ? 'Save' : 'Create'}</button>
         </div>
       </form>`;
@@ -1589,15 +1589,15 @@ const UI = {
     return `
       <form onsubmit="App.handleSendTestEmail(event)" class="form-grid">
         <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 16px;">
-          Enter the email address where you would like to receive the test message.
+          Introduza o endereço de e-mail onde pretende receber a mensagem de teste.
         </p>
         <div class="form-group">
-          <label>Recipient Email</label>
+          <label>E-mail do destinatário</label>
           <input type="email" name="test_email" value="${defaultEmail}" required placeholder="e.g. you@example.com" class="form-input">
         </div>
         <div style="margin-top:20px; display:flex; justify-content:flex-end; gap:10px;">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="send-test-btn">Send Test</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="send-test-btn">Enviar teste</button>
         </div>
       </form>`;
   },
@@ -1605,22 +1605,22 @@ const UI = {
   shareModal(modelId) {
     return `
       <div class="form-grid">
-        <p style="color:var(--text-secondary);font-size:.9rem;margin-bottom:16px">Create a public link to share this model with others.</p>
+        <p style="color:var(--text-secondary);font-size:.9rem;margin-bottom:16px">Crie um link público para partilhar este modelo com outras pessoas.</p>
         <div class="form-group">
           <label>Expiry (optional)</label>
           <select id="share-expiry" class="form-input">
-            <option value="">Never expires</option>
-            <option value="1">1 day</option>
-            <option value="7">7 days</option>
-            <option value="30">30 days</option>
+            <option value="">Nunca expira</option>
+            <option value="1">1 dia</option>
+            <option value="7">7 dias</option>
+            <option value="30">30 dias</option>
           </select>
         </div>
-        <button class="btn btn-primary" onclick="App.generateShare(${modelId})" style="width:100%;margin-top:10px">Generate Link</button>
+        <button class="btn btn-primary" onclick="App.generateShare(${modelId})" style="width:100%;margin-top:10px">Gerar link</button>
         <div id="share-result" style="margin-top:20px;display:none">
-          <label>Public Link</label>
+          <label>Link público</label>
           <div style="display:flex;gap:8px;margin-top:8px">
             <input type="text" id="share-link-input" readonly class="form-input" style="flex:1">
-            <button class="btn btn-secondary" onclick="App.copyShareLink()">Copy</button>
+            <button class="btn btn-secondary" onclick="App.copyShareLink()">Copiar</button>
           </div>
         </div>
       </div>`;
@@ -1632,25 +1632,25 @@ const UI = {
     return `
       <div style="max-width:1000px;margin:0 auto;padding:20px">
         <div class="detail-header">
-          <div><h1 class="page-title">${model.name}</h1><p class="page-subtitle">Public Shared Model</p></div>
+          <div><h1 class="page-title">${model.name}</h1><p class="page-subtitle">Modelo público partilhado</p></div>
         </div>
         <div class="detail-layout">
           <div>
             ${stlFile ? `
               <div class="glass-panel" style="margin-bottom:24px">
-                <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>3D Studio Preview</div></div>
+                <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>Antevisão do 3D Studio</div></div>
                 <div class="panel-body no-pad">
                   <div class="viewer-container" id="public-viewer" data-stl-url="${stlFile.url}"></div>
                 </div>
               </div>` : ''}
             <div class="glass-panel">
-              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Description</div></div>
+              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Descrição</div></div>
               <div class="panel-body">${model.description || 'No description'}</div>
             </div>
           </div>
           <div>
             <div class="glass-panel">
-              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Files</div></div>
+              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Ficheiros</div></div>
               <div class="panel-body no-pad">
                 ${model.files.map(f => `
                   <div class="file-item">
@@ -1671,24 +1671,24 @@ const UI = {
   },
 
   aboutSection(versionInfo = {}) {
-    const renderedChangelog = this.renderMarkdown(versionInfo.changelog || 'No release notes available.');
+    const renderedChangelog = this.renderMarkdown(versionInfo.changelog || 'Sem nota de lançamento disponível.');
     return `
       <div class="glass-panel">
-        <div class="panel-header"><div class="panel-title">About GyroidVault</div></div>
+        <div class="panel-header"><div class="panel-title">Sobre o RedPOISON 3d Creations</div></div>
         <div class="panel-body">
           <div style="display:flex;gap:24px;align-items:flex-start;margin-bottom:24px;flex-wrap:wrap">
             <div style="display:flex;align-items:center;justify-content:center">
               <img src="/img/logo-icon.png?v=35" alt="GyroidVault" style="width:84px;height:84px;object-fit:contain;filter:drop-shadow(0 6px 18px rgba(37,99,235,0.4)) drop-shadow(0 2px 6px rgba(56,189,248,0.25))">
             </div>
             <div style="flex:1">
-              <h3 style="margin:0 0 4px 0;font-size:1.4rem;background:var(--accent-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent">GyroidVault</h3>
-              <p style="margin:0;font-size:.9rem;color:var(--text-secondary)">Self-hosted 3D model management for enthusiasts and professionals.</p>
+              <h3 style="margin:0 0 4px 0;font-size:1.4rem;background:var(--accent-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent">RedPOISON 3d</h3>
+              <p style="margin:0;font-size:.9rem;color:var(--text-secondary)">Gestão de modelos 3D auto-hospedados para entusiastas e profissionais.</p>
               <div style="margin-top:12px;display:flex;gap:12px">
                 <a href="https://gyroidvault.com" target="_blank" class="btn btn-secondary btn-xs" style="color:var(--accent-cyan);border-color:rgba(0,212,255,0.3)">
                   <svg height="14" viewBox="0 0 24 24" width="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                   Official Website
                 </a>
-                <a href="https://github.com/TeeCodeDev/GyroidVault" target="_blank" class="btn btn-secondary btn-xs">
+                <a href="https://github.com/Claudiomfa/GyroidVault" target="_blank" class="btn btn-secondary btn-xs">
                   <svg height="14" viewBox="0 0 16 16" width="14" style="vertical-align:middle;margin-right:6px"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
                   GitHub Repository
                 </a>
@@ -1701,20 +1701,20 @@ const UI = {
           
           <div style="border-top:1px solid var(--border);padding-top:20px;margin-top:20px">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-              <div style="font-weight:600;font-size:.95rem">Version Information</div>
+              <div style="font-weight:600;font-size:.95rem">Informações da versão</div>
               <span class="badge badge-tag" style="background:var(--bg-input)">v${versionInfo.currentVersion || '1.0.0'}</span>
             </div>
             
             ${versionInfo.hasUpdate ? `
               <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);padding:16px;border-radius:8px;margin-bottom:20px">
                 <div style="display:flex;justify-content:space-between;align-items:center">
-                  <div style="color:#f59e0b;font-weight:600;display:flex;align-items:center;gap:6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>Update available: v${versionInfo.latestVersion}</div>
+                  <div style="color:#f59e0b;font-weight:600;display:flex;align-items:center;gap:6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>Atualização disponível: v${versionInfo.latestVersion}</div>
                   <a href="${versionInfo.url}" target="_blank" class="btn btn-primary btn-xs">View on GitHub</a>
                 </div>
               </div>
-            ` : '<div style="color:var(--success);font-size:.85rem;margin-bottom:20px">✓ You are running the latest version</div>'}
+            ` : '<div style="color:var(--success);font-size:.85rem;margin-bottom:20px">✓ Está a executar a versão mais recente.</div>'}
 
-            <div style="font-weight:600;font-size:.95rem;margin-bottom:12px">What\'s New</div>
+            <div style="font-weight:600;font-size:.95rem;margin-bottom:12px">O que há de novo</div>
             <div class="changelog-body" style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:20px;max-height:600px;overflow-y:auto;font-size:.9rem;line-height:1.6;color:var(--text-secondary)">${renderedChangelog}</div>
           </div>
         </div>
@@ -1798,7 +1798,7 @@ const UI = {
     return `
       <div class="upload-progress-box">
         <div class="upload-progress-header">
-          <span style="color:var(--accent-cyan)">⏳ Uploading...</span>
+          <span style="color:var(--accent-cyan)">⏳ Carregando...</span>
           <span style="font-weight:700">${percent}%</span>
         </div>
         <div class="upload-progress-track">
@@ -1821,7 +1821,7 @@ const UI = {
       </div>
     ` : `
       <div style="text-align:center;padding:28px 20px;color:var(--text-muted);font-size:0.875rem;background:var(--bg-primary);border-radius:10px;border:1px solid var(--border)">
-        Changelog details are available on <a href="https://github.com/TeeCodeDev/GyroidVault/releases" target="_blank" rel="noopener noreferrer" style="color:var(--accent-cyan);font-weight:600">GitHub Releases</a>.
+        Changelog details are available on <a href="https://github.com/Claudiomfa/GyroidVault/releases" target="_blank" rel="noopener noreferrer" style="color:var(--accent-cyan);font-weight:600">GitHub Releases</a>.
       </div>
     `;
 
@@ -1836,15 +1836,15 @@ const UI = {
           <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px">
             <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(37,99,235,0.12);color:#60a5fa;border:1px solid rgba(59,130,246,0.3);padding:3px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase">
               <span style="width:6px;height:6px;border-radius:50%;background:#38bdf8;box-shadow:0 0 8px #38bdf8"></span>
-              Major Release v${version}
+              Lançamento principal v${version}
             </div>
           </div>
 
           <h2 style="font-size:1.55rem;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;color:var(--text-primary)">
-            Welcome to GyroidVault 2.0
+            Bem-vindo ao GyroidVault 2.0
           </h2>
           <p style="color:var(--text-secondary);font-size:0.88rem;line-height:1.55;max-width:540px;margin:0 auto">
-            Your self-hosted 3D vault and slicing workspace — equipped with Studio 2.0 multi-part assembly, real-time mm dimensions, background scanner, and hardened security.
+            O seu cofre 3D auto-hospedado e espaço de trabalho de fatiamento — equipado com montagem de múltiplas peças do Studio 2.0, dimensões em milímetros em tempo real, scanner de fundo e segurança reforçada.
           </p>
         </div>
 
@@ -1856,16 +1856,16 @@ const UI = {
             </div>
             <div style="min-width:0">
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-                <span style="font-weight:700;font-size:0.92rem;color:#ffffff">Official Website is Live!</span>
+                <span style="font-weight:700;font-size:0.92rem;color:#ffffff">O site oficial já está no ar!</span>
                 <span style="background:rgba(16,185,129,0.2);color:#34d399;border:1px solid rgba(16,185,129,0.35);padding:1px 7px;border-radius:8px;font-size:0.62rem;font-weight:700;text-transform:uppercase">Official</span>
               </div>
               <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:2px">
-                Explore the interactive 3D Studio demo, feature overview & Docker setup at <strong style="color:var(--accent-cyan)">gyroidvault.com</strong>
+                Explore a demonstração interativa do 3D Studio, a visão geral das funcionalidades e a configuração do Docker em <strong style="color:var(--accent-cyan)">gyroidvault.com</strong>
               </div>
             </div>
           </div>
           <a href="https://gyroidvault.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" style="font-weight:600;white-space:nowrap;padding:7px 14px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;flex-shrink:0">
-            <span>Visit Website</span>
+            <span>Visite o site</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           </a>
         </div>
@@ -1874,11 +1874,11 @@ const UI = {
         <div style="display:flex;gap:8px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:10px">
           <button id="whatsnew-tab-btn-highlights" class="btn btn-secondary btn-sm active" onclick="App.switchWhatsNewTab('highlights')" style="font-weight:600;display:inline-flex;align-items:center;gap:6px">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span>Highlights & Features</span>
+            <span>Destaques e funcionalidades</span>
           </button>
           <button id="whatsnew-tab-btn-changelog" class="btn btn-secondary btn-sm" onclick="App.switchWhatsNewTab('changelog')" style="font-weight:600;display:inline-flex;align-items:center;gap:6px">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            <span>Full Changelog</span>
+            <span>Registo de alterações completo</span>
           </button>
         </div>
 
@@ -1892,7 +1892,7 @@ const UI = {
               </div>
               <div>
                 <div style="font-weight:700;font-size:0.9rem;color:var(--text-primary);margin-bottom:3px">Studio 2.0 & Multi-Assembly</div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.45">Inspect individual parts or arrange all project STL/3MF files on the virtual build plate with real-time physical mm dimension badges.</div>
+                <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.45">Inspecione peças individuais ou organize todos os ficheiros STL/3MF do projeto na plataforma de construção virtual com marcadores de dimensões físicas em milímetros em tempo real.</div>
               </div>
             </div>
 
@@ -1901,8 +1901,8 @@ const UI = {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
               </div>
               <div>
-                <div style="font-weight:700;font-size:0.9rem;color:var(--text-primary);margin-bottom:3px">Massive Libraries (2TB+) & Scanner</div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.45">Engineered for massive libraries of 2TB+ and 10,000+ models. Indexes directories and identifies duplicates in the background with zero UI freezes.</div>
+                <div style="font-weight:700;font-size:0.9rem;color:var(--text-primary);margin-bottom:3px">Bibliotecas enormes (mais de 2 TB) e scanner</div>
+                <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.45">Concebido para bibliotecas massivas de mais de 2 TB e mais de 10.000 modelos. Indexa diretórios e identifica duplicados em segundo plano, sem falhas na interface do utilizador.</div>
               </div>
             </div>
 
@@ -1911,8 +1911,8 @@ const UI = {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
               </div>
               <div>
-                <div style="font-weight:700;font-size:0.9rem;color:var(--text-primary);margin-bottom:3px">Power Batch Editing</div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.45">Multi-select dozens of models across library views to bulk-assign tags, categories, or collections in a single instant action.</div>
+                <div style="font-weight:700;font-size:0.9rem;color:var(--text-primary);margin-bottom:3px">Edição em lote avançada</div>
+                <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.45">Selecione vários modelos em diferentes visualizações da biblioteca para atribuir etiquetas, categorias ou coleções em massa numa única ação instantânea.</div>
               </div>
             </div>
 
@@ -1921,8 +1921,8 @@ const UI = {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               </div>
               <div>
-                <div style="font-weight:700;font-size:0.9rem;color:var(--text-primary);margin-bottom:3px">Local Privacy & Access Control</div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.45">Your models stay 100% private and self-hosted with zero cloud telemetry. Strictly confined to your storage folder with safe, token-protected share links.</div>
+                <div style="font-weight:700;font-size:0.9rem;color:var(--text-primary);margin-bottom:3px">Privacidade local e controlo de acessos</div>
+                <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.45">Os seus modelos permanecem 100% privados e alojados no seu próprio servidor, sem qualquer telemetria na nuvem. Estão estritamente confinados à sua pasta de armazenamento, com links de partilha seguros e protegidos por tokens.</div>
               </div>
             </div>
           </div>
@@ -1931,15 +1931,15 @@ const UI = {
           <div style="background:linear-gradient(135deg, rgba(245,158,11,0.08), rgba(37,99,235,0.06));border:1px solid rgba(245,158,11,0.25);border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px">
             <div>
               <div style="font-weight:700;font-size:0.88rem;color:var(--text-primary);display:flex;align-items:center;gap:6px;margin-bottom:3px">
-                <span>Support GyroidVault Development</span>
+                <span>Apoie o desenvolvimento do GyroidVault</span>
               </div>
               <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.4">
-                GyroidVault is 100% free and open source. Consider supporting maintenance via Ko-fi!
+                O GyroidVault é 100% gratuito e de código aberto. Considere apoiar a sua manutenção através do Ko-fi!
               </div>
             </div>
             <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
               <a href="https://gyroidvault.com" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" style="font-weight:600">gyroidvault.com</a>
-              <a href="https://github.com/TeeCodeDev/GyroidVault" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" style="font-weight:600">GitHub</a>
+              <a href="https://github.com/Claudiomfa/GyroidVault" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" style="font-weight:600">GitHub</a>
               <a href="https://ko-fi.com/D1D51ZGUNL" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" style="background:#f59e0b;border-color:#f59e0b;color:#000;font-weight:700">Ko-fi</a>
             </div>
           </div>
