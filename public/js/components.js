@@ -353,7 +353,7 @@ const UI = {
           ${items}
         </div>
         <div class="form-actions" style="display:flex;justify-content:flex-end;gap:10px">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
           <button type="submit" class="btn btn-primary">Save Collections</button>
         </div>
       </form>`;
@@ -1034,32 +1034,32 @@ const UI = {
       <div class="toolbar">
         <div class="search-box">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" placeholder="Search models..." id="search-input" oninput="App.handleSearch(this.value)">
+          <input type="text" placeholder="Pesquisar modelos..." id="search-input" oninput="App.handleSearch(this.value)">
         </div>
         <select class="filter-select" id="filter-category" onchange="App.handleFilter()">
-          <option value="">All Categories</option>${catOpts}
+          <option value="">Todas as categorias</option>${catOpts}
         </select>
         <select class="filter-select" id="filter-tag" onchange="App.handleFilter()">
-          <option value="">All Tags</option>${tagOpts}
+          <option value="">Todas as etiquetas</option>${tagOpts}
         </select>
         <select class="filter-select" id="filter-user" onchange="App.handleFilter()">
-          <option value="">All Users</option>${userOpts}
+          <option value="">Todos os utilizadores</option>${userOpts}
         </select>
         <select class="filter-select" id="filter-printed" onchange="App.handleFilter()">
-          <option value="">All Status</option>
-          <option value="true">Printed</option>
-          <option value="false">Not Printed</option>
+          <option value="">Todos os estados</option>
+          <option value="true">Impresso</option>
+          <option value="false">Não impresso</option>
         </select>
         <select class="filter-select" id="filter-sort" onchange="App.handleFilter()">
-          <option value="updated">Last Updated</option>
-          <option value="created">Date Created</option>
-          <option value="name">Name</option>
-          <option value="prints">Most Printed</option>
+          <option value="updated">Última atualização</option>
+          <option value="created">Data de criação</option>
+          <option value="name">Nome</option>
+          <option value="prints">Mais Impressos</option>
         </select>
         <select class="filter-select" id="filter-limit" onchange="App.handleFilter()">
-          <option value="24">24 per page</option>
-          <option value="48">48 per page</option>
-          <option value="96">96 per page</option>
+          <option value="24">24 por página</option>
+          <option value="48">48 por página</option>
+          <option value="96">96 por página</option>
         </select>
         <div style="display:flex;gap:4px;margin-left:auto;border-left:1px solid var(--border);padding-left:12px">
           <button class="btn btn-ghost btn-sm" id="view-mode-grid" onclick="App.setViewMode('grid')" title="Grid View" style="padding:8px">
@@ -1071,11 +1071,11 @@ const UI = {
         </div>
         <button class="btn btn-secondary btn-sm" onclick="App.selectAll()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-          Select All
+          Selecionar tudo
         </button>
         <button class="btn btn-primary btn-sm" id="scan-btn" onclick="App.handleScanLibrary()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-          Scan Library
+          Biblioteca de digitalização
         </button>
       </div>`;
   },
