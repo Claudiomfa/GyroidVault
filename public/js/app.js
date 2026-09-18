@@ -90,7 +90,6 @@ const App = {
     this.updateThemeIcon();
     this.initPrinters();
     this.route();
-    this.checkWhatsNew();
   },
 
   checkWhatsNew() {
