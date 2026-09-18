@@ -1,7 +1,7 @@
 {
   "name": "gyroid-vault",
   "version": "2.0.2",
-  "description": "GyroidVault — Self-hosted 3D model management for 3D printing",
+  "description": "RedPOISON 3d — Self-hosted 3D model management for 3D printing",
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
@@ -20,12 +20,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TeeCodeDev/GyroidVault.git"
+    "url": "git+https://github.com/Claudiomfa/GyroidVault.git"
   },
   "bugs": {
-    "url": "https://github.com/TeeCodeDev/GyroidVault/issues"
+    "url": "https://github.com/Claudiomfa/GyroidVault/issues"
   },
-  "homepage": "https://github.com/TeeCodeDev/GyroidVault#readme",
+  "homepage": "https://github.com/Claudiomfa/GyroidVault#readme",
   "license": "AGPL-3.0",
   "dependencies": {
     "adm-zip": "^0.5.17",
