@@ -10,7 +10,7 @@ const App = {
   versionInfo: null,
   libraryViewMode: 'grid',
 
-  // ── Init ──
+  // ── Iniciar ──
   async init() {
     this.el = document.getElementById('app');
     const savedUser = localStorage.getItem('pv_user');
@@ -41,7 +41,7 @@ const App = {
       this.publicConfig = await API.getPublicConfig();
     } catch(e) { this.publicConfig = {}; }
 
-    // Auto-resume scan monitoring if background scan is active
+    // Retomar automaticamente a monitorização da análise se estiver ativa em segundo plano
     if (this.currentUser && this.currentUser.role === 'admin') {
       fetch('/api/library/scan/status', { credentials: 'same-origin' })
         .then(r => r.ok ? r.json() : null)
@@ -54,14 +54,14 @@ const App = {
     }
     
     if (this.publicConfig.require_login_to_view && !this.currentUser) {
-      document.getElementById('app').innerHTML = '<div style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg-color)"><h1 style="margin-bottom:20px">GyroidVault</h1><button class="btn btn-primary btn-lg" onclick="App.showLogin()">Login to Access GyroidVault</button></div>';
+      document.getElementById('app').innerHTML = '<div style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg-color)"><h1 style="margin-bottom:20px">GyroidVault</h1><button class="btn btn-primary btn-lg" onclick="App.showLogin()">Iniciar Sessão para Aceder ao GyroidVault</button></div>';
       this.showLogin();
       return;
     }
     
     window.addEventListener('hashchange', () => this.route());
     
-    // Setup keyboard shortcuts (Ctrl+K for search, Ctrl+B for sidebar toggle)
+    // Configurar atalhos de teclado (Ctrl+K para pesquisa, Ctrl+B para alternar a barra lateral)
     window.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
@@ -74,7 +74,7 @@ const App = {
       }
     });
 
-    // Restore sidebar collapse state
+    // Restaurar o estado de colapso da barra lateral
     const savedCollapsed = localStorage.getItem('gv_sidebar_collapsed') === 'true';
     if (savedCollapsed) {
       document.getElementById('app-sidebar')?.classList.add('collapsed');
@@ -97,8 +97,8 @@ const App = {
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const seenVersion = localStorage.getItem('gv_last_seen_version');
     
-    // During local testing on localhost, always show on page load so it can be tested repeatedly
-    // In production (Unraid/Docker/live), only show once until dismissed
+    // Durante testes locais no localhost, mostrar sempre ao carregar a página para poder ser testado repetidamente
+    // Em produção (Unraid/Docker/ao vivo), mostrar apenas uma vez até ser dispensado
     if (isLocalhost || seenVersion !== CURRENT_VERSION) {
       setTimeout(() => {
         this.openWhatsNew();
@@ -110,9 +110,9 @@ const App = {
     try {
       const res = await API.getReleaseNotes().catch(() => ({ notes: [] }));
       this.cachedReleaseNotes = res.notes || [];
-      this.openModal('Welcome to GyroidVault 2.0', UI.whatsNewModal('2.0.0', this.cachedReleaseNotes), 'modal-lg');
+      this.openModal('Bem-vindo ao GyroidVault 2.0', UI.whatsNewModal('2.0.0', this.cachedReleaseNotes), 'modal-lg');
     } catch (e) {
-      this.openModal('Welcome to GyroidVault 2.0', UI.whatsNewModal('2.0.0', []), 'modal-lg');
+      this.openModal('Bem-vindo ao GyroidVault 2.0', UI.whatsNewModal('2.0.0', []), 'modal-lg');
     }
   },
 
@@ -203,7 +203,7 @@ const App = {
     try {
       const projects = await API.getProjects();
       if (!projects || projects.length === 0) {
-        list.innerHTML = `<span style="font-size:0.75rem;color:var(--text-muted);padding:4px 10px;font-style:italic">No collections yet</span>`;
+        list.innerHTML = `<span style="font-size:0.75rem;color:var(--text-muted);padding:4px 10px;font-style:italic">Ainda sem coleções</span>`;
         if (group) group.style.display = 'flex';
         return;
       }
@@ -292,7 +292,7 @@ const App = {
               const temps = widget.querySelector('.sidebar-printer-temps');
               if (temps) temps.style.display = 'flex';
             }
-            // Subscribe to temperature updates
+            // Subscrever atualizações de temperatura
             ws.send(JSON.stringify({
               jsonrpc: "2.0",
               method: "printer.objects.subscribe",
@@ -324,7 +324,7 @@ const App = {
                 }
               }
               if (msg.id === 1 && msg.result && msg.result.status) {
-                // Initial response
+                // Resposta inicial
                 const status = msg.result.status;
                 const widget = document.getElementById(`printer-widget-${p.id}`);
                 if (!widget) return;
@@ -350,10 +350,10 @@ const App = {
             delete this.printerSockets[p.id];
           };
         } catch(e) {
-          console.error('Failed to connect to printer WS', p.url, e);
+          console.error('Falha ao ligar à WS da impressora', p.url, e);
         }
       });
-    } catch(err) { console.error('Failed to init printers', err); }
+    } catch(err) { console.error('Falha ao iniciar impressoras', err); }
   },
 
   async checkUpdates() {
@@ -369,12 +369,12 @@ const App = {
           if (badge) badge.style.display = 'inline-flex';
         }
       }
-    } catch(e) { console.warn('Update check failed', e); }
+    } catch(e) { console.warn('Falha na verificação de atualizações', e); }
   },
 
   showUpdateInfo() {
     if (this.versionInfo) {
-      this.openModal('Update Available', UI.aboutSection(this.versionInfo));
+      this.openModal('Atualização Disponível', UI.aboutSection(this.versionInfo));
     }
   },
 
@@ -393,7 +393,7 @@ const App = {
     btn.innerHTML = isLight 
       ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`
       : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
-    btn.title = isLight ? "Switch to Dark Mode" : "Switch to Light Mode";
+    btn.title = isLight ? "Mudar para Modo Escuro" : "Mudar para Modo Claro";
   },
 
   async loadCache() {
@@ -405,23 +405,23 @@ const App = {
       this.cache.tags = tags || [];
       this.cache.materials = mats || [];
       
-      // Only try to fetch users if logged in
+      // Só tentar obter utilizadores se autenticado
       if (this.currentUser) {
         try {
           this.cache.users = await API.getUsers();
-        } catch(e) { /* user might not have permissions, just ignore */ }
+        } catch(e) { /* o utilizador pode não ter permissões, ignorar */ }
       }
-    } catch (e) { console.error('Cache load failed:', e); }
+    } catch (e) { console.error('Falha ao carregar cache:', e); }
   },
 
   async loadViewMode() {
     try {
       const res = await API.getViewMode();
       if (res) this.libraryViewMode = res.library_view_mode || 'grid';
-    } catch(e) { /* default to grid */ }
+    } catch(e) { /* predefinição: grelha */ }
   },
 
-  // ── Routing ──
+  // ── Rotas ──
   route() {
     const hash = location.hash.slice(1) || '/';
     const [path, query] = hash.split('?');
@@ -432,7 +432,7 @@ const App = {
     const links = document.querySelectorAll('.sidebar-nav-item, .sidebar-sub-item');
     links.forEach(l => l.classList.remove('active'));
     
-    // Clear selection when navigating
+    // Limpar seleção ao navegar
     this.selectedModelIds = [];
     this.selectedBrowsePaths = [];
     this.renderBulkBar();
@@ -459,7 +459,7 @@ const App = {
       this.renderProfile();
     } else if (path === '/settings') {
       if (!this.currentUser || this.currentUser.role !== 'admin') {
-        this.toast('Admin access required', 'error');
+        this.toast('É necessário acesso de administrador', 'error');
         this.navigate('/');
         return;
       }
@@ -489,7 +489,7 @@ const App = {
     localStorage.setItem('gv_accent', a);
   },
 
-  // ── Toast ──
+  // ── Notificações ──
   toast(msg, type = 'success') {
     const c = document.getElementById('toast-container');
     const t = document.createElement('div');
@@ -509,7 +509,7 @@ const App = {
     document.getElementById('modal-body').innerHTML = content;
     document.getElementById('modal-overlay').classList.add('active');
 
-    // Snapshot initial form state for dirty confirmation check on dismiss
+    // Guardar o estado inicial do formulário para verificar alterações não guardadas ao fechar
     setTimeout(() => {
       const form = document.querySelector('#modal-body form');
       if (form) {
@@ -533,7 +533,7 @@ const App = {
 
   dismissModal() {
     if (this.isModalFormDirty()) {
-      if (!confirm('You have unsaved changes. Are you sure you want to close and discard them?')) {
+      if (!confirm('Tem alterações não guardadas. Tem a certeza de que quer fechar e descartá-las?')) {
         return;
       }
     }
@@ -554,27 +554,27 @@ const App = {
     this.initialModalFormSnapshot = null;
   },
 
-  // ─── Dashboard ────────────────────────────────────────────────────────
+  // ─── Painel ────────────────────────────────────────────────────────
   async renderDashboard() {
-    this.el.innerHTML = `<div class="page-header"><div><h1 class="page-title">Dashboard</h1><p class="page-subtitle">Your 3D printing overview</p></div></div><div class="stats-grid"><div class="stat-card"><div class="skeleton" style="width:60%;height:32px;margin-top:40px"></div></div><div class="stat-card"><div class="skeleton" style="width:60%;height:32px;margin-top:40px"></div></div><div class="stat-card"><div class="skeleton" style="width:60%;height:32px;margin-top:40px"></div></div><div class="stat-card"><div class="skeleton" style="width:60%;height:32px;margin-top:40px"></div></div></div>`;
+    this.el.innerHTML = `<div class="page-header"><div><h1 class="page-title">Painel</h1><p class="page-subtitle">A sua visão geral de impressão 3D</p></div></div><div class="stats-grid"><div class="stat-card"><div class="skeleton" style="width:60%;height:32px;margin-top:40px"></div></div><div class="stat-card"><div class="skeleton" style="width:60%;height:32px;margin-top:40px"></div></div><div class="stat-card"><div class="skeleton" style="width:60%;height:32px;margin-top:40px"></div></div><div class="stat-card"><div class="skeleton" style="width:60%;height:32px;margin-top:40px"></div></div></div>`;
     try {
       const stats = await API.getStats();
       this.el.innerHTML = `
-        <div class="page-header"><div><h1 class="page-title">Dashboard</h1><p class="page-subtitle">Your 3D printing overview</p></div></div>
+        <div class="page-header"><div><h1 class="page-title">Painel</h1><p class="page-subtitle">A sua visão geral de impressão 3D</p></div></div>
         ${UI.statsCards(stats)}
         <div class="dashboard-panels">
-          <div class="glass-panel"><div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Recent Models</div></div><div class="panel-body">${UI.recentModels(stats.recentModels)}</div></div>
-          <div class="glass-panel"><div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Recent Prints</div></div><div class="panel-body">${UI.recentPrints(stats.recentPrints)}</div></div>
-          <div class="glass-panel"><div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>Material Usage</div></div><div class="panel-body">${UI.materialChart(stats.materialUsage)}</div></div>
+          <div class="glass-panel"><div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Modelos Recentes</div></div><div class="panel-body">${UI.recentModels(stats.recentModels)}</div></div>
+          <div class="glass-panel"><div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Impressões Recentes</div></div><div class="panel-body">${UI.recentPrints(stats.recentPrints)}</div></div>
+          <div class="glass-panel"><div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>Utilização de Material</div></div><div class="panel-body">${UI.materialChart(stats.materialUsage)}</div></div>
         </div>`;
     } catch (e) {
-      this.el.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="empty-state-text">Failed to load dashboard</div></div>';
+      this.el.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="empty-state-text">Falha ao carregar o painel</div></div>';
     }
   },
 
-  // ─── Models List ──────────────────────────────────────────────────────
+  // ─── Lista de Modelos ──────────────────────────────────────────────────────
   async renderModels(params = {}) {
-    // check if we should show folder view instead
+    // verificar se devemos mostrar a vista de pastas
     if (this.libraryViewMode === 'folder') {
       return this.renderBrowse(params.path || '');
     }
@@ -584,12 +584,12 @@ const App = {
     const toolbar = UI.toolbar(this.cache.categories, this.cache.tags, this.cache.users, activeFormat);
     this.el.innerHTML = `
       <div class="page-header">
-        <div><h1 class="page-title">Models</h1><p class="page-subtitle">Manage your 3D model library</p></div>
+        <div><h1 class="page-title">Modelos</h1><p class="page-subtitle">Faça a gestão da sua biblioteca de modelos 3D</p></div>
       </div>
       ${toolbar}
       <div id="models-grid"><div class="model-grid">${'<div class="model-card"><div class="model-card-thumb"><div class="skeleton" style="width:100%;height:100%"></div></div><div class="model-card-body"><div class="skeleton" style="width:70%;height:18px;margin-bottom:8px"></div><div class="skeleton" style="width:40%;height:14px"></div></div></div>'.repeat(6)}</div></div>`;
 
-    // Restore filter values
+    // Restaurar valores dos filtros
     if (params.search) document.getElementById('search-input').value = params.search;
     if (params.category) document.getElementById('filter-category').value = params.category;
     if (params.tag) document.getElementById('filter-tag').value = params.tag;
@@ -601,7 +601,7 @@ const App = {
       if (limitSelect) limitSelect.value = params.limit;
     }
 
-    // Hide scan if not admin
+    // Ocultar a análise se não for administrador
     if (!this.currentUser || this.currentUser.role !== 'admin') {
       const scanBtn = document.getElementById('scan-btn');
       if (scanBtn) scanBtn.style.display = 'none';
@@ -610,13 +610,13 @@ const App = {
     await this.fetchAndRenderModels(params);
   },
 
-  // ─── Folder Browser ─────────────────────────────────────────────────
+  // ─── Navegador de Pastas ─────────────────────────────────────────────────
   async renderBrowse(browsePath = '') {
     this.currentBrowsePath = browsePath;
     const toolbar = UI.toolbar(this.cache.categories, this.cache.tags, this.cache.users);
     this.el.innerHTML = `
       <div class="page-header">
-        <div><h1 class="page-title">Browse Library</h1><p class="page-subtitle">Explore your files on disk</p></div>
+        <div><h1 class="page-title">Explorar Biblioteca</h1><p class="page-subtitle">Explore os seus ficheiros em disco</p></div>
       </div>
       ${toolbar}
       <div id="browse-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; min-height:36px;"></div>
@@ -626,35 +626,35 @@ const App = {
       </div>`;
 
     try {
-      // fetch tree and current folder in parallel
+      // obter a árvore e a pasta atual em paralelo
       const [tree, data] = await Promise.all([
         API.getFolderTree(),
         API.browseLibrary(browsePath)
       ]);
 
-      // render tree sidebar
+      // desenhar a árvore lateral
       const treeEl = document.getElementById('browse-tree');
       if (treeEl) treeEl.innerHTML = UI.folderTree(tree, browsePath);
 
-      // render header with breadcrumbs, New Folder button, and search
+      // desenhar o cabeçalho com breadcrumbs, botão de Nova Pasta e pesquisa
       const headerEl = document.getElementById('browse-header');
       if (headerEl) {
         const fileCount = data.files.filter(f => f.type !== 'image').length;
         headerEl.innerHTML = `
           <div style="flex:1;display:flex;align-items:center;gap:12px">
             ${UI.breadcrumbs(data.currentPath)}
-            ${this.currentUser ? `<button class="btn btn-secondary btn-sm" onclick="App.handleCreateFolder('${data.currentPath}')">+ New Folder</button>` : ''}
+            ${this.currentUser ? `<button class="btn btn-secondary btn-sm" onclick="App.handleCreateFolder('${data.currentPath}')">+ Nova Pasta</button>` : ''}
           </div>
           <div style="display:flex;align-items:center;gap:12px">
-            <span style="font-size:0.85rem;color:var(--text-muted);white-space:nowrap" id="browse-counter">Showing ${data.folders.length} Folders / ${fileCount} Files</span>
+            <span style="font-size:0.85rem;color:var(--text-muted);white-space:nowrap" id="browse-counter">A mostrar ${data.folders.length} Pastas / ${fileCount} Ficheiros</span>
             <div style="width:250px">
-              <input type="text" id="browse-search" placeholder="Filter this folder..." class="form-input" onkeyup="App.handleBrowseSearch(event)" style="padding:6px 12px; font-size:.9rem;">
+              <input type="text" id="browse-search" placeholder="Filtrar esta pasta..." class="form-input" onkeyup="App.handleBrowseSearch(event)" style="padding:6px 12px; font-size:.9rem;">
             </div>
           </div>
         `;
       }
 
-      // render folder contents
+      // desenhar o conteúdo da pasta
       const container = document.getElementById('browse-content');
       if (!container) return;
 
@@ -670,7 +670,7 @@ const App = {
 
       if (!data.folders.length && !data.files.length) {
         container.innerHTML = `
-          <div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><div class="empty-state-text">This folder is empty</div><div class="empty-state-sub">No 3D files or subfolders found here</div></div>`;
+          <div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><div class="empty-state-text">Esta pasta está vazia</div><div class="empty-state-sub">Não foram encontrados ficheiros 3D ou subpastas aqui</div></div>`;
         return;
       }
 
@@ -682,14 +682,14 @@ const App = {
 
       this.renderBulkBrowseBar();
 
-      // trigger STL thumbnail rendering
+      // acionar a geração de miniaturas STL
       if (typeof Viewer !== 'undefined' && Viewer.generateThumbnails) {
         setTimeout(() => Viewer.generateThumbnails(), 50);
       }
     } catch(e) {
       console.error(e);
       const container = document.getElementById('browse-content');
-      if (container) container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="empty-state-text">Failed to load folder</div></div>';
+      if (container) container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="empty-state-text">Falha ao carregar pasta</div></div>';
     }
   },
 
@@ -709,7 +709,7 @@ const App = {
       try {
         const data = q ? await API.searchLibrary(q) : await API.browseLibrary(new URLSearchParams(location.hash.split('?')[1]).get('path') || '');
         
-        // Filter based on toolbar settings
+        // Filtrar com base nas definições da barra de ferramentas
         const sortMode = document.getElementById('filter-sort')?.value || 'name';
         if (sortMode === 'name') {
           data.files.sort((a,b) => a.name.localeCompare(b.name));
@@ -721,7 +721,7 @@ const App = {
         const filesHtml = data.files.filter(f => f.type !== 'image').map(f => UI.browseFileCard(f)).join('');
         
         if (!data.folders.length && !data.files.length) {
-          container.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="empty-state-text">No matches found</div></div>`;
+          container.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="empty-state-text">Não foram encontrados resultados</div></div>`;
           return;
         }
         
@@ -729,7 +729,7 @@ const App = {
         this.renderBulkBrowseBar();
         if (typeof Viewer !== 'undefined' && Viewer.generateThumbnails) setTimeout(() => Viewer.generateThumbnails(), 50);
       } catch(err) {
-        container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="empty-state-text">Search failed</div></div>';
+        container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="empty-state-text">Pesquisa falhada</div></div>';
       }
     }, 400);
   },
@@ -766,7 +766,7 @@ const App = {
     
     try {
       await API.moveItem(sourceItemPath, targetFolderPath);
-      this.toast('Moved successfully');
+      this.toast('Movido com sucesso');
       this.renderBrowse(this.currentBrowsePath);
     } catch(err) {
       this.toast(err.message, 'error');
@@ -774,11 +774,11 @@ const App = {
   },
 
   async handleCreateFolder(parentPath) {
-    const name = prompt('Enter new folder name:');
+    const name = prompt('Introduza o nome da nova pasta:');
     if (!name) return;
     try {
       await API.createFolder(parentPath, name);
-      this.toast('Folder created');
+      this.toast('Pasta criada');
       this.renderBrowse(this.currentBrowsePath);
     } catch(err) {
       this.toast(err.message, 'error');
@@ -806,22 +806,22 @@ const App = {
       
       const response = await API.getModels(queryParams);
       
-      // Handle the new paginated response format or fallback to array
+      // Tratar o novo formato de resposta paginada ou recorrer a um array
       const models = Array.isArray(response) ? response : (response.models || []);
       const totalPages = response.totalPages || 1;
       const currentPage = response.currentPage || 1;
 
-      // Update dynamic library summary counter in toolbar
+      // Atualizar o contador dinâmico da biblioteca na barra de ferramentas
       const statsCounter = document.getElementById('library-summary-stats');
       if (statsCounter) {
         const sizeStr = response.totalStorageBytes ? ` • ${UI.formatSize(response.totalStorageBytes)}` : '';
-        statsCounter.textContent = `${response.totalItems || 0} models${sizeStr}`;
+        statsCounter.textContent = `${response.totalItems || 0} modelos${sizeStr}`;
       }
 
       const grid = document.getElementById('models-grid');
       if (!grid) return;
       if (!models.length) {
-        grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><div class="empty-state-text">No models found</div><div class="empty-state-sub">Try changing your filters or create a new model</div></div>';
+        grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><div class="empty-state-text">Nenhum modelo encontrado</div><div class="empty-state-sub">Tente alterar os filtros ou criar um novo modelo</div></div>';
         return;
       }
       
@@ -830,14 +830,14 @@ const App = {
         <div class="model-grid ${viewMode === 'list' ? 'models-list-view' : ''}">${models.map(m => UI.modelCard(m)).join('')}</div>
         ${UI.pagination(totalPages, currentPage)}
       `;
-      this.setViewMode(viewMode); // highlight correct button
+      this.setViewMode(viewMode); // realçar o botão correto
       this.renderBulkBar();
       if (typeof Viewer !== 'undefined' && Viewer.generateThumbnails) {
         setTimeout(() => Viewer.generateThumbnails(), 50);
       }
     } catch (e) {
       console.error(e);
-      document.getElementById('models-grid').innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="empty-state-text">Failed to load models</div></div>';
+      document.getElementById('models-grid').innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="empty-state-text">Falha ao carregar modelos</div></div>';
     }
   },
 
@@ -881,7 +881,7 @@ const App = {
     else this.selectedModelIds.push(id);
     this.lastSelectedModelId = id;
     
-    // Update UI without full re-render
+    // Atualizar a interface sem redesenhar tudo
     const card = document.querySelector(`.model-card[data-model-id="${id}"]`);
     if (card) card.classList.toggle('selected');
     this.renderBulkBar();
@@ -931,19 +931,19 @@ const App = {
     this.renderBulkBar();
   },
 
-  openBulkDelete() { this.openModal('Bulk Delete', UI.bulkDeleteForm(this.selectedModelIds.length)); },
+  openBulkDelete() { this.openModal('Eliminar em Massa', UI.bulkDeleteForm(this.selectedModelIds.length)); },
   async handleBulkDelete(e) {
     e.preventDefault();
     const fd = new FormData(e.target);
     try {
       await API.bulkDeleteModels(this.selectedModelIds, fd.get('delete_disk') === 'on');
-      this.toast(`Deleted ${this.selectedModelIds.length} models`);
+      this.toast(`${this.selectedModelIds.length} modelos eliminados`);
       this.clearSelection();
       this.closeModal();
       this.route();
     } catch(e) { this.toast(e.message, 'error'); }
   },
-  openBulkTag() { this.openModal('Bulk Tag Models', UI.bulkTagForm(this.cache.tags)); },
+  openBulkTag() { this.openModal('Etiquetar Modelos em Massa', UI.bulkTagForm(this.cache.tags)); },
   async handleBulkTagSubmit(e) {
     e.preventDefault();
     const fd = new FormData(e.target);
@@ -958,7 +958,7 @@ const App = {
     }
     
     if (tagsToApply.length === 0) {
-      this.toast('Please select or enter at least one tag', 'error');
+      this.toast('Selecione ou introduza pelo menos uma etiqueta', 'error');
       return;
     }
     
@@ -968,7 +968,7 @@ const App = {
       } else {
         await API.bulkUpdateModels(this.selectedModelIds, { add_tags: tagsToApply });
       }
-      this.toast(`Updated tags on ${this.selectedModelIds.length} models`);
+      this.toast(`Etiquetas atualizadas em ${this.selectedModelIds.length} modelos`);
       this.clearSelection();
       this.closeModal();
       this.cache.tags = await API.getTags().catch(() => this.cache.tags);
@@ -976,14 +976,14 @@ const App = {
     } catch(e) { this.toast(e.message, 'error'); }
   },
 
-  openBulkMove() { this.openModal('Move to Category', UI.bulkMoveForm(this.cache.categories)); },
+  openBulkMove() { this.openModal('Mover para Categoria', UI.bulkMoveForm(this.cache.categories)); },
   async handleBulkMove(e) {
     e.preventDefault();
     const fd = new FormData(e.target);
     const catId = fd.get('category_id') || null;
     try {
       await API.bulkUpdateModels(this.selectedModelIds, { category_id: catId });
-      this.toast(`Updated category on ${this.selectedModelIds.length} models`);
+      this.toast(`Categoria atualizada em ${this.selectedModelIds.length} modelos`);
       this.clearSelection();
       this.closeModal();
       this.cache.categories = await API.getCategories().catch(() => this.cache.categories);
@@ -993,14 +993,14 @@ const App = {
 
   async openBulkAddToCollection() {
     const projects = await API.getProjects();
-    this.openModal('Add to Collection', UI.bulkCollectionForm(projects));
+    this.openModal('Adicionar à Coleção', UI.bulkCollectionForm(projects));
   },
   async handleBulkAddToCollectionSubmit(e) {
     e.preventDefault();
     const fd = new FormData(e.target);
     try {
       await API.bulkAddModelsToProject(fd.get('project_id'), this.selectedModelIds);
-      this.toast(`Added ${this.selectedModelIds.length} models to collection`);
+      this.toast(`${this.selectedModelIds.length} modelos adicionados à coleção`);
       this.clearSelection();
       this.closeModal();
     } catch(e) { this.toast(e.message, 'error'); }
@@ -1014,7 +1014,7 @@ const App = {
       document.body.appendChild(bar);
     }
     
-    // Check if all rendered items are selected
+    // Verificar se todos os itens apresentados estão selecionados
     const allCards = document.querySelectorAll('#browse-content .model-card');
     const allPaths = Array.from(allCards).map(c => c.dataset.path).filter(Boolean);
     const isAllSelected = allPaths.length > 0 && allPaths.every(p => this.selectedBrowsePaths.includes(p));
@@ -1027,7 +1027,7 @@ const App = {
     if (idx > -1) this.selectedBrowsePaths.splice(idx, 1);
     else this.selectedBrowsePaths.push(path);
     
-    // Update UI without full re-render
+    // Atualizar a interface sem redesenhar tudo
     const escapedPath = path.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
     const card = document.querySelector(`.model-card[data-path="${escapedPath}"]`);
     if (card) card.classList.toggle('selected');
@@ -1047,11 +1047,11 @@ const App = {
     const isAllSelected = allPaths.length > 0 && allPaths.every(p => this.selectedBrowsePaths.includes(p));
     
     if (isAllSelected) {
-      // Deselect only the currently rendered ones
+      // Desselecionar apenas os atualmente apresentados
       this.selectedBrowsePaths = this.selectedBrowsePaths.filter(p => !allPaths.includes(p));
       allCards.forEach(c => c.classList.remove('selected'));
     } else {
-      // Select all rendered ones
+      // Selecionar todos os apresentados
       allPaths.forEach(p => {
         if (!this.selectedBrowsePaths.includes(p)) this.selectedBrowsePaths.push(p);
       });
@@ -1061,7 +1061,7 @@ const App = {
   },
 
   openBulkBrowseMove() {
-    this.openModal('Move Items', UI.bulkBrowseMoveForm());
+    this.openModal('Mover Itens', UI.bulkBrowseMoveForm());
   },
   
   async handleBulkBrowseMoveSubmit(e) {
@@ -1069,7 +1069,7 @@ const App = {
     const fd = new FormData(e.target);
     try {
       await API.bulkMoveItems(this.selectedBrowsePaths, fd.get('target_path'));
-      this.toast(`Moved ${this.selectedBrowsePaths.length} items`);
+      this.toast(`${this.selectedBrowsePaths.length} itens movidos`);
       this.clearBrowseSelection();
       this.closeModal();
       this.renderBrowse(this.currentBrowsePath);
@@ -1077,14 +1077,14 @@ const App = {
   },
 
   openBulkBrowseDelete() {
-    this.openModal('Bulk Delete', UI.bulkBrowseDeleteForm(this.selectedBrowsePaths.length));
+    this.openModal('Eliminar em Massa', UI.bulkBrowseDeleteForm(this.selectedBrowsePaths.length));
   },
 
   async handleBulkBrowseDeleteSubmit(e) {
     e.preventDefault();
     try {
       await API.bulkDeleteItems(this.selectedBrowsePaths);
-      this.toast(`Deleted ${this.selectedBrowsePaths.length} items`);
+      this.toast(`${this.selectedBrowsePaths.length} itens eliminados`);
       this.clearBrowseSelection();
       this.closeModal();
       this.renderBrowse(this.currentBrowsePath);
@@ -1092,7 +1092,7 @@ const App = {
   },
 
   openBulkBrowseTag() {
-    this.openModal('Bulk Tag Items', UI.bulkBrowseTagForm(this.cache.tags));
+    this.openModal('Etiquetar Itens em Massa', UI.bulkBrowseTagForm(this.cache.tags));
   },
 
   async handleBulkBrowseTagSubmit(e) {
@@ -1108,16 +1108,16 @@ const App = {
     }
     
     if (tagsToApply.length === 0) {
-      this.toast('Please select or enter at least one tag', 'error');
+      this.toast('Selecione ou introduza pelo menos uma etiqueta', 'error');
       return;
     }
     
     try {
       await API.bulkTagItems(this.selectedBrowsePaths, tagsToApply);
-      this.toast(`Tagged ${this.selectedBrowsePaths.length} items`);
+      this.toast(`${this.selectedBrowsePaths.length} itens etiquetados`);
       this.clearBrowseSelection();
       this.closeModal();
-      // Tagging might not immediately reflect in folder view without a backend rescan or re-fetch, but re-render is safe
+      // A aplicação de etiquetas pode não se refletir de imediato na vista de pastas sem nova análise ou pedido ao servidor, mas voltar a desenhar é seguro
       this.renderBrowse(this.currentBrowsePath);
     } catch(err) { this.toast(err.message, 'error'); }
   },
@@ -1178,14 +1178,14 @@ const App = {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   },
 
-  // ── Auth ──
+  // ── Autenticação ──
   showLogin() { 
     const allowReg = this.publicConfig && this.publicConfig.open_registration;
-    this.openModal('Login', UI.loginForm(allowReg)); 
+    this.openModal('Iniciar Sessão', UI.loginForm(allowReg)); 
   },
-  showRegister(token = '') { this.openModal('Register', UI.registerForm(token)); },
-  showForgotPassword() { this.openModal('Reset Password', UI.forgotPasswordForm()); },
-  showResetPassword(token) { if (token) this.openModal('Choose New Password', UI.resetPasswordForm(token)); },
+  showRegister(token = '') { this.openModal('Registar', UI.registerForm(token)); },
+  showForgotPassword() { this.openModal('Repor Palavra-passe', UI.forgotPasswordForm()); },
+  showResetPassword(token) { if (token) this.openModal('Escolher Nova Palavra-passe', UI.resetPasswordForm(token)); },
   
   async handleLogin(e) {
     e.preventDefault();
@@ -1193,14 +1193,14 @@ const App = {
     try {
       const res = await API.login(fd.get('username'), fd.get('password'));
       if (!res || !res.csrfToken) {
-        this.toast('Invalid username or password', 'error');
+        this.toast('Nome de utilizador ou palavra-passe inválidos', 'error');
         return;
       }
       if (res.error) throw new Error(res.error);
       localStorage.setItem('pv_csrf_token', res.csrfToken);
       localStorage.setItem('pv_user', JSON.stringify(res.user));
       this.currentUser = res.user;
-      this.toast('Welcome back, ' + res.user.username);
+      this.toast('Bem-vindo de volta, ' + res.user.username);
       this.closeModal();
       this.updateUserNav();
       await this.loadCache();
@@ -1213,7 +1213,7 @@ const App = {
     const fd = new FormData(e.target);
     try {
       await API.register(fd.get('username'), fd.get('email'), fd.get('password'), fd.get('token'));
-      this.toast('Registration successful! Please login.');
+      this.toast('Registo efetuado com sucesso! Inicie sessão.');
       this.showLogin();
     } catch(e) { this.toast(e.message, 'error'); }
   },
@@ -1221,16 +1221,16 @@ const App = {
   async handleInviteUser(e) {
     e.preventDefault();
     const btn = e.target.querySelector('button');
-    if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+    if (btn) { btn.disabled = true; btn.textContent = 'A enviar...'; }
     const fd = new FormData(e.target);
     try {
       await API.inviteUser(fd.get('email'));
-      this.toast('Invitation sent successfully', 'success');
+      this.toast('Convite enviado com sucesso', 'success');
       e.target.reset();
     } catch(err) {
       this.toast(err.message, 'error');
     } finally {
-      if (btn) { btn.disabled = false; btn.textContent = 'Send Invite'; }
+      if (btn) { btn.disabled = false; btn.textContent = 'Enviar Convite'; }
     }
   },
 
@@ -1238,24 +1238,24 @@ const App = {
     try {
       const newRole = selectElem.value;
       await API.updateUserRole(userId, newRole);
-      this.toast('User role updated successfully', 'success');
-      // trigger refresh of settings tab
+      this.toast('Função do utilizador atualizada com sucesso', 'success');
+      // acionar a atualização do separador de definições
       const usersBtn = document.querySelector('.tab-btn[data-tab="users"]');
       if (usersBtn) usersBtn.click();
     } catch (err) {
       this.toast(err.message, 'error');
-      // Revert select on error
+      // Reverter seleção em caso de erro
       const usersBtn = document.querySelector('.tab-btn[data-tab="users"]');
       if (usersBtn) usersBtn.click();
     }
   },
 
   async deleteUser(userId) {
-    if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) return;
+    if (!confirm('Tem a certeza de que quer eliminar este utilizador? Esta ação não pode ser desfeita.')) return;
     try {
       await API.deleteUser(userId);
-      this.toast('User deleted successfully', 'success');
-      // trigger refresh of settings tab
+      this.toast('Utilizador eliminado com sucesso', 'success');
+      // acionar a atualização do separador de definições
       const usersBtn = document.querySelector('.tab-btn[data-tab="users"]');
       if (usersBtn) usersBtn.click();
     } catch (err) {
@@ -1277,7 +1277,7 @@ const App = {
   async handleResetPassword(e) {
     e.preventDefault();
     const fd = new FormData(e.target);
-    if (fd.get('password') !== fd.get('confirm')) return this.toast('Passwords do not match', 'error');
+    if (fd.get('password') !== fd.get('confirm')) return this.toast('As palavras-passe não coincidem', 'error');
     try {
       const res = await API.resetPassword(fd.get('token'), fd.get('password'));
       this.toast(res.message);
@@ -1295,8 +1295,8 @@ const App = {
     if (fd.has('preferred_slicer')) data.preferred_slicer = fd.get('preferred_slicer');
     try {
       await API.updateProfile(data);
-      this.toast('Profile updated successfully');
-      // Refresh user info
+      this.toast('Perfil atualizado com sucesso');
+      // Atualizar informação do utilizador
       const user = await API.getMe();
       this.currentUser = user;
       localStorage.setItem('pv_user', JSON.stringify(user));
@@ -1312,10 +1312,10 @@ const App = {
         if (resultDiv) {
           resultDiv.textContent = res.api_key;
           resultDiv.style.display = 'block';
-          this.toast('API Key generated successfully', 'success');
+          this.toast('Chave API gerada com sucesso', 'success');
         }
       }
-    } catch(e) { this.toast(e.message || 'Failed to generate API key', 'error'); }
+    } catch(e) { this.toast(e.message || 'Falha ao gerar chave API', 'error'); }
   },
 
   async handleSaveSMTP(e) {
@@ -1324,7 +1324,7 @@ const App = {
     const data = Object.fromEntries(fd.entries());
     try {
       await API.saveSMTPSettings(data);
-      this.toast('SMTP settings saved');
+      this.toast('Definições SMTP guardadas');
     } catch(e) { this.toast(e.message, 'error'); }
   },
   
@@ -1336,8 +1336,8 @@ const App = {
     data.require_login_to_view = fd.has('require_login_to_view') ? 'true' : 'false';
     try {
       await API.saveSystemSettings(data);
-      await this.loadViewMode(); // refresh the cached view mode
-      this.toast('System settings saved');
+      await this.loadViewMode(); // atualizar o modo de vista em cache
+      this.toast('Definições do sistema guardadas');
     } catch(e) { this.toast(e.message, 'error'); }
   },
 
@@ -1357,20 +1357,20 @@ const App = {
       try { if (config.printers) printers = JSON.parse(config.printers); } catch(e){}
       printers.push(newPrinter);
       await API.saveSystemSettings({ printers: JSON.stringify(printers) });
-      this.toast('Printer added');
+      this.toast('Impressora adicionada');
       this.renderSettings();
     } catch(err) { this.toast(err.message, 'error'); }
   },
 
   async deletePrinter(id) {
-    if (!confirm('Remove this printer?')) return;
+    if (!confirm('Remover esta impressora?')) return;
     try {
       const config = await API.getSystemSettings();
       let printers = [];
       try { if (config.printers) printers = JSON.parse(config.printers); } catch(e){}
       printers = printers.filter(p => p.id !== id);
       await API.saveSystemSettings({ printers: JSON.stringify(printers) });
-      this.toast('Printer removed');
+      this.toast('Impressora removida');
       this.renderSettings();
     } catch(err) { this.toast(err.message, 'error'); }
   },
@@ -1379,7 +1379,7 @@ const App = {
     if (e) e.preventDefault();
     const btn = e?.target;
     
-    // First, save current settings so we test what is on screen
+    // Primeiro, guardar as definições atuais para testar o que está no ecrã
     const form = btn.closest('form');
     if (form) {
       try {
@@ -1387,11 +1387,11 @@ const App = {
         const data = Object.fromEntries(fd.entries());
         await API.saveSMTPSettings(data);
       } catch(e) { 
-        return this.toast('Failed to save settings before test: ' + e.message, 'error'); 
+        return this.toast('Falha ao guardar definições antes do teste: ' + e.message, 'error'); 
       }
     }
     
-    this.openModal('Test SMTP Connection', UI.smtpTestModal(this.currentUser?.email || ""));
+    this.openModal('Testar Ligação SMTP', UI.smtpTestModal(this.currentUser?.email || ""));
   },
 
   async handleSendTestEmail(e) {
@@ -1400,14 +1400,14 @@ const App = {
     const email = fd.get('test_email');
     const btn = document.getElementById('send-test-btn');
 
-    if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+    if (btn) { btn.disabled = true; btn.textContent = 'A enviar...'; }
     try {
       await API.testSMTP({ email });
-      this.toast('Test email sent successfully! Check your inbox.', 'success');
+      this.toast('E-mail de teste enviado com sucesso! Verifique a sua caixa de entrada.', 'success');
       this.closeModal();
     } catch(e) { 
       this.toast(e.message, 'error'); 
-      if (btn) { btn.disabled = false; btn.textContent = 'Send Test'; }
+      if (btn) { btn.disabled = false; btn.textContent = 'Enviar Teste'; }
     }
   },
   
@@ -1416,7 +1416,7 @@ const App = {
     localStorage.removeItem('pv_csrf_token');
     localStorage.removeItem('pv_user');
     this.currentUser = null;
-    this.toast('Logged out');
+    this.toast('Sessão terminada');
     this.updateUserNav();
     this.route();
   },
@@ -1431,24 +1431,24 @@ const App = {
     if (this.currentUser) {
       if (avatar) avatar.textContent = (this.currentUser.username || 'U').charAt(0).toUpperCase();
       if (username) username.textContent = this.currentUser.username;
-      if (role) role.textContent = this.currentUser.role ? `${this.currentUser.role.charAt(0).toUpperCase()}${this.currentUser.role.slice(1)}` : 'Member';
+      if (role) role.textContent = this.currentUser.role ? `${this.currentUser.role.charAt(0).toUpperCase()}${this.currentUser.role.slice(1)}` : 'Membro';
       if (settingsLink) {
         settingsLink.style.display = (this.currentUser.role === 'admin') ? 'flex' : 'none';
       }
       if (wrapper) {
         wrapper.innerHTML = `
-          <button class="btn-icon" onclick="App.handleLogout()" title="Log Out">
+          <button class="btn-icon" onclick="App.handleLogout()" title="Terminar Sessão">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           </button>`;
       }
     } else {
       if (avatar) avatar.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
-      if (username) username.textContent = 'Guest User';
-      if (role) role.textContent = 'Click to login';
+      if (username) username.textContent = 'Utilizador Convidado';
+      if (role) role.textContent = 'Clique para iniciar sessão';
       if (settingsLink) settingsLink.style.display = 'none';
       if (wrapper) {
         wrapper.innerHTML = `
-          <button class="btn-icon" onclick="App.showLogin()" title="Login">
+          <button class="btn-icon" onclick="App.showLogin()" title="Iniciar Sessão">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
           </button>`;
       }
@@ -1468,12 +1468,12 @@ const App = {
     
     this.el.innerHTML = `
       <div class="page-header">
-        <div><h1 class="page-title">My Profile</h1><p class="page-subtitle">Manage your account settings and preferences</p></div>
+        <div><h1 class="page-title">O Meu Perfil</h1><p class="page-subtitle">Faça a gestão das definições e preferências da sua conta</p></div>
       </div>
       <div class="settings-tabs" style="display:flex;gap:8px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:1px">
-        <button class="tab-btn active" data-tab="account" style="background:none;border:none;color:var(--text-secondary);padding:10px 20px;cursor:pointer;font-weight:600;border-bottom:2px solid transparent;transition:all .2s">Account Details</button>
-        <button class="tab-btn" data-tab="appearance" style="background:none;border:none;color:var(--text-secondary);padding:10px 20px;cursor:pointer;font-weight:600;border-bottom:2px solid transparent;transition:all .2s">Local Appearance</button>
-        <button class="tab-btn" data-tab="api" style="background:none;border:none;color:var(--text-secondary);padding:10px 20px;cursor:pointer;font-weight:600;border-bottom:2px solid transparent;transition:all .2s">API & Integrations</button>
+        <button class="tab-btn active" data-tab="account" style="background:none;border:none;color:var(--text-secondary);padding:10px 20px;cursor:pointer;font-weight:600;border-bottom:2px solid transparent;transition:all .2s">Detalhes da Conta</button>
+        <button class="tab-btn" data-tab="appearance" style="background:none;border:none;color:var(--text-secondary);padding:10px 20px;cursor:pointer;font-weight:600;border-bottom:2px solid transparent;transition:all .2s">Aparência Local</button>
+        <button class="tab-btn" data-tab="api" style="background:none;border:none;color:var(--text-secondary);padding:10px 20px;cursor:pointer;font-weight:600;border-bottom:2px solid transparent;transition:all .2s">API e Integrações</button>
       </div>
       <div id="profile-content"></div>`;
 
@@ -1491,26 +1491,26 @@ const App = {
       if (tab === 'account') {
         content.innerHTML = `
           <div class="glass-panel">
-            <div class="panel-header"><div class="panel-title">Account Details</div></div>
+            <div class="panel-header"><div class="panel-title">Detalhes da Conta</div></div>
             <div class="panel-body">
               <form onsubmit="App.handleUpdateProfile(event)" class="form-grid">
                 <div class="form-group">
-                  <label class="form-label">Username</label>
+                  <label class="form-label">Nome de Utilizador</label>
                   <input type="text" name="username" value="${user.username}" required class="form-input">
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Email Address</label>
+                  <label class="form-label">Endereço de E-mail</label>
                   <input type="email" name="email" value="${user.email || ''}" required class="form-input">
                 </div>
                 <div class="form-group">
-                  <label class="form-label">New Password</label>
-                  <input type="password" name="password" placeholder="Leave blank to keep current" class="form-input">
-                  <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">Must be at least 8 characters and contain letters and numbers.</p>
+                  <label class="form-label">Nova Palavra-passe</label>
+                  <input type="password" name="password" placeholder="Deixe em branco para manter a atual" class="form-input">
+                  <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">Deve ter pelo menos 8 caracteres e conter letras e números.</p>
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Preferred Slicer</label>
+                  <label class="form-label">Slicer Preferido</label>
                   <select name="preferred_slicer" class="form-select">
-                    <option value="" ${!user.preferred_slicer ? 'selected' : ''}>None (Ask every time)</option>
+                    <option value="" ${!user.preferred_slicer ? 'selected' : ''}>Nenhum (Perguntar sempre)</option>
                     <option value="orcaslicer" ${user.preferred_slicer === 'orcaslicer' ? 'selected' : ''}>OrcaSlicer</option>
                     <option value="elegooslicer" ${user.preferred_slicer === 'elegooslicer' ? 'selected' : ''}>Elegoo Slicer</option>
                     <option value="cura" ${user.preferred_slicer === 'cura' ? 'selected' : ''}>Ultimaker Cura</option>
@@ -1518,7 +1518,7 @@ const App = {
                   </select>
                 </div>
                 <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--border); display:flex; justify-content:flex-end;">
-                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                  <button type="submit" class="btn btn-primary">Guardar Alterações</button>
                 </div>
               </form>
             </div>
@@ -1527,27 +1527,27 @@ const App = {
       } else if (tab === 'appearance') {
         content.innerHTML = `
           <div class="glass-panel">
-            <div class="panel-header"><div class="panel-title">Local Appearance</div></div>
+            <div class="panel-header"><div class="panel-title">Aparência Local</div></div>
             <div class="panel-body">
-              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">These UI settings are saved only to your current browser context.</p>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">Estas definições de interface são guardadas apenas no seu navegador atual.</p>
               <div class="form-grid">
                 <div class="form-group">
-                  <label class="form-label">App Theme</label>
+                  <label class="form-label">Tema da Aplicação</label>
                   <select id="theme-selector" class="form-select" onchange="App.previewTheme()">
-                    <option value="glass" ${localStorage.getItem('gv_theme') === 'glass' || !localStorage.getItem('gv_theme') ? 'selected' : ''}>Glass (Default)</option>
+                    <option value="glass" ${localStorage.getItem('gv_theme') === 'glass' || !localStorage.getItem('gv_theme') ? 'selected' : ''}>Vidro (Predefinido)</option>
                     <option value="industrial" ${localStorage.getItem('gv_theme') === 'industrial' ? 'selected' : ''}>Industrial</option>
                   </select>
                 </div>
                 <div class="form-group" style="margin-bottom:0">
-                  <label class="form-label">Accent Color</label>
-                  <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px">Choose your preferred studio accent color</p>
+                  <label class="form-label">Cor de Destaque</label>
+                  <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px">Escolha a sua cor de destaque preferida</p>
                   <div style="display:flex; gap:12px; margin-top:6px; flex-wrap:wrap;">
-                    <button type="button" class="accent-color-btn" style="background:#3b82f6; outline: ${(localStorage.getItem('gv_accent') === 'blue' || localStorage.getItem('gv_accent') === 'cyan' || !localStorage.getItem('gv_accent')) ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('blue'); App.renderProfile();" title="Studio Blue (Default)"></button>
-                    <button type="button" class="accent-color-btn" style="background:#10b981; outline: ${localStorage.getItem('gv_accent') === 'emerald' || localStorage.getItem('gv_accent') === 'green' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('emerald'); App.renderProfile();" title="Emerald Green"></button>
-                    <button type="button" class="accent-color-btn" style="background:#f59e0b; outline: ${localStorage.getItem('gv_accent') === 'amber' || localStorage.getItem('gv_accent') === 'orange' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('amber'); App.renderProfile();" title="Amber Gold"></button>
-                    <button type="button" class="accent-color-btn" style="background:#f43f5e; outline: ${localStorage.getItem('gv_accent') === 'rose' || localStorage.getItem('gv_accent') === 'red' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('rose'); App.renderProfile();" title="Coral Rose"></button>
-                    <button type="button" class="accent-color-btn" style="background:#8b5cf6; outline: ${localStorage.getItem('gv_accent') === 'violet' || localStorage.getItem('gv_accent') === 'purple' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('violet'); App.renderProfile();" title="Studio Violet"></button>
-                    <button type="button" class="accent-color-btn" style="background:#14b8a6; outline: ${localStorage.getItem('gv_accent') === 'teal' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('teal'); App.renderProfile();" title="Teal Sage"></button>
+                    <button type="button" class="accent-color-btn" style="background:#3b82f6; outline: ${(localStorage.getItem('gv_accent') === 'blue' || localStorage.getItem('gv_accent') === 'cyan' || !localStorage.getItem('gv_accent')) ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('blue'); App.renderProfile();" title="Azul Studio (Predefinido)"></button>
+                    <button type="button" class="accent-color-btn" style="background:#10b981; outline: ${localStorage.getItem('gv_accent') === 'emerald' || localStorage.getItem('gv_accent') === 'green' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('emerald'); App.renderProfile();" title="Verde Esmeralda"></button>
+                    <button type="button" class="accent-color-btn" style="background:#f59e0b; outline: ${localStorage.getItem('gv_accent') === 'amber' || localStorage.getItem('gv_accent') === 'orange' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('amber'); App.renderProfile();" title="Dourado Âmbar"></button>
+                    <button type="button" class="accent-color-btn" style="background:#f43f5e; outline: ${localStorage.getItem('gv_accent') === 'rose' || localStorage.getItem('gv_accent') === 'red' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('rose'); App.renderProfile();" title="Rosa Coral"></button>
+                    <button type="button" class="accent-color-btn" style="background:#8b5cf6; outline: ${localStorage.getItem('gv_accent') === 'violet' || localStorage.getItem('gv_accent') === 'purple' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('violet'); App.renderProfile();" title="Violeta Studio"></button>
+                    <button type="button" class="accent-color-btn" style="background:#14b8a6; outline: ${localStorage.getItem('gv_accent') === 'teal' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('teal'); App.renderProfile();" title="Verde-azulado Sálvia"></button>
                   </div>
                 </div>
               </div>
@@ -1557,14 +1557,14 @@ const App = {
       } else if (tab === 'api') {
         content.innerHTML = `
           <div class="glass-panel">
-            <div class="panel-header"><div class="panel-title">API & Integrations</div></div>
+            <div class="panel-header"><div class="panel-title">API e Integrações</div></div>
             <div class="panel-body">
               <div class="form-group" style="margin-bottom:0">
-                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">Generate an API key to allow external tools (like OrcaSlicer post-processing scripts) to securely interact with your GyroidVault account. Keep this key secret.</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">Gere uma chave API para permitir que ferramentas externas (como scripts de pós-processamento do OrcaSlicer) interajam de forma segura com a sua conta GyroidVault. Mantenha esta chave secreta.</p>
                 <div id="api-key-result" style="display:none; margin-bottom:15px; background:rgba(16,185,129,0.1); padding:12px; border-radius:var(--radius-sm); border:1px solid var(--success); color:var(--success); word-break:break-all; font-family:monospace; font-size:0.85rem"></div>
                 <button type="button" class="btn btn-secondary" onclick="App.generateApiKey()">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
-                  Generate New API Key
+                  Gerar Nova Chave API
                 </button>
               </div>
             </div>
@@ -1582,7 +1582,7 @@ const App = {
     switchTab(defaultTab);
   },
 
-  // ─── Collections ────────────────────────────────────────────────────────
+  // ─── Coleções ────────────────────────────────────────────────────────
   cachedProjects: [],
   selectedCollectionIds: [],
   collectionsSortBy: 'recent',
@@ -1593,7 +1593,7 @@ const App = {
 
   async renderProjects() {
     if (!this.currentUser) {
-      this.el.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="empty-state-text">Login to view collections</div><div class="empty-state-sub">Collections are private and require an account</div><button class="btn btn-primary btn-sm" onclick="App.showLogin()" style="margin-top:16px">Login</button></div>';
+      this.el.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="empty-state-text">Inicie sessão para ver coleções</div><div class="empty-state-sub">As coleções são privadas e requerem uma conta</div><button class="btn btn-primary btn-sm" onclick="App.showLogin()" style="margin-top:16px">Iniciar Sessão</button></div>';
       return;
     }
     this.el.innerHTML = '<div class="skeleton-grid"></div>';
@@ -1601,7 +1601,7 @@ const App = {
       this.cachedProjects = await API.getProjects();
       this.el.innerHTML = UI.projectsPage(this.cachedProjects, this.collectionsSortBy, this.collectionsSearchQuery);
       this.renderSidebarCollections();
-    } catch (e) { this.toast('Failed to load collections', 'error'); }
+    } catch (e) { this.toast('Falha ao carregar coleções', 'error'); }
   },
 
   handleCollectionsSearch(query) {
@@ -1635,8 +1635,8 @@ const App = {
     grid.innerHTML = filtered.map(p => UI.projectCard(p)).join('') || `
       <div class="empty-state" style="grid-column: 1/-1">
         <div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
-        <div class="empty-state-text">No collections found</div>
-        <div class="empty-state-sub">Try a different search query</div>
+        <div class="empty-state-text">Não foram encontradas coleções</div>
+        <div class="empty-state-sub">Tente uma pesquisa diferente</div>
       </div>
     `;
   },
@@ -1669,14 +1669,14 @@ const App = {
   async bulkDeleteCollections() {
     if (!this.selectedCollectionIds?.length) return;
     const count = this.selectedCollectionIds.length;
-    if (!confirm(`Are you sure you want to delete ${count} collection${count > 1 ? 's' : ''}? Models inside them will remain safely in your library.`)) return;
+    if (!confirm(`Tem a certeza de que quer eliminar ${count} coleç${count > 1 ? 'ões' : 'ão'}? Os modelos dentro delas permanecerão em segurança na sua biblioteca.`)) return;
     try {
       await API.bulkDeleteProjects(this.selectedCollectionIds);
-      this.toast(`Deleted ${count} collection${count > 1 ? 's' : ''}`);
+      this.toast(`${count} coleç${count > 1 ? 'ões eliminadas' : 'ão eliminada'}`);
       this.selectedCollectionIds = [];
       this.renderProjects();
     } catch (e) {
-      this.toast(e.message || 'Failed to delete collections', 'error');
+      this.toast(e.message || 'Falha ao eliminar coleções', 'error');
     }
   },
 
@@ -1685,11 +1685,11 @@ const App = {
     const count = this.selectedCollectionIds.length;
     try {
       await API.bulkSetProjectsVisibility(this.selectedCollectionIds, visibility);
-      this.toast(`Updated ${count} collection${count > 1 ? 's' : ''} to ${visibility}`);
+      this.toast(`${count} coleç${count > 1 ? 'ões atualizadas' : 'ão atualizada'} para ${visibility}`);
       this.selectedCollectionIds = [];
       this.renderProjects();
     } catch (e) {
-      this.toast(e.message || 'Failed to update visibility', 'error');
+      this.toast(e.message || 'Falha ao atualizar visibilidade', 'error');
     }
   },
 
@@ -1703,7 +1703,7 @@ const App = {
       if (typeof Viewer !== 'undefined' && Viewer.generateThumbnails) {
         setTimeout(() => Viewer.generateThumbnails(), 50);
       }
-    } catch (e) { this.toast('Failed to load collection', 'error'); }
+    } catch (e) { this.toast('Falha ao carregar coleção', 'error'); }
   },
 
   handleCollectionModelsSearch(query) {
@@ -1740,9 +1740,9 @@ const App = {
       const res = await API.getModels({ limit: 500 });
       const allModels = res.models || res || [];
       const currentModelIds = (this.currentProject?.models || []).map(m => m.id);
-      this.openModal('Add Models to Collection', UI.addModelsToCollectionModal(allModels, currentModelIds, projectId));
+      this.openModal('Adicionar Modelos à Coleção', UI.addModelsToCollectionModal(allModels, currentModelIds, projectId));
     } catch (e) {
-      this.toast('Failed to load library models: ' + e.message, 'error');
+      this.toast('Falha ao carregar modelos da biblioteca: ' + e.message, 'error');
     }
   },
 
@@ -1767,7 +1767,7 @@ const App = {
     const fd = new FormData(e.target);
     const modelIds = fd.getAll('model_ids').map(Number);
     try {
-      // First, get currently assigned models to compute additions & removals
+      // Primeiro, obter os modelos atualmente atribuídos para calcular adições e remoções
       const currentIds = (this.currentProject?.models || []).map(m => m.id);
       const toAdd = modelIds.filter(id => !currentIds.includes(id));
       const toRemove = currentIds.filter(id => !modelIds.includes(id));
@@ -1779,39 +1779,39 @@ const App = {
         await API.bulkRemoveModelsFromProject(projectId, toRemove);
       }
 
-      this.toast(`Collection updated (${toAdd.length} added, ${toRemove.length} removed)`);
+      this.toast(`Coleção atualizada (${toAdd.length} adicionados, ${toRemove.length} removidos)`);
       this.closeModal();
       this.renderProjectDetail(projectId);
       this.renderSidebarCollections();
     } catch (err) {
-      this.toast(err.message || 'Failed to update collection models', 'error');
+      this.toast(err.message || 'Falha ao atualizar modelos da coleção', 'error');
     }
   },
 
   async removeFromProject(projectId, modelId) {
-    if (!confirm('Remove this model from the collection?')) return;
+    if (!confirm('Remover este modelo da coleção?')) return;
     try {
       await API.removeModelFromProject(projectId, modelId);
-      this.toast('Model removed from collection');
+      this.toast('Modelo removido da coleção');
       this.renderProjectDetail(projectId);
       this.renderSidebarCollections();
     } catch (e) {
-      this.toast(e.message || 'Failed to remove model', 'error');
+      this.toast(e.message || 'Falha ao remover modelo', 'error');
     }
   },
 
   async bulkRemoveFromCollection(projectId) {
     if (!this.selectedCollectionModelIds?.length) return;
     const count = this.selectedCollectionModelIds.length;
-    if (!confirm(`Remove ${count} model${count > 1 ? 's' : ''} from this collection?`)) return;
+    if (!confirm(`Remover ${count} modelo${count > 1 ? 's' : ''} desta coleção?`)) return;
     try {
       await API.bulkRemoveModelsFromProject(projectId, this.selectedCollectionModelIds);
-      this.toast(`Removed ${count} model${count > 1 ? 's' : ''} from collection`);
+      this.toast(`${count} modelo${count > 1 ? 's removidos' : ' removido'} da coleção`);
       this.selectedCollectionModelIds = [];
       this.renderProjectDetail(projectId);
       this.renderSidebarCollections();
     } catch (e) {
-      this.toast(e.message || 'Failed bulk removal', 'error');
+      this.toast(e.message || 'Falha na remoção em massa', 'error');
     }
   },
 
@@ -1821,17 +1821,17 @@ const App = {
       const projects = await API.getProjects();
       const otherProjects = projects.filter(p => p.id !== Number(currentProjectId));
       if (!otherProjects.length) {
-        this.toast('No other collections found to copy to', 'error');
+        this.toast('Não foram encontradas outras coleções para copiar', 'error');
         return;
       }
-      this.openModal('Copy Models to Collection', UI.collectionSelectForm(otherProjects, [], null));
+      this.openModal('Copiar Modelos para a Coleção', UI.collectionSelectForm(otherProjects, [], null));
     } catch (e) {
       this.toast(e.message, 'error');
     }
   },
 
   downloadCollectionZip(projectId) {
-    this.toast('Generating collection ZIP...', 'info');
+    this.toast('A gerar ZIP da coleção...', 'info');
     const a = document.createElement('a');
     a.href = `/api/projects/${projectId}/download`;
     a.download = `collection_${projectId}.zip`;
@@ -1841,7 +1841,7 @@ const App = {
   },
 
   showCreateProject() {
-    this.openModal('New Collection', UI.projectForm());
+    this.openModal('Nova Coleção', UI.projectForm());
   },
 
   async handleProjectSubmit(e, id) {
@@ -1855,7 +1855,7 @@ const App = {
     try {
       if (id) {
         await API.updateProject(id, data);
-        this.toast('Collection updated');
+        this.toast('Coleção atualizada');
         this.closeModal();
         if (location.hash.startsWith('#/projects/') || location.hash.startsWith('#/collections/')) {
           this.renderProjectDetail(id);
@@ -1864,7 +1864,7 @@ const App = {
         }
       } else {
         await API.createProject(data);
-        this.toast('Collection created');
+        this.toast('Coleção criada');
         this.closeModal();
         this.renderProjects();
       }
@@ -1875,9 +1875,9 @@ const App = {
   async openEditProjectModal(projectId) {
     try {
       const project = await API.getProject(projectId);
-      this.openModal('Edit Collection', UI.editProjectModal(project));
+      this.openModal('Editar Coleção', UI.editProjectModal(project));
     } catch (e) {
-      this.toast('Failed to load collection: ' + e.message, 'error');
+      this.toast('Falha ao carregar coleção: ' + e.message, 'error');
     }
   },
 
@@ -1891,7 +1891,7 @@ const App = {
     };
     try {
       await API.updateProject(projectId, data);
-      this.toast('Collection updated');
+      this.toast('Coleção atualizada');
       this.closeModal();
       if (location.hash.startsWith('#/projects/') || location.hash.startsWith('#/collections/')) {
         this.renderProjectDetail(projectId);
@@ -1905,10 +1905,10 @@ const App = {
   },
 
   async deleteProject(id) {
-    if (!confirm('Are you sure you want to delete this collection? Models will not be deleted.')) return;
+    if (!confirm('Tem a certeza de que quer eliminar esta coleção? Os modelos não serão eliminados.')) return;
     try {
       await API.deleteProject(id);
-      this.toast('Collection deleted');
+      this.toast('Coleção eliminada');
       this.navigate('/collections');
       this.renderSidebarCollections();
     } catch (e) { this.toast(e.message, 'error'); }
@@ -1922,9 +1922,9 @@ const App = {
     try {
       const [model, projects] = await Promise.all([API.getModel(modelId), API.getProjects()]);
       const selectedIds = (model.projects || []).map(p => p.id);
-      this.openModal('Manage Collections', UI.collectionSelectForm(projects, selectedIds, modelId));
+      this.openModal('Gerir Coleções', UI.collectionSelectForm(projects, selectedIds, modelId));
     } catch (e) {
-      this.toast('Failed to load collections: ' + e.message, 'error');
+      this.toast('Falha ao carregar coleções: ' + e.message, 'error');
     }
   },
 
@@ -1935,7 +1935,7 @@ const App = {
     try {
       if (modelId) {
         await API.syncModelProjects(modelId, selectedProjectIds);
-        this.toast('Collections updated successfully');
+        this.toast('Coleções atualizadas com sucesso');
         this.closeModal();
         if (location.hash.startsWith('#/models/')) {
           this.renderModelDetail(modelId);
@@ -1943,11 +1943,11 @@ const App = {
           this.fetchAndRenderModels();
         }
       } else if (this.selectedModelIds?.length > 0) {
-        // Bulk add
+        // Adição em massa
         for (const pid of selectedProjectIds) {
           await API.bulkAddModelsToProject(pid, this.selectedModelIds);
         }
-        this.toast(`Added ${this.selectedModelIds.length} models to ${selectedProjectIds.length} collection(s)`);
+        this.toast(`${this.selectedModelIds.length} modelos adicionados a ${selectedProjectIds.length} coleção(ões)`);
         this.clearSelection();
         this.closeModal();
       }
@@ -1966,9 +1966,9 @@ const App = {
     });
   },
 
-  // ─── Sharing ─────────────────────────────────────────────────────────
+  // ─── Partilha ─────────────────────────────────────────────────────────
   showShareModal(modelId) {
-    this.openModal('Share Model', UI.shareModal(modelId));
+    this.openModal('Partilhar Modelo', UI.shareModal(modelId));
   },
 
   async generateShare(modelId) {
@@ -1986,29 +1986,29 @@ const App = {
   copyShareLink() {
     const input = document.getElementById('share-link-input');
     if (input) {
-      this.copyToClipboard(input.value, 'Link copied to clipboard');
+      this.copyToClipboard(input.value, 'Link copiado para a área de transferência');
     }
   },
 
   showCreateVersion(id, name) {
-    const modelName = name || this.currentModel?.name || 'Model';
+    const modelName = name || this.currentModel?.name || 'Modelo';
     const safeName = UI.escapeHtml(modelName);
     const html = `
       <form onsubmit="App.handleVersionSubmit(event, ${id})" class="form-grid">
         <div class="form-group">
-          <label>Version Name</label>
-          <input type="text" name="name" value="${safeName} (v2)" required class="form-input" placeholder="e.g. My Model v2">
+          <label>Nome da Versão</label>
+          <input type="text" name="name" value="${safeName} (v2)" required class="form-input" placeholder="ex.: O Meu Modelo v2">
         </div>
         <div class="form-group">
-          <label>Description of changes (optional)</label>
-          <textarea name="description" class="form-textarea" placeholder="What changed in this version?"></textarea>
+          <label>Descrição das alterações (opcional)</label>
+          <textarea name="description" class="form-textarea" placeholder="O que mudou nesta versão?"></textarea>
         </div>
         <div style="margin-top:20px;display:flex;justify-content:flex-end;gap:8px">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Create Version</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Criar Versão</button>
         </div>
       </form>`;
-    this.openModal('New Version', html);
+    this.openModal('Nova Versão', html);
   },
 
   async handleVersionSubmit(e, id) {
@@ -2017,14 +2017,14 @@ const App = {
     const data = { name: fd.get('name'), description: fd.get('description') };
     try {
       const res = await API.createVersion(id, data);
-      this.toast('Version created');
+      this.toast('Versão criada');
       this.closeModal();
       this.navigate(`/models/${res.id}`);
     } catch (e) { this.toast(e.message, 'error'); }
   },
 
   async renderSharedModel(slug) {
-    this.el.innerHTML = '<div style="padding:40px;text-align:center">Loading shared model...</div>';
+    this.el.innerHTML = '<div style="padding:40px;text-align:center">A carregar modelo partilhado...</div>';
     try {
       const model = await API.getSharedModel(slug);
       this.el.innerHTML = UI.publicModelDetail(model);
@@ -2036,7 +2036,7 @@ const App = {
         }, 100);
       }
     } catch (e) {
-      this.el.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="empty-state-text">Share link invalid or expired</div></div>`;
+      this.el.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="empty-state-text">Link de partilha inválido ou expirado</div></div>`;
     }
   },
 
@@ -2049,14 +2049,14 @@ const App = {
     
     if (protocol) {
       window.location.href = protocol + absoluteUrl;
-      this.toast(`Opening in ${slicer}...`);
+      this.toast(`A abrir em ${slicer}...`);
     } else {
-      // Fallback for Cura: just download?
+      // Alternativa para o Cura: apenas descarregar?
       window.open(fileUrl, '_blank');
     }
   },
 
-  // ─── Model Detail ────────────────────────────────────────────────────
+  // ─── Detalhe do Modelo ────────────────────────────────────────────────────
   async renderModelDetail(id) {
     if (typeof Viewer !== 'undefined') Viewer.cleanup();
     this.el.innerHTML = '<div style="padding:40px;text-align:center"><div class="skeleton" style="width:200px;height:30px;margin:0 auto 20px"></div><div class="skeleton" style="width:100%;height:200px"></div></div>';
@@ -2069,7 +2069,7 @@ const App = {
 
       this.el.innerHTML = `
         ${UI.modelDetail(model, hasPrinters)}`;
-      // Initialize 3D viewer using chosen 3D preview file or first stl/3mf
+      // Iniciar o visualizador 3D com o ficheiro de pré-visualização 3D escolhido ou o primeiro stl/3mf
       const files = model.files || [];
       const cadFiles = files.filter(f => f.file_type === 'stl' || f.file_type === '3mf' || f.file_type === 'step');
       const previewCadFile = (model.preview_file_id && cadFiles.find(f => f.id === model.preview_file_id)) ||
@@ -2091,14 +2091,14 @@ const App = {
         }, 100);
       }
     } catch (e) {
-      this.el.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="empty-state-text">Model not found</div></div>';
+      this.el.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="empty-state-text">Modelo não encontrado</div></div>';
     }
   },
 
   async setPreviewFile(modelId, fileId) {
     try {
       await API.setPreviewFile(modelId, fileId);
-      this.toast('Primary preview file updated');
+      this.toast('Ficheiro de pré-visualização principal atualizado');
       this.renderModelDetail(modelId);
     } catch (err) {
       this.toast(err.message, 'error');
@@ -2116,7 +2116,7 @@ const App = {
 
   setDefaultMaterial(val) {
     localStorage.setItem('gv_default_material', val);
-    this.toast('Default print material updated');
+    this.toast('Material de impressão predefinido atualizado');
   },
 
   toggleDescTab(tab) {
@@ -2136,7 +2136,7 @@ const App = {
       writeTab.classList.remove('active');
       input.style.display = 'none';
       preview.style.display = 'block';
-      preview.innerHTML = UI.renderMarkdown(input.value) || '<div style="color:var(--text-muted);font-style:italic">No description entered yet.</div>';
+      preview.innerHTML = UI.renderMarkdown(input.value) || '<div style="color:var(--text-muted);font-style:italic">Ainda não foi inserida uma descrição.</div>';
     }
   },
 
@@ -2145,7 +2145,7 @@ const App = {
     try {
       file = JSON.parse(decodeURIComponent(fileJsonEncoded));
     } catch (e) {
-      console.error('Failed to parse file json', e);
+      console.error('Falha ao processar json do ficheiro', e);
       return;
     }
 
@@ -2155,15 +2155,15 @@ const App = {
 
     let metadataRows = '';
     const metaEntries = [];
-    if (meta.printTime) metaEntries.push({ label: 'Est. Print Time', val: meta.printTime });
-    if (meta.filamentType) metaEntries.push({ label: 'Filament', val: meta.filamentType });
-    if (meta.tempNozzle) metaEntries.push({ label: 'Nozzle Temp', val: `${meta.tempNozzle}°C` });
-    if (meta.tempBed) metaEntries.push({ label: 'Bed Temp', val: `${meta.tempBed}°C` });
-    if (meta.layerHeight) metaEntries.push({ label: 'Layer Height', val: `${meta.layerHeight} mm` });
-    if (meta.fillDensity) metaEntries.push({ label: 'Infill', val: meta.fillDensity });
+    if (meta.printTime) metaEntries.push({ label: 'Tempo Estim. de Impressão', val: meta.printTime });
+    if (meta.filamentType) metaEntries.push({ label: 'Filamento', val: meta.filamentType });
+    if (meta.tempNozzle) metaEntries.push({ label: 'Temp. do Bico', val: `${meta.tempNozzle}°C` });
+    if (meta.tempBed) metaEntries.push({ label: 'Temp. da Mesa', val: `${meta.tempBed}°C` });
+    if (meta.layerHeight) metaEntries.push({ label: 'Altura da Camada', val: `${meta.layerHeight} mm` });
+    if (meta.fillDensity) metaEntries.push({ label: 'Preenchimento', val: meta.fillDensity });
     if (meta.slicer) metaEntries.push({ label: 'Slicer', val: meta.slicer });
-    if (meta.printerModel) metaEntries.push({ label: 'Printer Model', val: meta.printerModel });
-    if (meta.filamentWeight) metaEntries.push({ label: 'Filament Used', val: `${meta.filamentWeight}g` });
+    if (meta.printerModel) metaEntries.push({ label: 'Modelo da Impressora', val: meta.printerModel });
+    if (meta.filamentWeight) metaEntries.push({ label: 'Filamento Usado', val: `${meta.filamentWeight}g` });
 
     if (metaEntries.length > 0) {
       metadataRows = `
@@ -2182,7 +2182,7 @@ const App = {
     if (is3D || isGcode) {
       viewerArea = `
         <div id="browse-file-viewer-container" style="width:100%;height:320px;background:var(--bg-secondary);border-radius:var(--radius-md);overflow:hidden;position:relative;margin-bottom:16px;border:1px solid var(--border)">
-          <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted)">Loading 3D Preview...</div>
+          <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted)">A carregar Pré-visualização 3D...</div>
         </div>
       `;
     } else if (file.type === 'image') {
@@ -2199,12 +2199,12 @@ const App = {
         ${metadataRows}
         <div style="display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap">
           <div style="font-size:0.8rem;color:var(--text-muted);display:flex;align-items:center;gap:6px">
-            <span>Size: <strong>${UI.formatSize(file.size)}</strong></span>
+            <span>Tamanho: <strong>${UI.formatSize(file.size)}</strong></span>
             ${file.folderPath ? `<span>·</span><span style="display:inline-flex;align-items:center;gap:3px;color:#f59e0b"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>${file.folderPath}</span>` : ''}
           </div>
           <div style="display:flex;gap:8px;align-items:center">
-            ${(is3D || isGcode) ? `<button class="btn btn-secondary btn-sm" onclick="App.previewFileModal('${file.url}', '${file.name.replace(/'/g, "\\'")}', '${file.type}')">Full Screen</button>` : ''}
-            ${file.id ? `<a href="/api/files/${file.id}/download" class="btn btn-primary btn-sm" download>Download</a>` : `<a href="${file.url}" class="btn btn-primary btn-sm" download="${file.name}">Download</a>`}
+            ${(is3D || isGcode) ? `<button class="btn btn-secondary btn-sm" onclick="App.previewFileModal('${file.url}', '${file.name.replace(/'/g, "\\'")}', '${file.type}')">Ecrã Inteiro</button>` : ''}
+            ${file.id ? `<a href="/api/files/${file.id}/download" class="btn btn-primary btn-sm" download>Transferir</a>` : `<a href="${file.url}" class="btn btn-primary btn-sm" download="${file.name}">Transferir</a>`}
           </div>
         </div>
       </div>
@@ -2231,7 +2231,7 @@ const App = {
     const btn = document.getElementById('scan-btn');
     if (btn) {
       btn.disabled = true;
-      btn.innerHTML = '<span class="btn-icon rotating"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg></span> Starting...';
+      btn.innerHTML = '<span class="btn-icon rotating"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg></span> A iniciar...';
     }
 
     try {
@@ -2243,22 +2243,22 @@ const App = {
       });
       const data = await res.json();
       if (res.ok || res.status === 409) {
-        this.toast(res.status === 409 ? 'A scan is already in progress. Monitoring...' : 'Library scan started in background.');
+        this.toast(res.status === 409 ? 'Já existe uma análise em curso. A monitorizar...' : 'Análise da biblioteca iniciada em segundo plano.');
         this.monitorScanProgress();
       } else {
-        if (res.status === 401) this.toast('Please login as admin to scan', 'error');
-        else this.toast('Scan start failed: ' + (data.error || 'Unknown error'), 'error');
+        if (res.status === 401) this.toast('Inicie sessão como administrador para analisar', 'error');
+        else this.toast('Falha ao iniciar a análise: ' + (data.error || 'Erro desconhecido'), 'error');
         if (btn) {
           btn.disabled = false;
-          btn.innerHTML = '<span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg></span> Scan Library';
+          btn.innerHTML = '<span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg></span> Analisar Biblioteca';
         }
       }
     } catch (e) {
       console.error(e);
-      this.toast('Failed to reach server to start scan', 'error');
+      this.toast('Falha ao contactar o servidor para iniciar a análise', 'error');
       if (btn) {
         btn.disabled = false;
-        btn.innerHTML = '<span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg></span> Scan Library';
+        btn.innerHTML = '<span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg></span> Analisar Biblioteca';
       }
     }
   },
@@ -2270,7 +2270,7 @@ const App = {
       const btn = document.getElementById('scan-btn');
       if (btn) {
         btn.disabled = true;
-        btn.innerHTML = `<span class="btn-icon rotating"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg></span> ${status.foldersScanned || 0} folders (${status.filesAdded || 0} files)`;
+        btn.innerHTML = `<span class="btn-icon rotating"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg></span> ${status.foldersScanned || 0} pastas (${status.filesAdded || 0} ficheiros)`;
       }
     };
 
@@ -2289,20 +2289,20 @@ const App = {
           const btn = document.getElementById('scan-btn');
           if (btn) {
             btn.disabled = false;
-            btn.innerHTML = '<span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg></span> Scan Library';
+            btn.innerHTML = '<span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg></span> Analisar Biblioteca';
           }
 
           if (status.error) {
-            this.toast('Scan stopped with error: ' + status.error, 'error');
+            this.toast('Análise interrompida com erro: ' + status.error, 'error');
           } else {
             const addedModels = status.lastResults?.modelsAdded || 0;
             const addedFiles = status.lastResults?.filesAdded || 0;
-            this.toast(`✓ Scan completed! ${addedModels} models and ${addedFiles} files added (${status.elapsedSeconds || 0}s).`);
+            this.toast(`✓ Análise concluída! ${addedModels} modelos e ${addedFiles} ficheiros adicionados (${status.elapsedSeconds || 0}s).`);
             this.fetchAndRenderModels();
           }
         }
       } catch (e) {
-        console.warn('Could not poll scan status:', e);
+        console.warn('Não foi possível consultar o estado da análise:', e);
       }
     }, 1500);
   },
@@ -2318,7 +2318,7 @@ const App = {
           </div>
           <div class="modal-body" style="flex:1;padding:0;overflow:hidden;position:relative">
             <div id="full-preview-viewer" style="width:100%;height:100%">
-              <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted)">Loading 3D Viewer...</div>
+              <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted)">A carregar Visualizador 3D...</div>
             </div>
           </div>
         </div>
@@ -2372,7 +2372,7 @@ const App = {
       if (container.nextElementSibling) {
         container.nextElementSibling.style.visibility = 'visible';
       }
-      container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted)">Loading...</div>';
+      container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted)">A carregar...</div>';
       container.dataset.stlUrl = url;
       setTimeout(() => {
         Viewer.create(`stl-viewer-${modelId}`, url, fileType);
@@ -2386,8 +2386,8 @@ const App = {
     this.el.innerHTML = `
       <div class="page-header" style="margin-bottom:20px">
         <div>
-          <h1 class="page-title">Settings</h1>
-          <p class="page-subtitle">Configure and personalize your GyroidVault 2.0 instance</p>
+          <h1 class="page-title">Definições</h1>
+          <p class="page-subtitle">Configure e personalize a sua instância do GyroidVault 2.0</p>
         </div>
       </div>
 
@@ -2395,18 +2395,18 @@ const App = {
         <!-- Modern Left Navigation Sub-Sidebar -->
         <aside class="settings-nav-sidebar">
           <div class="settings-nav-group">
-            <div class="settings-nav-group-title">Taxonomies</div>
+            <div class="settings-nav-group-title">Taxonomias</div>
             <button class="settings-nav-btn active" data-tab="categories">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-              <span>Categories</span>
+              <span>Categorias</span>
             </button>
             <button class="settings-nav-btn" data-tab="tags">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-              <span>Tags</span>
+              <span>Etiquetas</span>
             </button>
             <button class="settings-nav-btn" data-tab="materials">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-              <span>Materials</span>
+              <span>Materiais</span>
             </button>
           </div>
 
@@ -2415,40 +2415,40 @@ const App = {
               <div class="settings-nav-group-title">Hardware</div>
               <button class="settings-nav-btn" data-tab="printers">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-                <span>3D Printers</span>
+                <span>Impressoras 3D</span>
               </button>
               <button class="settings-nav-btn" data-tab="smtp">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                <span>SMTP & Mail</span>
+                <span>SMTP e Correio</span>
               </button>
             </div>
 
             <div class="settings-nav-group">
-              <div class="settings-nav-group-title">Administration</div>
+              <div class="settings-nav-group-title">Administração</div>
               <button class="settings-nav-btn" data-tab="security">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                <span>Security</span>
+                <span>Segurança</span>
               </button>
               <button class="settings-nav-btn" data-tab="users">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                <span>Users & Roles</span>
+                <span>Utilizadores e Funções</span>
               </button>
               <button class="settings-nav-btn" data-tab="system">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                <span>System</span>
+                <span>Sistema</span>
               </button>
               <button class="settings-nav-btn" data-tab="maintenance">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <span>Maintenance & Logs</span>
+                <span>Manutenção e Registos</span>
               </button>
             </div>
           ` : ''}
 
           <div class="settings-nav-group">
-            <div class="settings-nav-group-title">System Info</div>
+            <div class="settings-nav-group-title">Informação do Sistema</div>
             <button class="settings-nav-btn" data-tab="about">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-              <span>About GyroidVault</span>
+              <span>Sobre o GyroidVault</span>
             </button>
           </div>
         </aside>
@@ -2469,27 +2469,27 @@ const App = {
       try {
         if (tab === 'categories') {
           const cats = await API.getCategories();
-          content.innerHTML = `<div class="settings-grid">${UI.settingsPanel('Categories', cats, 'categories')}</div>`;
+          content.innerHTML = `<div class="settings-grid">${UI.settingsPanel('Categorias', cats, 'categories')}</div>`;
         } else if (tab === 'tags') {
           const tags = await API.getTags();
-          content.innerHTML = `<div class="settings-grid">${UI.settingsPanel('Tags', tags, 'tags')}</div>`;
+          content.innerHTML = `<div class="settings-grid">${UI.settingsPanel('Etiquetas', tags, 'tags')}</div>`;
         } else if (tab === 'materials') {
           const mats = await API.getMaterials();
-          content.innerHTML = `<div class="settings-grid">${UI.settingsPanel('Materials', mats, 'materials')}</div>`;
+          content.innerHTML = `<div class="settings-grid">${UI.settingsPanel('Materiais', mats, 'materials')}</div>`;
         } else if (tab === 'printers') {
           const config = await API.getSystemSettings();
           let printers = [];
           try { if (config.printers) printers = JSON.parse(config.printers); } catch(e){}
           content.innerHTML = `
             <div class="glass-panel">
-              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>3D Printers (Moonraker)</div></div>
+              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Impressoras 3D (Moonraker)</div></div>
               <div class="panel-body">${UI.printersSettingsForm(printers)}</div>
             </div>`;
         } else if (tab === 'security') {
           const config = await API.getSystemSettings();
           content.innerHTML = `
             <div class="glass-panel">
-              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Security & Access Control</div></div>
+              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Segurança e Controlo de Acesso</div></div>
               <div class="panel-body">${UI.securitySettingsForm(config)}</div>
             </div>`;
           setTimeout(() => App.loadBlockedIps(), 50);
@@ -2497,13 +2497,13 @@ const App = {
           const logs = await API.getSystemLogs();
           content.innerHTML = `
             <div class="glass-panel" style="margin-bottom:24px">
-              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Maintenance & Duplicates</div></div>
+              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Manutenção e Duplicados</div></div>
               <div class="panel-body">${UI.maintenanceSettingsForm()}</div>
             </div>
             <div class="glass-panel">
               <div class="panel-header">
-                <div class="panel-title">System Event Logs</div>
-                <button class="btn btn-ghost btn-xs" onclick="App.handleClearLogs()" style="color:var(--error)">Clear Logs</button>
+                <div class="panel-title">Registos de Eventos do Sistema</div>
+                <button class="btn btn-ghost btn-xs" onclick="App.handleClearLogs()" style="color:var(--error)">Limpar Registos</button>
               </div>
               <div class="panel-body no-pad">
                 <div id="system-logs-list" style="max-height:400px;overflow-y:auto;font-family:monospace;font-size:.75rem">
@@ -2513,7 +2513,7 @@ const App = {
                       <span style="color:var(--accent-${l.level === 'warning' ? 'pink' : 'cyan'});font-weight:700;width:60px">[${l.level.toUpperCase()}]</span>
                       <span style="color:var(--text-secondary)">${l.message}</span>
                     </div>
-                  `).join('') : '<div style="padding:20px;text-align:center;color:var(--text-muted)">No logs available</div>'}
+                  `).join('') : '<div style="padding:20px;text-align:center;color:var(--text-muted)">Sem registos disponíveis</div>'}
                 </div>
               </div>
             </div>`;
@@ -2521,39 +2521,39 @@ const App = {
           const config = await API.getSMTPSettings();
           content.innerHTML = `
             <div class="glass-panel">
-              <div class="panel-header"><div class="panel-title">SMTP Mail Configuration</div></div>
+              <div class="panel-header"><div class="panel-title">Configuração de Correio SMTP</div></div>
               <div class="panel-body">${UI.smtpSettingsForm(config)}</div>
             </div>`;
         } else if (tab === 'system') {
           const config = await API.getSystemSettings();
           content.innerHTML = `
             <div class="glass-panel">
-              <div class="panel-header"><div class="panel-title">System Settings</div></div>
+              <div class="panel-header"><div class="panel-title">Definições do Sistema</div></div>
               <div class="panel-body">${UI.systemSettingsForm(config)}</div>
             </div>`;
         } else if (tab === 'users') {
           const users = await API.getUsers();
           content.innerHTML = `
             <div class="glass-panel" style="margin-bottom:20px">
-              <div class="panel-header"><div class="panel-title">Invite User</div></div>
+              <div class="panel-header"><div class="panel-title">Convidar Utilizador</div></div>
               <div class="panel-body">
                 <form onsubmit="App.handleInviteUser(event)" style="display:flex;gap:10px;flex-wrap:wrap">
-                  <input type="email" name="email" required placeholder="Email address to invite" class="form-input" style="max-width:320px">
-                  <button type="submit" class="btn btn-primary">Send Invite</button>
+                  <input type="email" name="email" required placeholder="Endereço de e-mail a convidar" class="form-input" style="max-width:320px">
+                  <button type="submit" class="btn btn-primary">Enviar Convite</button>
                 </form>
               </div>
             </div>
             <div class="glass-panel">
-              <div class="panel-header"><div class="panel-title">User Accounts & Roles</div></div>
+              <div class="panel-header"><div class="panel-title">Contas de Utilizador e Funções</div></div>
               <div class="panel-body no-pad" style="overflow-x:auto">
                 <table class="settings-table">
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>Username</th>
-                      <th>Email</th>
-                      <th>Role</th>
-                      <th style="text-align:right">Actions</th>
+                      <th>Nome de Utilizador</th>
+                      <th>E-mail</th>
+                      <th>Função</th>
+                      <th style="text-align:right">Ações</th>
                     </tr>
                   </thead>
                   <tbody>${users.map(u => `
@@ -2563,14 +2563,14 @@ const App = {
                       <td>${u.email || '-'}</td>
                       <td>
                         <select class="form-input" style="padding:4px 8px;font-size:.85rem;width:auto;display:inline-block" onchange="App.changeUserRole(${u.id}, this)" ${u.id === 1 ? 'disabled' : ''}>
-                          <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
-                          <option value="uploader" ${u.role === 'uploader' ? 'selected' : ''}>Uploader</option>
-                          <option value="viewer" ${u.role === 'viewer' ? 'selected' : ''}>Viewer</option>
+                          <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Administrador</option>
+                          <option value="uploader" ${u.role === 'uploader' ? 'selected' : ''}>Autor do Envio</option>
+                          <option value="viewer" ${u.role === 'viewer' ? 'selected' : ''}>Visualizador</option>
                         </select>
-                        ${u.id === 1 ? '<span style="font-size:0.7rem;color:var(--accent-cyan);margin-left:6px;font-weight:600">Master Admin</span>' : ''}
+                        ${u.id === 1 ? '<span style="font-size:0.7rem;color:var(--accent-cyan);margin-left:6px;font-weight:600">Administrador Principal</span>' : ''}
                       </td>
                       <td style="text-align:right">
-                        ${u.id !== 1 ? `<button class="btn btn-danger btn-xs" onclick="App.deleteUser(${u.id})" style="display:inline-flex;align-items:center;gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>` : ''}
+                        ${u.id !== 1 ? `<button class="btn btn-danger btn-xs" onclick="App.deleteUser(${u.id})" style="display:inline-flex;align-items:center;gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Eliminar</button>` : ''}
                       </td>
                     </tr>`).join('')}
                   </tbody>
@@ -2587,7 +2587,7 @@ const App = {
     switchTab(initialTab);
   },
 
-  // ─── Actions ──────────────────────────────────────────────────────────
+  // ─── Ações ──────────────────────────────────────────────────────────
   async showCreateModel() {
     await this.loadCache();
     this.pendingFiles = [];
@@ -2597,14 +2597,14 @@ const App = {
       const folderOptionsHtml = `
         <div class="form-group">
           <input type="hidden" name="parent_folder" value="${this.currentBrowsePath}">
-          <label><input type="checkbox" name="create_subfolder" value="true" checked> Create subfolder for this model</label>
+          <label><input type="checkbox" name="create_subfolder" value="true" checked> Criar subpasta para este modelo</label>
         </div>
       `;
-      // Inject before form-actions
+      // Inserir antes de form-actions
       formHtml = formHtml.replace('<div class="form-actions">', folderOptionsHtml + '<div class="form-actions">');
     }
     
-    this.openModal('New Model', formHtml);
+    this.openModal('Novo Modelo', formHtml);
     setTimeout(() => document.getElementById('model-name-input')?.focus(), 100);
   },
 
@@ -2643,7 +2643,7 @@ const App = {
     const validFiles = [];
     for (const f of files) {
       if (f.size > MAX_SIZE) {
-        this.toast(`File "${f.name}" exceeds the 500MB size limit.`, 'error');
+        this.toast(`O ficheiro "${f.name}" excede o limite de tamanho de 500MB.`, 'error');
       } else {
         validFiles.push(f);
       }
@@ -2683,7 +2683,7 @@ const App = {
     
     const label = document.createElement('label');
     label.className = 'tag-pill-checkbox';
-    // Use a prefix to identify it as a new tag string rather than an ID
+    // Usar um prefixo para identificar como uma nova etiqueta em vez de um ID
     label.innerHTML = `
       <input type="checkbox" name="tags" value="NEW:${val}" checked> 
       <span class="tag-pill new">${val}</span>`;
@@ -2699,8 +2699,8 @@ const App = {
     div.style.cssText = 'display:flex; gap:8px; margin-bottom:8px;';
     div.className = 'custom-meta-row';
     div.innerHTML = `
-      <input type="text" class="form-input" name="meta_keys[]" placeholder="Key (e.g. Designer)" style="flex:1" required>
-      <input type="text" class="form-input" name="meta_values[]" placeholder="Value" style="flex:2" required>
+      <input type="text" class="form-input" name="meta_keys[]" placeholder="Chave (ex.: Designer)" style="flex:1" required>
+      <input type="text" class="form-input" name="meta_values[]" placeholder="Valor" style="flex:2" required>
       <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">X</button>
     `;
     container.appendChild(div);
@@ -2709,8 +2709,8 @@ const App = {
   async showEditModel(id) {
     try {
       const [model] = await Promise.all([API.getModel(id), this.loadCache()]);
-      this.openModal('Edit Model', UI.modelForm(model, this.cache.categories, this.cache.tags));
-    } catch (e) { this.toast('Failed to load model', 'error'); }
+      this.openModal('Editar Modelo', UI.modelForm(model, this.cache.categories, this.cache.tags));
+    } catch (e) { this.toast('Falha ao carregar modelo', 'error'); }
   },
 
   async handleModelSubmit(e, id) {
@@ -2748,15 +2748,15 @@ const App = {
     try {
       if (id) {
         await API.updateModel(id, data);
-        this.toast('Model updated');
+        this.toast('Modelo atualizado');
         this.closeModal();
         this.renderModelDetail(id);
       } else {
         const model = await API.createModel(data);
-        // Upload pending files if any
+        // Enviar ficheiros pendentes, se existirem
         if (this.pendingFiles.length > 0) {
           const submitBtn = document.getElementById('model-submit-btn');
-          if (submitBtn) { submitBtn.disabled = true; submitBtn.innerText = 'Uploading files...'; }
+          if (submitBtn) { submitBtn.disabled = true; submitBtn.innerText = 'A enviar ficheiros...'; }
           const progress = document.getElementById('create-upload-progress');
           try {
             const uploadOpts = {
@@ -2766,13 +2766,13 @@ const App = {
             await API.uploadFiles(model.id, this.pendingFiles, uploadOpts, (p) => {
               if (progress) progress.innerHTML = UI.uploadProgressBox(p);
             });
-            this.toast(`Model created with ${this.pendingFiles.length} file(s)`);
+            this.toast(`Modelo criado com ${this.pendingFiles.length} ficheiro(s)`);
           } catch (ue) {
-            this.toast('Model created but file upload failed: ' + ue.message, 'error');
+            this.toast('Modelo criado mas o envio do ficheiro falhou: ' + ue.message, 'error');
           }
           this.pendingFiles = [];
         } else {
-          this.toast('Model created');
+          this.toast('Modelo criado');
         }
         this.closeModal();
         this.navigate(`/models/${model.id}`);
@@ -2784,7 +2784,7 @@ const App = {
         const container = document.getElementById('duplicate-suggestions-container');
         if (banner) {
           banner.style.display = 'block';
-          if (warnText) warnText.textContent = e.message || 'A model with this name already exists.';
+          if (warnText) warnText.textContent = e.message || 'Já existe um modelo com este nome.';
           const suggestions = e.suggested_names && e.suggested_names.length ? e.suggested_names : (e.suggested_name ? [e.suggested_name] : []);
           this.pendingSuggestedName = suggestions[0] || null;
           if (container) {
@@ -2835,10 +2835,10 @@ const App = {
 
   confirmDeleteModel(id, name) {
     if (!this.currentUser || this.currentUser.role === 'viewer') {
-      return this.toast('You must be logged in to delete models', 'error');
+      return this.toast('Tem de ter sessão iniciada para eliminar modelos', 'error');
     }
     const modelName = name || this.currentModel?.name || '';
-    this.openModal('Delete Model', UI.deleteModelForm(id, modelName));
+    this.openModal('Eliminar Modelo', UI.deleteModelForm(id, modelName));
   },
 
   async handleDeleteModel(e, id) {
@@ -2847,13 +2847,13 @@ const App = {
     const deleteDisk = form.get('delete_disk') === 'on';
     try {
       await API.deleteModel(id, deleteDisk);
-      this.toast('Model deleted');
+      this.toast('Modelo eliminado');
       this.closeModal();
       this.navigate('/models');
     } catch (err) { this.toast(err.message, 'error'); }
   },
 
-  copyToClipboard(text, message = 'Copied') {
+  copyToClipboard(text, message = 'Copiado') {
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(text).then(() => this.toast(message));
     } else {
@@ -2869,16 +2869,16 @@ const App = {
         document.execCommand('copy');
         this.toast(message);
       } catch (err) {
-        console.error('Fallback copy failed', err);
-        this.toast('Failed to copy', 'error');
+        console.error('Falha na cópia alternativa', err);
+        this.toast('Falha ao copiar', 'error');
       }
       document.body.removeChild(textArea);
     }
   },
 
-  // ── Files ──
+  // ── Ficheiros ──
   showUploadFiles(modelId) {
-    this.openModal('Upload Files', UI.uploadForm(modelId));
+    this.openModal('Enviar Ficheiros', UI.uploadForm(modelId));
   },
 
   async handleFileSelect(e, modelId) {
@@ -2897,7 +2897,7 @@ const App = {
     const MAX_SIZE = 500 * 1024 * 1024; // 500MB
     const tooLarge = files.find(f => f.size > MAX_SIZE);
     if (tooLarge) {
-      this.toast(`File "${tooLarge.name}" exceeds the 500MB size limit.`, 'error');
+      this.toast(`O ficheiro "${tooLarge.name}" excede o limite de tamanho de 500MB.`, 'error');
       return;
     }
     const progress = document.getElementById('upload-progress');
@@ -2908,7 +2908,7 @@ const App = {
       await API.uploadFiles(modelId, files, {}, (p) => {
         if (progress) progress.innerHTML = UI.uploadProgressBox(p);
       });
-      this.toast(`${files.length} file(s) uploaded`);
+      this.toast(`${files.length} ficheiro(s) enviado(s)`);
       this.closeModal();
       this.renderModelDetail(modelId);
     } catch (e) {
@@ -2919,9 +2919,9 @@ const App = {
 
   confirmDeleteFile(fileId, filename, modelId) {
     if (!this.currentUser || this.currentUser.role === 'viewer') {
-      return this.toast('You must be logged in to delete files', 'error');
+      return this.toast('Tem de ter sessão iniciada para eliminar ficheiros', 'error');
     }
-    this.openModal('Delete File', UI.deleteFileForm(fileId, filename, modelId));
+    this.openModal('Eliminar Ficheiro', UI.deleteFileForm(fileId, filename, modelId));
   },
 
   async handleDeleteFile(e, fileId, modelId) {
@@ -2930,7 +2930,7 @@ const App = {
     const deleteDisk = form.get('delete_disk') === 'on';
     try {
       await API.deleteFile(fileId, deleteDisk);
-      this.toast('File deleted');
+      this.toast('Ficheiro eliminado');
       this.closeModal();
       this.renderModelDetail(modelId);
     } catch (err) { this.toast(err.message, 'error'); }
@@ -2943,16 +2943,16 @@ const App = {
       try { if (config.printers) printers = JSON.parse(config.printers); } catch(e){}
       
       if (printers.length === 0) {
-        return this.toast('No printers configured. Go to Settings > Printers.', 'error');
+        return this.toast('Nenhuma impressora configurada. Vá a Definições > Impressoras.', 'error');
       }
       
       if (printers.length === 1) {
-        this.toast('Sending to ' + printers[0].name + '...', 'info');
+        this.toast('A enviar para ' + printers[0].name + '...', 'info');
         await API.sendToPrinter(fileId, printers[0].id);
-        return this.toast('G-Code sent successfully to ' + printers[0].name);
+        return this.toast('G-Code enviado com sucesso para ' + printers[0].name);
       }
       
-      this.openModal('Send to Moonraker', UI.sendToPrinterForm(fileId, printers));
+      this.openModal('Enviar para o Moonraker', UI.sendToPrinterForm(fileId, printers));
     } catch(err) {
       this.toast(err.message, 'error');
     }
@@ -2965,17 +2965,17 @@ const App = {
     const select = e.target.querySelector('select');
     const printerName = select.options[select.selectedIndex].text.split(' (')[0];
     try {
-      this.toast('Sending to ' + printerName + '...', 'info');
+      this.toast('A enviar para ' + printerName + '...', 'info');
       this.closeModal();
       await API.sendToPrinter(fileId, printerId);
-      this.toast('G-Code sent successfully to ' + printerName);
+      this.toast('G-Code enviado com sucesso para ' + printerName);
     } catch (err) { this.toast(err.message, 'error'); }
   },
 
-  // ── Prints ──
+  // ── Impressões ──
   async showLogPrint(modelId) {
     await this.loadCache();
-    this.openModal('Log Print', UI.printForm(modelId, this.cache.materials));
+    this.openModal('Registar Impressão', UI.printForm(modelId, this.cache.materials));
   },
 
   async handlePrintSubmit(e, modelId) {
@@ -2988,22 +2988,22 @@ const App = {
         notes: form.get('notes'),
         printed_at: form.get('printed_at'),
       });
-      this.toast('Print logged');
+      this.toast('Impressão registada');
       this.closeModal();
       this.renderModelDetail(modelId);
     } catch (e) { this.toast(e.message, 'error'); }
   },
 
   async deletePrint(printId, modelId) {
-    if (!confirm('Delete this print entry?')) return;
+    if (!confirm('Eliminar este registo de impressão?')) return;
     try {
       await API.deletePrint(printId);
-      this.toast('Print entry deleted');
+      this.toast('Registo de impressão eliminado');
       this.renderModelDetail(modelId);
     } catch (e) { this.toast(e.message, 'error'); }
   },
 
-  // ── Settings Items ──
+  // ── Itens de Definições ──
   async addSettingsItem(type) {
     const input = document.getElementById(`add-${type}-input`);
     const name = input?.value?.trim();
@@ -3018,30 +3018,30 @@ const App = {
       else if (type === 'tags') await API.createTag(data);
       else if (type === 'materials') await API.createMaterial(data);
 
-      this.toast(`${type.slice(0,-1)} added`);
+      this.toast(`${type.slice(0,-1)} adicionado(a)`);
       await this.loadCache();
       this.renderSettings();
     } catch (e) { this.toast(e.message, 'error'); }
   },
 
   async deleteSettingsItem(type, id, name) {
-    if (!confirm(`Delete "${name}"?`)) return;
+    if (!confirm(`Eliminar "${name}"?`)) return;
     try {
       if (type === 'categories') await API.deleteCategory(id);
       else if (type === 'tags') await API.deleteTag(id);
       else if (type === 'materials') await API.deleteMaterial(id);
 
-      this.toast(`${type.slice(0,-1)} deleted`);
+      this.toast(`${type.slice(0,-1)} eliminado(a)`);
       await this.loadCache();
       this.renderSettings();
     } catch (e) { this.toast(e.message, 'error'); }
   },
 
   async handleClearLogs() {
-    if (!confirm('Clear all system logs?')) return;
+    if (!confirm('Limpar todos os registos do sistema?')) return;
     try {
       await API.clearSystemLogs();
-      this.toast('Logs cleared');
+      this.toast('Registos limpos');
       this.switchSettingsTab('system');
     } catch (e) { this.toast(e.message, 'error'); }
   },
@@ -3049,7 +3049,7 @@ const App = {
   async switchSettingsTab(tab) {
     const tabs = document.querySelectorAll('.settings-tab');
     tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-    // Trigger the switch logic already defined in renderSettings
+    // Acionar a lógica de mudança já definida em renderSettings
     const activeTab = Array.from(tabs).find(t => t.dataset.tab === tab);
     if (activeTab) activeTab.click();
   },
@@ -3057,36 +3057,36 @@ const App = {
   async loadBlockedIps() {
     const el = document.getElementById('blocked-ips-list');
     if (!el) return;
-    el.innerHTML = '<div style="color:var(--text-muted);font-size:.85rem">Loading blocked IPs...</div>';
+    el.innerHTML = '<div style="color:var(--text-muted);font-size:.85rem">A carregar IPs bloqueados...</div>';
     try {
       const ips = await API.getBlockedIps();
       if (!ips || ips.length === 0) {
-        el.innerHTML = '<div style="color:var(--text-muted);font-size:.85rem;padding:8px 0">No IP addresses are currently blocked.</div>';
+        el.innerHTML = '<div style="color:var(--text-muted);font-size:.85rem;padding:8px 0">Não existem atualmente endereços IP bloqueados.</div>';
         return;
       }
       el.innerHTML = `
         <table class="table" style="width:100%;font-size:.85rem">
-          <thead><tr><th>IP Address</th><th>Failed Attempts</th><th>Blocked At</th><th>Action</th></tr></thead>
+          <thead><tr><th>Endereço IP</th><th>Tentativas Falhadas</th><th>Bloqueado Em</th><th>Ação</th></tr></thead>
           <tbody>
             ${ips.map(item => `
               <tr>
                 <td><strong>${item.ip}</strong></td>
                 <td>${item.attempts}</td>
                 <td>${UI.formatDate(item.blockedAt)}</td>
-                <td><button type="button" class="btn btn-danger btn-xs" onclick="App.unblockIp('${item.ip}')">Unblock</button></td>
+                <td><button type="button" class="btn btn-danger btn-xs" onclick="App.unblockIp('${item.ip}')">Desbloquear</button></td>
               </tr>
             `).join('')}
           </tbody>
         </table>`;
     } catch (e) {
-      el.innerHTML = `<div style="color:var(--error);font-size:.85rem">${e.message || 'Failed to fetch blocked IPs'}</div>`;
+      el.innerHTML = `<div style="color:var(--error);font-size:.85rem">${e.message || 'Falha ao obter IPs bloqueados'}</div>`;
     }
   },
 
   async unblockIp(ip) {
     try {
       await API.unblockIp(ip);
-      this.toast(`Unblocked IP ${ip}`);
+      this.toast(`IP ${ip} desbloqueado`);
       this.loadBlockedIps();
     } catch (e) {
       this.toast(e.message, 'error');
@@ -3096,15 +3096,15 @@ const App = {
   async scanForDuplicates() {
     const el = document.getElementById('duplicates-results');
     if (!el) return;
-    el.innerHTML = '<div style="color:var(--accent-cyan);font-size:.85rem">⏳ Scanning library using SHA-256 hashes... Please wait.</div>';
+    el.innerHTML = '<div style="color:var(--accent-cyan);font-size:.85rem">⏳ A analisar a biblioteca usando hashes SHA-256... Aguarde.</div>';
     try {
       const res = await API.scanDuplicates();
       if (!res.groups || res.groups.length === 0) {
-        el.innerHTML = '<div style="color:var(--accent-green);font-size:.85rem;padding:8px 0">✓ Great news! No duplicate 3D model files found in your library.</div>';
+        el.innerHTML = '<div style="color:var(--accent-green);font-size:.85rem;padding:8px 0">✓ Ótimas notícias! Não foram encontrados ficheiros de modelos 3D duplicados na sua biblioteca.</div>';
         return;
       }
       el.innerHTML = `
-        <div style="margin-bottom:10px;font-weight:600;color:var(--error)">Found ${res.duplicatesCount} group(s) of identical files:</div>
+        <div style="margin-bottom:10px;font-weight:600;color:var(--error)">Encontrados ${res.duplicatesCount} grupo(s) de ficheiros idênticos:</div>
         <div style="display:flex;flex-direction:column;gap:12px">
           ${res.groups.map(group => `
             <div style="background:var(--bg-input);padding:12px;border-radius:6px;border:1px solid var(--border)">
@@ -3112,8 +3112,8 @@ const App = {
               <div style="display:flex;flex-direction:column;gap:4px">
                 ${group.files.map(f => `
                   <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.85rem">
-                    <span style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><strong>${f.original_name}</strong> in model <a href="#/models/${f.model_id}" style="color:var(--accent-cyan)">${f.model_name || 'Model #'+f.model_id}</a></span>
-                    <a href="#/models/${f.model_id}" class="btn btn-ghost btn-xs">View Model</a>
+                    <span style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><strong>${f.original_name}</strong> no modelo <a href="#/models/${f.model_id}" style="color:var(--accent-cyan)">${f.model_name || 'Modelo #'+f.model_id}</a></span>
+                    <a href="#/models/${f.model_id}" class="btn btn-ghost btn-xs">Ver Modelo</a>
                   </div>
                 `).join('')}
               </div>
@@ -3121,12 +3121,12 @@ const App = {
           `).join('')}
         </div>`;
     } catch (e) {
-      el.innerHTML = `<div style="color:var(--error);font-size:.85rem">${e.message || 'Failed to scan duplicates'}</div>`;
+      el.innerHTML = `<div style="color:var(--error);font-size:.85rem">${e.message || 'Falha ao procurar duplicados'}</div>`;
     }
   }
 };
 
-// ── Drag-Safe Overlay Dismiss Handler (PR #51) ──
+// ── Gestor de Fecho do Overlay Seguro para Arrastar (PR #51) ──
 let overlayMouseDownTarget = null;
 const modalOverlayEl = document.getElementById('modal-overlay');
 
@@ -3147,7 +3147,7 @@ if (modalOverlayEl) {
   });
 }
 
-// ── Close modal on Escape & Ctrl+K search shortcut ──
+// ── Fechar modal com Escape e atalho de pesquisa Ctrl+K ──
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     const previewContainer = document.getElementById('preview-modal-container');
@@ -3164,5 +3164,5 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// ── Initialize ──
+// ── Inicializar ──
 document.addEventListener('DOMContentLoaded', () => App.init());
