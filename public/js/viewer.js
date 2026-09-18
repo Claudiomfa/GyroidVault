@@ -25,7 +25,7 @@ const Viewer = {
       try {
         worker = new Worker('/js/vendor/occt/occt-import-js-worker.js');
       } catch (e) {
-        reject(new Error('STEP importer failed to start'));
+        reject(new Error('O importador STEP não conseguiu arrancar.'));
         return;
       }
       let settled = false;
@@ -37,16 +37,16 @@ const Viewer = {
         fn(arg);
       };
       const timer = setTimeout(
-        () => finish(reject, new Error('STEP import timed out — the file may be too complex to display')),
+        () => finish(reject, new Error('A importação do STEP expirou — o ficheiro pode ser demasiado complexo para ser apresentado.')),
         120000
       );
 
-      worker.onerror = () => finish(reject, new Error('Could not load the STEP importer'));
+      worker.onerror = () => finish(reject, new Error('Não foi possível carregar o importador STEP.'));
       worker.onmessage = (ev) => {
         try {
           const result = ev.data;
-          if (!result || !result.success) throw new Error('This file could not be read as STEP');
-          if (!result.meshes || result.meshes.length === 0) throw new Error('No displayable geometry in this STEP file');
+          if (!result || !result.success) throw new Error('Este ficheiro não pôde ser lido como STEP');
+          if (!result.meshes || result.meshes.length === 0) throw new Error('Não há geometria visível neste ficheiro STEP.');
 
           const inner = new THREE.Group();
           for (const m of result.meshes) {
@@ -87,12 +87,12 @@ const Viewer = {
       if (onProgress) onProgress('Downloading STEP file…');
       fetch(url, { credentials: 'same-origin' })
         .then(r => {
-          if (!r.ok) throw new Error('Could not download the file (HTTP ' + r.status + ')');
+          if (!r.ok) throw new Error('Não foi possível descarregar o ficheiro. (HTTP ' + r.status + ')');
           return r.arrayBuffer();
         })
         .then(buffer => {
           if (settled) return;
-          if (onProgress) onProgress('Tessellating STEP geometry…');
+          if (onProgress) onProgress('Geometria STEP tesselada…');
           worker.postMessage({ format: 'step', buffer: new Uint8Array(buffer), params: null });
         })
         .catch(err => finish(reject, err));
@@ -153,7 +153,7 @@ const Viewer = {
       // Load G-Code via fetch and process chunks
       fetch(fileUrl)
         .then(response => {
-          if (!response.body) throw new Error('ReadableStream not supported.');
+          if (!response.body) throw new Error('Fluxo de leitura não suportado.');
           return preview._readFromStream(response.body);
         })
         .then(() => {
@@ -175,7 +175,7 @@ const Viewer = {
                   preview.controls.update();
                 }
               }
-            } catch (e) { console.error('Auto-center camera error:', e); }
+            } catch (e) { console.error('Erro de centragem automática da câmara:', e); }
           }
 
           if (totalLayers > 1) {
@@ -206,15 +206,15 @@ const Viewer = {
             layerSlider.oninput = updateLayerUI;
             updateLayerUI();
           } else {
-            layerLabel.innerText = 'G-Code Preview';
+            layerLabel.innerText = 'Pré-visualização do G-Code';
             zLabel.innerText = '';
           }
         })
         .catch(err => {
-          console.error('GCode load error:', err);
+          console.error('GCode erro de carregamento:', err);
           container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:.85rem;flex-direction:column;gap:8px">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            <span>Could not load 3D G-Code preview</span>
+            <span>Não foi possível carregar a pré-visualização do código G 3D.</span>
           </div>`;
         });
         
@@ -226,7 +226,7 @@ const Viewer = {
       THREE.fflate = fflate; 
     }
     const loaderClass = is3MF ? (THREE.ThreeMFLoader || THREE['3MFLoader'] || THREE.MFLoader) : (THREE.STLLoader);
-    console.log('[Viewer] Using loader:', loaderClass?.name || 'Unknown');
+    console.log('[Viewer] Utilizando o loader:', loaderClass?.name || 'Unknown');
     if (!loaderClass) return;
     const loader = new loaderClass();
 
@@ -303,17 +303,17 @@ const Viewer = {
           ` : ''}
         </div>
         <div class="viewer-pill" style="display:flex;gap:4px">
-          <button class="viewer-tool-btn active" id="${containerId}-btn-rotate" title="Toggle Auto-Rotate">
+          <button class="viewer-tool-btn active" id="${containerId}-btn-rotate" title="Alternar rotação automática">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-            <span>Spin</span>
+            <span>Rodar</span>
           </button>
           ${modelId ? `
-            <button class="viewer-tool-btn" id="${containerId}-btn-thumb" title="Capture current 3D view as model thumbnail">
+            <button class="viewer-tool-btn" id="${containerId}-btn-thumb" title="Capte a visualização 3D atual como uma miniatura do modelo.">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-              <span>Cover</span>
+              <span>Cobertura</span>
             </button>
           ` : ''}
-          <button class="viewer-tool-btn" id="${containerId}-btn-fullscreen" title="Fullscreen 3D Studio">
+          <button class="viewer-tool-btn" id="${containerId}-btn-fullscreen" title="3D Studio em ecrã completo">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
           </button>
         </div>
@@ -322,36 +322,36 @@ const Viewer = {
       <!-- Bottom Interactive Studio Dock -->
       <div class="viewer-bottom-dock">
         <!-- Camera Angle Presets -->
-        <button class="viewer-tool-btn active" data-view="iso" title="Isometric View">Iso</button>
-        <button class="viewer-tool-btn" data-view="top" title="Top View">Top</button>
-        <button class="viewer-tool-btn" data-view="front" title="Front View">Front</button>
-        <button class="viewer-tool-btn" data-view="side" title="Side View">Side</button>
+        <button class="viewer-tool-btn active" data-view="iso" title="Vista isométrica">Iso</button>
+        <button class="viewer-tool-btn" data-view="top" title="Vista superior">Topo</button>
+        <button class="viewer-tool-btn" data-view="front" title="Vista frontal">Frente</button>
+        <button class="viewer-tool-btn" data-view="side" title="Vista lateral">Lado</button>
 
         <div class="viewer-dock-sep"></div>
 
         <!-- Shading Modes -->
-        <button class="viewer-tool-btn active" data-shading="solid" title="Solid Shading">Solid</button>
-        <button class="viewer-tool-btn" data-shading="wireframe" title="Wireframe Mesh">Wire</button>
-        <button class="viewer-tool-btn" data-shading="xray" title="X-Ray Inspection">X-Ray</button>
+        <button class="viewer-tool-btn active" data-shading="solid" title="Sombreamento sólido">Sólido</button>
+        <button class="viewer-tool-btn" data-shading="wireframe" title="Malha de arame">Fio</button>
+        <button class="viewer-tool-btn" data-shading="xray" title="Inspeção por raios X">Raio X</button>
 
         <div class="viewer-dock-sep"></div>
 
         <!-- Color Palette -->
         <div style="display:flex;align-items:center;gap:4px">
-          <div class="viewer-swatch active" data-color="#00ccee" style="background:#00ccee" title="Cyan"></div>
-          <div class="viewer-swatch" data-color="#f97316" style="background:#f97316" title="Orange"></div>
-          <div class="viewer-swatch" data-color="#10b981" style="background:#10b981" title="Green"></div>
-          <div class="viewer-swatch" data-color="#8b5cf6" style="background:#8b5cf6" title="Purple"></div>
-          <div class="viewer-swatch" data-color="#eab308" style="background:#eab308" title="Gold"></div>
-          <div class="viewer-swatch" data-color="#f1f5f9" style="background:#f1f5f9" title="White"></div>
-          <div class="viewer-swatch" data-color="#475569" style="background:#475569" title="Slate Black"></div>
+          <div class="viewer-swatch active" data-color="#00ccee" style="background:#00ccee" title="Ciano"></div>
+          <div class="viewer-swatch" data-color="#f97316" style="background:#f97316" title="Laranja"></div>
+          <div class="viewer-swatch" data-color="#10b981" style="background:#10b981" title="Verde"></div>
+          <div class="viewer-swatch" data-color="#8b5cf6" style="background:#8b5cf6" title="Roxo"></div>
+          <div class="viewer-swatch" data-color="#eab308" style="background:#eab308" title="Dourado"></div>
+          <div class="viewer-swatch" data-color="#f1f5f9" style="background:#f1f5f9" title="Branco"></div>
+          <div class="viewer-swatch" data-color="#475569" style="background:#475569" title="Preto ardósia"></div>
         </div>
 
         <div class="viewer-dock-sep"></div>
 
         <!-- Grid Toggle -->
-        <button class="viewer-tool-btn active" id="${containerId}-btn-grid" title="Toggle Grid Floor">
-          <span>Grid</span>
+        <button class="viewer-tool-btn active" id="${containerId}-btn-grid" title="Alternar piso em grade">
+          <span>Grade</span>
         </button>
       </div>
     `;
@@ -425,7 +425,7 @@ const Viewer = {
           <span>Cover ✓</span>
         `;
         if (typeof App !== 'undefined' && App.toast) {
-          App.toast('3D view saved as model thumbnail!');
+          App.toast('Visualização 3D guardada como miniatura do modelo!');
         }
       };
     }
@@ -615,7 +615,7 @@ const Viewer = {
       return new Promise((resolve, reject) => {
         const is3D3MF = type === '3mf' || url.toLowerCase().includes('.3mf');
         const lClass = is3D3MF ? (THREE.ThreeMFLoader || THREE['3MFLoader'] || THREE.MFLoader) : THREE.STLLoader;
-        if (!lClass) return reject(new Error('Loader not found'));
+        if (!lClass) return reject(new Error('Loader não encontrado'));
         const l = new lClass();
 
         l.load(
@@ -688,7 +688,7 @@ const Viewer = {
               const u = `${f.url || '/uploads/'+f.filename}?t=${Date.now()}`;
               const col = partPalette[idx % partPalette.length];
               return loadGeometryPromise(u, f.file_type, col).catch(err => {
-                console.warn('Failed to load part:', f.filename, err);
+                console.warn('Falha ao carregar a parte:', f.filename, err);
                 return null;
               });
             })
@@ -696,7 +696,7 @@ const Viewer = {
 
           const validParts = loadedParts.filter(Boolean);
           const count = validParts.length;
-          if (count === 0) throw new Error('None of the parts in this model could be displayed');
+          if (count === 0) throw new Error('Nenhuma das peças deste modelo pôde ser apresentada.');
 
           if (count > 1) {
             // Wrap each part in an identity container to ensure standard world axis positioning
@@ -784,10 +784,10 @@ const Viewer = {
           if (footerEl) {
             footerEl.innerHTML = `
               <span style="display:flex;align-items:center;gap:6px">
-                <span class="badge badge-category" style="background:rgba(0,212,255,0.15);color:var(--accent-cyan)">BUILD PLATE</span>
-                <span style="color:var(--text-secondary);font-weight:500">Plate View (${validParts.length} parts arranged)</span>
+                <span class="badge badge-category" style="background:rgba(0,212,255,0.15);color:var(--accent-cyan)">PLACA DE CONSTRUÇÃO</span>
+                <span style="color:var(--text-secondary);font-weight:500">Vista da placa (${validParts.length} peças organizadas)</span>
               </span>
-              <span style="opacity:0.6;font-size:0.7rem;display:inline-flex;align-items:center;gap:4px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="3" width="12" height="18" rx="6"/><line x1="12" y1="7" x2="12" y2="11"/></svg>Drag to rotate · Scroll to zoom · Right-click to pan</span>
+              <span style="opacity:0.6;font-size:0.7rem;display:inline-flex;align-items:center;gap:4px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="3" width="12" height="18" rx="6"/><line x1="12" y1="7" x2="12" y2="11"/></svg>Arraste para rodar · Percorra para ampliar · Clique com o botão direito do rato para mover</span>
             `;
           }
         } else {
@@ -844,7 +844,7 @@ const Viewer = {
                 <span class="badge badge-${singleFile.file_type}">${singleFile.file_type.toUpperCase()}</span>
                 <span style="color:var(--text-secondary);font-weight:500">${singleFile.original_name || singleFile.filename}</span>
               </span>
-              <span style="opacity:0.6;font-size:0.7rem;display:inline-flex;align-items:center;gap:4px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="3" width="12" height="18" rx="6"/><line x1="12" y1="7" x2="12" y2="11"/></svg>Drag to rotate · Scroll to zoom · Right-click to pan</span>
+              <span style="opacity:0.6;font-size:0.7rem;display:inline-flex;align-items:center;gap:4px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="3" width="12" height="18" rx="6"/><line x1="12" y1="7" x2="12" y2="11"/></svg>Arraste para rodar · Percorra para ampliar · Clique com o botão direito do rato para mover</span>
             `;
           }
         }
@@ -874,7 +874,7 @@ const Viewer = {
         setStatus(null);
       } catch (err) {
         console.error('Part loading error:', err);
-        setStatus((err && err.message) ? err.message : 'This file could not be displayed', true);
+        setStatus((err && err.message) ? err.message : 'Este ficheiro não pôde ser apresentado.', true);
       }
     };
 
@@ -938,7 +938,7 @@ const Viewer = {
           const res = await API.uploadThumbnail(modelId, file);
           resolve(res);
         } catch(e) {
-          console.error('Snapshot upload failed:', e);
+          console.error('Falha no envio do instantâneo:', e);
           resolve(null);
         }
       }, 'image/png');
@@ -1055,7 +1055,7 @@ const Viewer = {
           });
         }
       } catch (e) {
-        console.error('Failed to generate thumb for', url, e);
+        console.error('Falha ao gerar miniatura para', url, e);
       }
     }
     
