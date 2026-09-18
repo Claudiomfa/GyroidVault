@@ -988,18 +988,18 @@ const UI = {
     return `
       <form id="delete-model-form" onsubmit="App.handleDeleteModel(event, ${id})">
         <div style="margin-bottom: 20px; color: var(--text-secondary)">
-          Are you sure you want to delete <strong>"${safeName}"</strong>?<br>
-          This will remove the model, all its files, and print history from GyroidVault.
+          Tem a certeza de que pretende eliminar <strong>"${safeName}"</strong>?<br>
+          Isto irá remover o modelo, todos os seus ficheiros e o histórico de impressão do RedPOISON 3d.
         </div>
         <div class="form-group" style="padding: 12px; background: rgba(239, 68, 68, 0.1); border-radius: 6px; border: 1px solid rgba(239, 68, 68, 0.2)">
           <label class="form-checkbox" style="color: #ef4444; font-weight: 600; margin: 0">
             <input type="checkbox" name="delete_disk"> 
-            Also permanently delete physical files from disk
+            Também elimina permanentemente os ficheiros físicos do disco.
           </label>
         </div>
         <div class="form-actions" style="margin-top: 24px">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
-          <button type="submit" class="btn btn-danger">Delete Model</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-danger">Excluir modelo</button>
         </div>
       </form>
     `;
@@ -1009,7 +1009,7 @@ const UI = {
     return `
       <form id="delete-file-form" onsubmit="App.handleDeleteFile(event, ${fileId}, ${modelId})">
         <div style="margin-bottom: 20px; color: var(--text-secondary)">
-          Are you sure you want to delete <strong>"${filename}"</strong> from GyroidVault?
+          Are you sure you want to delete <strong>"${filename}"</strong> from RedPOISON 3d?
         </div>
         <div class="form-group" style="padding: 12px; background: rgba(239, 68, 68, 0.1); border-radius: 6px; border: 1px solid rgba(239, 68, 68, 0.2)">
           <label class="form-checkbox" style="color: #ef4444; font-weight: 600; margin: 0">
@@ -1462,7 +1462,7 @@ const UI = {
         </div>
         <div class="form-group">
           <label>From Email</label>
-          <input type="text" name="smtp_from" value="${config.smtp_from || ''}" placeholder="GyroidVault <noreply@example.com>" class="form-input">
+          <input type="text" name="smtp_from" value="${config.smtp_from || ''}" placeholder="RedPOISON 3d <noreply@example.com>" class="form-input">
         </div>
         <div class="form-group">
           <label>Secure (SSL/TLS)</label>
@@ -1816,7 +1816,7 @@ const UI = {
     const latestNote = releaseNotes && releaseNotes.length ? releaseNotes[0] : null;
     const changelogHtml = latestNote ? `
       <div class="markdown-body" style="font-size: 0.875rem; line-height: 1.6; max-height: 380px; overflow-y: auto; padding: 16px; background: var(--bg-primary); border-radius: 10px; border: 1px solid var(--border);">
-        <h3 style="margin-top:0;margin-bottom:12px;color:var(--accent-cyan)">${this.escapeHtml(latestNote.title || 'GyroidVault ' + version)}</h3>
+        <h3 style="margin-top:0;margin-bottom:12px;color:var(--accent-cyan)">${this.escapeHtml(latestNote.title || 'RedPOISON 3d ' + version)}</h3>
         <div style="white-space: pre-wrap; font-family: var(--font); color: var(--text-secondary); font-size: 0.82rem;">${this.escapeHtml(latestNote.content || latestNote.rawMarkdown || '')}</div>
       </div>
     ` : `
@@ -1841,7 +1841,7 @@ const UI = {
           </div>
 
           <h2 style="font-size:1.55rem;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;color:var(--text-primary)">
-            Bem-vindo ao GyroidVault 2.0
+            Bem-vindo ao RedPOISON 3d 2.0
           </h2>
           <p style="color:var(--text-secondary);font-size:0.88rem;line-height:1.55;max-width:540px;margin:0 auto">
             O seu cofre 3D auto-hospedado e espaço de trabalho de fatiamento — equipado com montagem de múltiplas peças do Studio 2.0, dimensões em milímetros em tempo real, scanner de fundo e segurança reforçada.
@@ -1931,10 +1931,10 @@ const UI = {
           <div style="background:linear-gradient(135deg, rgba(245,158,11,0.08), rgba(37,99,235,0.06));border:1px solid rgba(245,158,11,0.25);border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px">
             <div>
               <div style="font-weight:700;font-size:0.88rem;color:var(--text-primary);display:flex;align-items:center;gap:6px;margin-bottom:3px">
-                <span>Apoie o desenvolvimento do GyroidVault</span>
+                <span>Apoie o desenvolvimento do RedPOISON 3d</span>
               </div>
               <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.4">
-                O GyroidVault é 100% gratuito e de código aberto. Considere apoiar a sua manutenção através do Ko-fi!
+                O RedPOISON 3d é 100% gratuito e de código aberto. Considere apoiar a sua manutenção através do Ko-fi!
               </div>
             </div>
             <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
