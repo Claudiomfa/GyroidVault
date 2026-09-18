@@ -1,7 +1,7 @@
 services:
   gyroidvault:
-    image: ghcr.io/teecodedev/gyroidvault:latest
-    container_name: gyroidvault
+    image: ghcr.io/claudiomfa/gyroidvault:latest
+    container_name: RedPOISON3d
     ports:
       - "${PORT:-3457}:3000"
     volumes:
