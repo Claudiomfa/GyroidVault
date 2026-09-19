@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Container version="2">
   <Name>GyroidVault</Name>
-  <Version>v2.1.0</Version>
+  <Version>v2.1.1</Version>
   <Repository>ghcr.io/claudiomfa/gyroidvault:latest</Repository>
   <Registry>https://ghcr.io/claudiomfa/gyroidvault</Registry>
   <Network>bridge</Network>
@@ -32,6 +32,10 @@
   <DonateLink>https://ko-fi.com/D1D51ZGUNL</DonateLink>
 
   <Changes>
+### v2.1.1 (2026-09-19)
+
+Removido Check Updates
+
 ### v2.1.0 (2026-09-19)
 
 Removido banner no inicio do website.
