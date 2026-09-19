@@ -1922,7 +1922,7 @@ const App = {
     try {
       const [model, projects] = await Promise.all([API.getModel(modelId), API.getProjects()]);
       const selectedIds = (model.projects || []).map(p => p.id);
-      this.openModal('Manage Collections', UI.collectionSelectForm(projects, selectedIds, modelId));
+      this.openModal('Gerir Cobranças', UI.collectionSelectForm(projects, selectedIds, modelId));
     } catch (e) {
       this.toast('Failed to load collections: ' + e.message, 'error');
     }
@@ -1996,16 +1996,16 @@ const App = {
     const html = `
       <form onsubmit="App.handleVersionSubmit(event, ${id})" class="form-grid">
         <div class="form-group">
-          <label>Version Name</label>
-          <input type="text" name="name" value="${safeName} (v2)" required class="form-input" placeholder="e.g. My Model v2">
+          <label>Nome da versão</label>
+          <input type="text" name="name" value="${safeName} (v2)" required class="form-input" placeholder="e.g. O Meu Modelo v2">
         </div>
         <div class="form-group">
-          <label>Description of changes (optional)</label>
-          <textarea name="description" class="form-textarea" placeholder="What changed in this version?"></textarea>
+          <label>Descrição das alterações (opcional)</label>
+          <textarea name="description" class="form-textarea" placeholder="O que mudou nesta versão?"></textarea>
         </div>
         <div style="margin-top:20px;display:flex;justify-content:flex-end;gap:8px">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Create Version</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Criar versão</button>
         </div>
       </form>`;
     this.openModal('New Version', html);
