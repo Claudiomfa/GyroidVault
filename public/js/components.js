@@ -962,7 +962,7 @@ const UI = {
             <select class="form-select" name="material_id">${matOptions}</select>
           </div>
           <div class="form-group">
-            <label class="form-label">Date</label>
+            <label class="form-label">Data</label>
             <input class="form-input" type="date" name="printed_at" value="${new Date().toISOString().split('T')[0]}">
           </div>
         </div>
@@ -972,12 +972,12 @@ const UI = {
           </label>
         </div>
         <div class="form-group">
-          <label class="form-label">Notes (optional)</label>
-          <textarea class="form-textarea" name="notes" placeholder="Print settings, observations..." rows="2"></textarea>
+          <label class="form-label">Notas (optional)</label>
+          <textarea class="form-textarea" name="notes" placeholder="Definições de impressão, observações..." rows="2"></textarea>
         </div>
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Log Print</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Impressão de registo</button>
         </div>
       </form>`;
   },
