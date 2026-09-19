@@ -894,7 +894,7 @@ const UI = {
               <button type="button" class="btn btn-ghost btn-xs" id="desc-tab-preview" onclick="App.toggleDescTab('preview')" style="padding:2px 8px;font-size:0.75rem">Pré-visualizar</button>
             </div>
           </div>
-          <textarea class="form-textarea" id="model-description-input" name="description" placeholder="Describe this model using Markdown formatting, lists, links, images..." rows="4">${model?.description || ''}</textarea>
+          <textarea class="form-textarea" id="model-description-input" name="description" placeholder="Descreva este modelo utilizando a formatação Markdown, listas, links, imagens..." rows="4">${model?.description || ''}</textarea>
           <div id="model-description-preview" class="glass-panel" style="display:none;padding:12px;min-height:90px;max-height:220px;overflow-y:auto;background:var(--bg-input)"></div>
         </div>
         <div class="form-group">
@@ -928,7 +928,7 @@ const UI = {
         </div>` : ''}
         <div class="form-actions">
           <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
-          <button type="submit" class="btn btn-primary" id="model-submit-btn">${isEdit ? 'Save Changes' : 'Create Model'}</button>
+          <button type="submit" class="btn btn-primary" id="model-submit-btn">${isEdit ? 'Save Changes' : 'Criar modelo'}</button>
         </div>
       </form>`;
   },
@@ -1519,7 +1519,7 @@ const UI = {
     const list = projects.map(p => this.projectCard(p)).join('');
     return `
       <div class="page-header">
-        <div><h1 class="page-title">Collections</h1><p class="page-subtitle">Agrupe os modelos em coleções.</p></div>
+        <div><h1 class="page-title">Coleções</h1><p class="page-subtitle">Agrupe os modelos em coleções.</p></div>
         ${App.currentUser?.role !== 'viewer' ? '<button class="btn btn-primary" onclick="App.showCreateProject()">+ Nova Coleção</button>' : ''}
       </div>
       <div class="model-grid">
@@ -1565,11 +1565,11 @@ const UI = {
       <form onsubmit="App.handleProjectSubmit(event, ${project?.id || 'null'})" class="form-grid">
         <div class="form-group">
           <label>Nome da coleção</label>
-          <input type="text" name="name" value="${project?.name || ''}" required class="form-input" placeholder="e.g. Iron Man Helm">
+          <input type="text" name="name" value="${project?.name || ''}" required class="form-input" placeholder="e.g. Capacete do Homem de Ferro">
         </div>
         <div class="form-group">
           <label>Descrição</label>
-          <textarea name="description" class="form-textarea" placeholder="What is this collection about?">${project?.description || ''}</textarea>
+          <textarea name="description" class="form-textarea" placeholder="Sobre o que trata esta coleção?">${project?.description || ''}</textarea>
         </div>
         <div class="form-group">
           <label>Visibilidade</label>
@@ -1580,7 +1580,7 @@ const UI = {
         </div>
         <div style="margin-top:20px;display:flex;justify-content:flex-end;gap:8px">
           <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
-          <button type="submit" class="btn btn-primary">${project ? 'Save' : 'Create'}</button>
+          <button type="submit" class="btn btn-primary">${project ? 'Save' : 'Crear'}</button>
         </div>
       </form>`;
   },
