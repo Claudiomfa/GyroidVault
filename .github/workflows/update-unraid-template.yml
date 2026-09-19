@@ -14,43 +14,75 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Update XML File
+      - name: Update Unraid XML
         shell: bash
         env:
           VERSION: ${{ github.event.release.tag_name }}
           RELEASE_BODY: ${{ github.event.release.body }}
         run: |
-          DATE=$(date +'%Y-%m-%d')
+          set -e
 
-          echo "$RELEASE_BODY" > release_notes.txt
+          XML_FILE="templates/GyroidVault.xml"
+          DATE=$(date -u +'%Y-%m-%d')
+
+          echo "Updating $XML_FILE"
+          echo "Version: $VERSION"
+          echo "Date: $DATE"
+
+          # Check XML exists
+          if [ ! -f "$XML_FILE" ]; then
+            echo "ERROR: $XML_FILE not found."
+            exit 1
+          fi
 
           # Update Version
-          sed -i "s|<Version>.*</Version>|<Version>$VERSION</Version>|g" templates/GyroidVault.xml
+          sed -i \
+            "s|<Version>[^<]*</Version>|<Version>$VERSION</Version>|" \
+            "$XML_FILE"
 
           # Update Date
-          sed -i "s|<Date>.*</Date>|<Date>$DATE</Date>|g" templates/GyroidVault.xml
+          sed -i \
+            "s|<Date>[^<]*</Date>|<Date>$DATE</Date>|" \
+            "$XML_FILE"
 
-          # Prepare new changes
-          echo "### $VERSION ($DATE)" > new_changes.txt
-          cat release_notes.txt >> new_changes.txt
-          echo "" >> new_changes.txt
+          # Create new Changes entry
+          {
+            echo "### $VERSION ($DATE)"
 
-          # Insert changes after <Changes>
+            if [ -n "$RELEASE_BODY" ]; then
+              printf '%s\n' "$RELEASE_BODY"
+            else
+              echo "- Release $VERSION"
+            fi
+
+            echo ""
+          } > new_changes.txt
+
+          # Insert the new release notes immediately after <Changes>
           awk '
             /<Changes>/ {
               print
-              while (getline line < "new_changes.txt") {
+              while ((getline line < "new_changes.txt") > 0) {
                 print line
               }
+              close("new_changes.txt")
               next
             }
             { print }
-          ' templates/GyroidVault.xml > temp.xml
+          ' "$XML_FILE" > temp.xml
 
-          mv temp.xml templates/GyroidVault.xml
+          mv temp.xml "$XML_FILE"
 
-          rm -f release_notes.txt new_changes.txt
+          rm -f new_changes.txt
+
+          echo "XML updated successfully."
+
+      - name: Show changes
+        run: |
+          git diff -- templates/GyroidVault.xml
 
       - name: Commit changes
         run: |
@@ -65,4 +97,5 @@ jobs:
           fi
 
           git commit -m "update: Unraid template for ${{ github.event.release.tag_name }}"
+
           git push
