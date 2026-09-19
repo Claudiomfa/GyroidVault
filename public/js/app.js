@@ -203,7 +203,7 @@ const App = {
     try {
       const projects = await API.getProjects();
       if (!projects || projects.length === 0) {
-        list.innerHTML = `<span style="font-size:0.75rem;color:var(--text-muted);padding:4px 10px;font-style:italic">No collections yet</span>`;
+        list.innerHTML = `<span style="font-size:0.75rem;color:var(--text-muted);padding:4px 10px;font-style:italic">Ainda não há coleções.</span>`;
         if (group) group.style.display = 'flex';
         return;
       }
@@ -563,9 +563,9 @@ const App = {
         <div class="page-header"><div><h1 class="page-title">Dashboard</h1><p class="page-subtitle">Your 3D printing overview</p></div></div>
         ${UI.statsCards(stats)}
         <div class="dashboard-panels">
-          <div class="glass-panel"><div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Recent Models</div></div><div class="panel-body">${UI.recentModels(stats.recentModels)}</div></div>
-          <div class="glass-panel"><div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Recent Prints</div></div><div class="panel-body">${UI.recentPrints(stats.recentPrints)}</div></div>
-          <div class="glass-panel"><div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>Material Usage</div></div><div class="panel-body">${UI.materialChart(stats.materialUsage)}</div></div>
+          <div class="glass-panel"><div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Modelos recentes</div></div><div class="panel-body">${UI.recentModels(stats.recentModels)}</div></div>
+          <div class="glass-panel"><div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Impressões recentes</div></div><div class="panel-body">${UI.recentPrints(stats.recentPrints)}</div></div>
+          <div class="glass-panel"><div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>Utilização de materiais</div></div><div class="panel-body">${UI.materialChart(stats.materialUsage)}</div></div>
         </div>`;
     } catch (e) {
       this.el.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="empty-state-text">Failed to load dashboard</div></div>';
@@ -821,7 +821,7 @@ const App = {
       const grid = document.getElementById('models-grid');
       if (!grid) return;
       if (!models.length) {
-        grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><div class="empty-state-text">No models found</div><div class="empty-state-sub">Tente alterar os seus filtros ou criar um novo modelo.</div></div>';
+        grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><div class="empty-state-text">Nenhum modelo encontrado</div><div class="empty-state-sub">Tente alterar os seus filtros ou criar um novo modelo.</div></div>';
         return;
       }
       
@@ -837,7 +837,7 @@ const App = {
       }
     } catch (e) {
       console.error(e);
-      document.getElementById('models-grid').innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="empty-state-text">Failed to load models</div></div>';
+      document.getElementById('models-grid').innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--accent-yellow)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="empty-state-text">Falha ao carregar os modelos</div></div>';
     }
   },
 
@@ -1468,7 +1468,7 @@ const App = {
     
     this.el.innerHTML = `
       <div class="page-header">
-        <div><h1 class="page-title">O meu perfil</h1><p class="page-subtitle">Gira as definições e preferências da sua conta.</p></div>
+        <div><h1 class="page-title">O meu perfil</h1><p class="page-subtitle">Gerir as definições e preferências da sua conta.</p></div>
       </div>
       <div class="settings-tabs" style="display:flex;gap:8px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:1px">
         <button class="tab-btn active" data-tab="account" style="background:none;border:none;color:var(--text-secondary);padding:10px 20px;cursor:pointer;font-weight:600;border-bottom:2px solid transparent;transition:all .2s">Detalhes da conta</button>
@@ -1499,12 +1499,12 @@ const App = {
                   <input type="text" name="username" value="${user.username}" required class="form-input">
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Email Address</label>
+                  <label class="form-label">Endereço de Email</label>
                   <input type="email" name="email" value="${user.email || ''}" required class="form-input">
                 </div>
                 <div class="form-group">
                   <label class="form-label">Nova Password</label>
-                  <input type="password" name="password" placeholder="Leave blank to keep current" class="form-input">
+                  <input type="password" name="password" placeholder="Deixe em branco para manter atualizado." class="form-input">
                   <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">Deve ter no mínimo 8 caracteres e conter letras e números.</p>
                 </div>
                 <div class="form-group">
