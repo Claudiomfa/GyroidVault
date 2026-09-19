@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Container version="2">
   <Name>GyroidVault</Name>
-  <Version>v2.0.2</Version>
+  <Version>v2.1.0</Version>
   <Repository>ghcr.io/claudiomfa/gyroidvault:latest</Repository>
   <Registry>https://ghcr.io/claudiomfa/gyroidvault</Registry>
   <Network>bridge</Network>
@@ -32,6 +32,11 @@
   <DonateLink>https://ko-fi.com/D1D51ZGUNL</DonateLink>
 
   <Changes>
+### v2.1.0 (2026-09-19)
+
+Removido banner no inicio do website.
+Tradução de Inglês para Portugues Portugal.
+
 ### v2.0.2 (2026-09-13)
 - **Folder Browser Performance (100% CPU Fix):** Eliminated full-table in-memory scans and nested loops when browsing folders (#59). Replaced with indexed SQLite queries, dropping directory load times to &lt;1ms.
 - **Duplicate Scanner Memory Safety (OOM Fix):** Replaced synchronous file loading with chunk-streaming SHA-256 hashing (#58). Memory usage during scans is locked to &lt;1MB regardless of file size, preventing Docker OOM crashes on multi-GB files.
