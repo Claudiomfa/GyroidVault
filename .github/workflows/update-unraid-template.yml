@@ -17,6 +17,7 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Unraid Template
         shell: bash
@@ -31,28 +32,25 @@ jobs:
 
           echo "======================================"
           echo "Updating Unraid Template"
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Branch: main"
           echo "Version: $VERSION"
           echo "Date: $DATE"
-          echo "File: $XML_FILE"
           echo "======================================"
 
-          # Verify XML exists
           if [ ! -f "$XML_FILE" ]; then
             echo "ERROR: $XML_FILE does not exist."
             exit 1
           fi
 
-          # Update version
           sed -i \
             "s|<Version>[^<]*</Version>|<Version>$VERSION</Version>|" \
             "$XML_FILE"
 
-          # Update date
           sed -i \
             "s|<Date>[^<]*</Date>|<Date>$DATE</Date>|" \
             "$XML_FILE"
 
-          # Create new release notes
           {
             echo "### $VERSION ($DATE)"
             echo ""
@@ -66,7 +64,6 @@ jobs:
             echo ""
           } > new_changes.txt
 
-          # Insert release notes immediately after <Changes>
           awk '
             /<Changes>/ {
               print
@@ -84,22 +81,16 @@ jobs:
           rm -f new_changes.txt
 
           echo ""
-          echo "Template updated successfully."
-          echo ""
-
+          echo "Template updated:"
           grep -E '<Version>|<Date>' "$XML_FILE"
 
-      - name: Validate XML
+      - name: Check Git status
         shell: bash
         run: |
-          set -e
-
-          if command -v xmllint >/dev/null 2>&1; then
-            xmllint --noout templates/GyroidVault.xml
-            echo "XML validation: OK"
-          else
-            echo "xmllint not available, skipping XML validation."
-          fi
+          git status
+          echo ""
+          echo "Changes:"
+          git diff -- templates/GyroidVault.xml
 
       - name: Commit changes
         shell: bash
@@ -111,6 +102,9 @@ jobs:
 
           git add templates/GyroidVault.xml
 
+          echo "Staged changes:"
+          git diff --cached --stat
+
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
@@ -118,4 +112,15 @@ jobs:
 
           git commit -m "update: Unraid template for ${{ github.event.release.tag_name }}"
 
+      - name: Push changes
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+
+          echo "Pushing to main..."
+
           git push origin HEAD:main
+
+          echo "Push completed successfully."
