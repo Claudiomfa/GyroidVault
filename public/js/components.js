@@ -928,7 +928,7 @@ const UI = {
         </div>` : ''}
         <div class="form-actions">
           <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
-          <button type="submit" class="btn btn-primary" id="model-submit-btn">${isEdit ? 'Save Changes' : 'Criar modelo'}</button>
+          <button type="submit" class="btn btn-primary" id="model-submit-btn">${isEdit ? 'Guardar alterações' : 'Criar modelo'}</button>
         </div>
       </form>`;
   },
