@@ -120,7 +120,7 @@ const UI = {
     // root item
     const isRootActive = activePath === '';
     let html = `<div class="tree-node" style="padding:4px 8px;cursor:pointer;border-radius:4px;font-size:.8rem;font-weight:600;display:flex;align-items:center;gap:6px;${isRootActive ? 'background:rgba(0,212,255,0.15);color:var(--accent-cyan)' : 'color:var(--text-secondary)'}" onclick="App.browseTo('')" ondragover="event.preventDefault(); this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="App.handleDrop(event, '')">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Library Root
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Raiz da Biblioteca
     </div>`;
     
     html += nodes.map(n => renderNode(n, 0)).join('');
@@ -451,7 +451,7 @@ const UI = {
       : '<span class="badge badge-not-printed">Não Impresso</span>';
     const cleanSourceUrl = this.safeUrl(model.source_url);
     const sourceLink = cleanSourceUrl
-      ? `<a href="${this.escapeHtml(cleanSourceUrl)}" target="_blank" rel="noopener noreferrer" class="badge badge-category" style="background:var(--bg-tertiary);color:var(--accent-cyan);text-decoration:none;border:1px solid var(--border)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Source</a>`
+      ? `<a href="${this.escapeHtml(cleanSourceUrl)}" target="_blank" rel="noopener noreferrer" class="badge badge-category" style="background:var(--bg-tertiary);color:var(--accent-cyan);text-decoration:none;border:1px solid var(--border)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Fonte</a>`
       : '';
 
     // Find first STL or 3MF file for 3D preview
@@ -469,7 +469,7 @@ const UI = {
             <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted)">Carregando pré-visualização 3D...</div>
           </div>
           <div style="padding:12px 16px;font-size:.7rem;color:var(--text-muted);border-top:1px solid var(--border);background:rgba(0,0,0,0.1)">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Drag to rotate · Scroll to zoom · Right-click to pan
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Arraste para rodar · Percorra para ampliar · Clique com o botão direito do rato para mover
           </div>
         </div>
       </div>`;
@@ -477,7 +477,7 @@ const UI = {
       viewerHtml = `
       <div class="glass-panel" style="margin-bottom:24px;overflow:hidden">
         <div class="panel-header">
-          <div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Model Preview</div>
+          <div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Pré-visualizar Modelo</div>
         </div>
         <div class="panel-body no-pad" style="height:400px;background:var(--bg-dark);display:flex;align-items:center;justify-content:center">
           <img src="${model.thumbnail_url}" style="max-width:100%;max-height:100%;object-fit:contain">
@@ -620,9 +620,9 @@ const UI = {
         if (pref && slicerLinks[pref]) {
           slicerBtnHtml = `
             <div style="display:inline-flex;align-items:stretch">
-              <a href="${slicerLinks[pref].url}" class="btn btn-ghost btn-xs" title="Open in ${slicerLinks[pref].name}" style="color:var(--accent-purple);font-weight:600;font-size:0.7rem;border:1px solid var(--accent-purple);border-right:none;padding:3px 8px;border-radius:4px 0 0 4px;line-height:1;white-space:nowrap;display:inline-flex;align-items:center;gap:5px">
+              <a href="${slicerLinks[pref].url}" class="btn btn-ghost btn-xs" title="Abrir em ${slicerLinks[pref].name}" style="color:var(--accent-purple);font-weight:600;font-size:0.7rem;border:1px solid var(--accent-purple);border-right:none;padding:3px 8px;border-radius:4px 0 0 4px;line-height:1;white-space:nowrap;display:inline-flex;align-items:center;gap:5px">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                OPEN IN ${slicerLinks[pref].name.toUpperCase()}
+                ABRIR EM ${slicerLinks[pref].name.toUpperCase()}
               </a>
               <div class="dropdown">
                 <button class="btn btn-ghost btn-xs" style="color:var(--accent-purple);border:1px solid var(--accent-purple);padding:3px 6px;border-radius:0 4px 4px 0;height:100%;display:flex;align-items:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
@@ -636,13 +636,13 @@ const UI = {
         } else {
           slicerBtnHtml = `
             <div class="dropdown" style="display:inline-block">
-              <button class="btn btn-ghost btn-xs" title="Open in Slicer" style="color:var(--accent-purple);font-weight:600;font-size:0.7rem;border:1px solid var(--accent-purple);padding:3px 8px;border-radius:4px;line-height:1;white-space:nowrap;display:inline-flex;align-items:center;gap:5px">
+              <button class="btn btn-ghost btn-xs" title="Abrir no Fatiador" style="color:var(--accent-purple);font-weight:600;font-size:0.7rem;border:1px solid var(--accent-purple);padding:3px 8px;border-radius:4px;line-height:1;white-space:nowrap;display:inline-flex;align-items:center;gap:5px">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                OPEN IN SLICER
+                ABRIR NO FATIADOR
                 <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
               <div class="dropdown-content">
-                <div class="dropdown-header">Open in Slicer</div>
+                <div class="dropdown-header">Abrir no Fatiador</div>
                 ${Object.values(slicerLinks).map(s => `<a href="${s.url}">${s.name}</a>`).join('')}
               </div>
             </div>
@@ -661,7 +661,7 @@ const UI = {
             <div style="min-width:0;flex:1">
               <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
                 <span class="file-name" style="font-weight:600;font-size:0.85rem;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%" title="${f.original_name}">${f.original_name}</span>
-                ${isPreview ? `<span class="badge badge-primary badge-xs" style="font-size:0.65rem;padding:2px 6px;background:rgba(0,212,255,0.15);color:var(--accent-cyan);border:1px solid rgba(0,212,255,0.3);display:inline-flex;align-items:center;gap:3px"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>${isImage ? 'Cover Image' : 'Primary 3D'}</span>` : ''}
+                ${isPreview ? `<span class="badge badge-primary badge-xs" style="font-size:0.65rem;padding:2px 6px;background:rgba(0,212,255,0.15);color:var(--accent-cyan);border:1px solid rgba(0,212,255,0.3);display:inline-flex;align-items:center;gap:3px"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>${isImage ? 'Cover Image' : 'Primário 3D'}</span>` : ''}
               </div>
               <div class="file-meta" style="font-size:0.72rem;color:var(--text-muted);display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:2px">
                 <span>${this.formatSize(f.file_size)}</span>
@@ -670,16 +670,16 @@ const UI = {
                 <span>·</span>
                 <span style="display:inline-flex;align-items:center;gap:3px">
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;opacity:0.8"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
-                  ${f.uploader_name || 'System'}
+                  ${f.uploader_name || 'Sistema'}
                 </span>
               </div>
             </div>
           </div>
           <!-- Quick Actions: 3D Preview Eye, Download, Delete -->
           <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
-            ${(is3D || isGcode) ? `<button class="file-action-btn preview" onclick="event.stopPropagation();App.previewStl(${model.id},'${f.url || '/uploads/'+f.filename}', '${f.file_type}')" title="Preview 3D / G-Code"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>` : ''}
-            <a href="/api/files/${f.id}/download" class="file-action-btn" title="Download file"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>
-            ${canEdit ? `<button class="file-action-btn delete" onclick="event.stopPropagation();App.confirmDeleteFile(${f.id},'${(f.original_name || f.filename).replace(/'/g, "\\'")}',${model.id})" title="Delete file"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>` : ''}
+            ${(is3D || isGcode) ? `<button class="file-action-btn preview" onclick="event.stopPropagation();App.previewStl(${model.id},'${f.url || '/uploads/'+f.filename}', '${f.file_type}')" title="Pré-visualizar 3D / G-Code"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>` : ''}
+            <a href="/api/files/${f.id}/download" class="file-action-btn" title="Baixar ficheiro"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>
+            ${canEdit ? `<button class="file-action-btn delete" onclick="event.stopPropagation();App.confirmDeleteFile(${f.id},'${(f.original_name || f.filename).replace(/'/g, "\\'")}',${model.id})" title="Apagar arquivo"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>` : ''}
           </div>
         </div>
 
@@ -705,7 +705,7 @@ const UI = {
             <span>·</span>
             <span style="display:inline-flex;align-items:center;gap:3px">
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              ${f.uploader_name || 'System'}
+              ${f.uploader_name || 'Sistema'}
             </span>
           </div>
         </div>
@@ -730,7 +730,7 @@ const UI = {
 
     const breadcrumbs = `
       <div class="breadcrumbs">
-        <a href="#/models">Library</a>
+        <a href="#/models">Biblioteca</a>
         <span>/</span>
         ${model.category_id ? `<a href="#/models?category=${model.category_id}">${model.category_name}</a><span>/</span>` : ''}
         <span class="current">${model.name}</span>
@@ -746,25 +746,25 @@ const UI = {
         </div>
         <div class="detail-actions">
           ${canEdit ? `
-          <button class="btn btn-secondary btn-sm" onclick="App.showShareModal(${model.id})" title="Share Model">
+          <button class="btn btn-secondary btn-sm" onclick="App.showShareModal(${model.id})" title="Modelo de partilha">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-            Share
+            Partilha
           </button>
-          <button class="btn btn-secondary btn-sm" onclick="App.addToProject(${model.id})" title="Add to Collection">
+          <button class="btn btn-secondary btn-sm" onclick="App.addToProject(${model.id})" title="Adicionar à coleção">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-            Collection
+            Coleção
           </button>
           <button class="btn btn-secondary btn-sm" onclick="App.showCreateVersion(${model.id})">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            New Version
+            Nova versão
           </button>
           <button class="btn btn-secondary btn-sm" onclick="App.showEditModel(${model.id})">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            Edit
+            Editar
           </button>
           <button class="btn btn-danger btn-sm" onclick="App.confirmDeleteModel(${model.id})">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
-            Delete
+            Eliminar
           </button>
           ` : ''}
         </div>
@@ -795,11 +795,11 @@ const UI = {
           <div class="glass-panel">
             <div class="panel-header">
               <div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Histórico de Impressão</div>
-              <button class="btn btn-secondary btn-sm" onclick="App.showLogPrint(${model.id})">+ Log Print</button>
+              <button class="btn btn-secondary btn-sm" onclick="App.showLogPrint(${model.id})">+ Registo de Impressão</button>
             </div>
             <div class="panel-body">
               <div class="print-history-list">
-                ${printsHtml || '<div style="color:var(--text-muted);font-size:.875rem;text-align:center;padding:16px 0">No prints recorded yet</div>'}
+                ${printsHtml || '<div style="color:var(--text-muted);font-size:.875rem;text-align:center;padding:16px 0">Nenhuma impressão foi ainda registada.</div>'}
               </div>
             </div>
           </div>
@@ -874,12 +874,12 @@ const UI = {
       <form id="model-form" onsubmit="App.handleModelSubmit(event,${model?.id || 'null'})">
         <div class="form-group">
           <label class="form-label">Nome *</label>
-          <input class="form-input" name="name" required value="${model?.name || ''}" placeholder="e.g. Phone Stand v2" id="model-name-input">
+          <input class="form-input" name="name" required value="${model?.name || ''}" placeholder="e.g. Suporte para telemóvel v2" id="model-name-input">
         </div>
         <div class="form-group">
           <label class="form-label">Categoria</label>
           <select class="form-select" name="category_id">
-            <option value="">No category</option>${catOptions}
+            <option value="">Sem categoria</option>${catOptions}
           </select>
         </div>
         <div class="form-group">
@@ -1580,7 +1580,7 @@ const UI = {
         </div>
         <div style="margin-top:20px;display:flex;justify-content:flex-end;gap:8px">
           <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
-          <button type="submit" class="btn btn-primary">${project ? 'Save' : 'Crear'}</button>
+          <button type="submit" class="btn btn-primary">${project ? 'Save' : 'Criar'}</button>
         </div>
       </form>`;
   },
@@ -1607,7 +1607,7 @@ const UI = {
       <div class="form-grid">
         <p style="color:var(--text-secondary);font-size:.9rem;margin-bottom:16px">Crie um link público para partilhar este modelo com outras pessoas.</p>
         <div class="form-group">
-          <label>Expiry (optional)</label>
+          <label>Validade (opcional)</label>
           <select id="share-expiry" class="form-input">
             <option value="">Nunca expira</option>
             <option value="1">1 dia</option>
