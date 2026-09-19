@@ -2,32 +2,35 @@
 <Container version="2">
   <Name>GyroidVault</Name>
   <Version>v2.0.2</Version>
-  <Repository>ghcr.io/teecodedev/gyroidvault:latest</Repository>
-  <Registry>https://ghcr.io/teecodedev/gyroidvault</Registry>
+  <Repository>ghcr.io/claudiomfa/gyroidvault:latest</Repository>
+  <Registry>https://ghcr.io/claudiomfa/gyroidvault</Registry>
   <Network>bridge</Network>
   <MyPort>3457</MyPort>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Support>https://forums.unraid.net/topic/198986-support-gyroidvault-3d-model-library-and-print-manager/</Support>
-  <Project>https://github.com/TeeCodeDev/GyroidVault</Project>
+  <Support>https://github.com/Claudiomfa/GyroidVault</Support>
+  <Project>https://github.com/Claudiomfa/GyroidVault</Project>
   <Overview>GyroidVault is a modern, self-hosted 3D model library and print management platform. Organize your STL, 3MF, STEP, and G-Code files on your own hardware, inspect multi-part assemblies in a calm 3D studio, measure exact physical dimensions in millimeters, and send slices directly to your printers.</Overview>
   <Category>Tools:Utilities MediaServer:Other</Category>
   <WebUI>http://[IP]:[PORT:3000]/</WebUI>
-  <TemplateURL>https://raw.githubusercontent.com/TeeCodeDev/unraid-templates/main/templates/GyroidVault.xml</TemplateURL>
-  <ReadMe>https://raw.githubusercontent.com/TeeCodeDev/GyroidVault/main/README.md</ReadMe>
+  <TemplateURL>https://raw.githubusercontent.com/Claudiomfa/GyroidVault/main/templates/GyroidVault.xml</TemplateURL>
+  <ReadMe>https://raw.githubusercontent.com/Claudiomfa/GyroidVault/main/README.md</ReadMe>
   <ExtraSearchTerms>3d print printing stl 3mf gcode klipper moonraker model cad vault slicer bambu prusa orca</ExtraSearchTerms>
   <License>AGPL-3.0</License>
-  <Icon>https://raw.githubusercontent.com/TeeCodeDev/GyroidVault/main/public/icon.png?v=2</Icon>
+  <Icon>https://raw.githubusercontent.com/Claudiomfa/GyroidVault/main/public/icon.png?v=2</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
-  <Date>2026-09-13</Date>
-  <Screenshot>https://raw.githubusercontent.com/TeeCodeDev/GyroidVault/main/screenshots/library-grid.png</Screenshot>
-  <Screenshot>https://raw.githubusercontent.com/TeeCodeDev/GyroidVault/main/screenshots/studio-model-detail.png</Screenshot>
-  <Screenshot>https://raw.githubusercontent.com/TeeCodeDev/GyroidVault/main/screenshots/studio-pawn.png</Screenshot>
-  <Screenshot>https://raw.githubusercontent.com/TeeCodeDev/GyroidVault/main/screenshots/GyroidVault-Dashboard_page.png</Screenshot>
+  <Date>2026-09-19</Date>
+
+  <Screenshot>https://raw.githubusercontent.com/Claudiomfa/GyroidVault/main/screenshots/library-grid.png</Screenshot>
+  <Screenshot>https://raw.githubusercontent.com/Claudiomfa/GyroidVault/main/screenshots/studio-model-detail.png</Screenshot>
+  <Screenshot>https://raw.githubusercontent.com/Claudiomfa/GyroidVault/main/screenshots/studio-pawn.png</Screenshot>
+  <Screenshot>https://raw.githubusercontent.com/Claudiomfa/GyroidVault/main/screenshots/GyroidVault-Dashboard_page.png</Screenshot>
+
   <DonateText>If you like GyroidVault, buy me a coffee!</DonateText>
   <DonateLink>https://ko-fi.com/D1D51ZGUNL</DonateLink>
+
   <Changes>
 ### v2.0.2 (2026-09-13)
 - **Folder Browser Performance (100% CPU Fix):** Eliminated full-table in-memory scans and nested loops when browsing folders (#59). Replaced with indexed SQLite queries, dropping directory load times to &lt;1ms.
@@ -38,7 +41,7 @@
 - **Cover Image Selection:** Set any uploaded image as the primary cover thumbnail for your models directly from the gallery with 1 click.
 - **Storage Calculation Fix:** Fixed an SQLite aggregate query bug that caused library disk usage and storage totals to display incorrectly (#56).
 
-### v2.0.0 (2026-09-11)  
+### v2.0.0 (2026-09-11)
 Welcome to version 2.0.0! This major release completely reimagines the model exploration experience with a calm 2-column Studio layout, an interactive 3D multi-part assembly viewer, physical millimeter dimension measurements, background library scanning for 2TB+ collections, in-archive inspection for ZIP files, and major security hardening.
 
 ## New Features
@@ -58,7 +61,7 @@ Welcome to version 2.0.0! This major release completely reimagines the model exp
 - **Duplicate Name Handling:** Returns clear 409 Conflict with smart name suggestions instead of 500 server error (#48).
 - **Security Hardening:** Parameterized SQL binding, strict filesystem path confinement, and private collection isolation.
 
-### v1.5.0 (2026-08-21)  
+### v1.5.0 (2026-08-21)
 Welcome to version 1.5.0. This major update brings full support for Binary G-Code (`.bgcode`), a customizable primary 3D preview selector, rich metadata and preview modals in Folder Mode, real-time upload progress with speed and ETA, Autodesk Fusion 360 (`.f3d`) file support, Markdown descriptions with live preview, default print materials, and light/dark theme fixes.
 
 ## New Features
@@ -66,62 +69,41 @@ Welcome to version 1.5.0. This major update brings full support for Binary G-Cod
 - **Custom Primary 3D Preview Selector:** When a model contains multiple STL or 3MF files, you can now choose exactly which file serves as the primary 3D preview and thumbnail using the `★ Set as Preview` action in the model detail view.
 - **Rich Folder Mode Metadata and Previews:** File cards in Folder Mode now display essential slicer metadata chips (print time, filament type, nozzle temperature). Clicking any file opens a modal with interactive 3D/G-code toolpath inspection, slicer specifications, and quick download or send-to-printer actions.
 - **Real-Time Upload Progress, Speed and ETA:** File uploads now feature a live progress bar showing transferred size, percentage, upload speed in MB/s, and estimated time remaining (ETA).
-- **Organized `/library` Storage:** Model files are now stored directly inside the model's subfolder within your mounted `/library` path, keeping your disk storage organized and eliminating lingering upload caches.
-- **Autodesk Fusion 360 (`.f3d`) and STEP (`.stp`) Support:** You can now store, organize, filter, and download `.f3d` CAD files and `.stp` models directly in GyroidVault alongside your STLs and 3MFs.
-- **Markdown Support in Model Descriptions:** Model descriptions now support full GitHub-flavored Markdown formatting (headings, bold/italic text, lists, blockquotes, code blocks, links, and images). It also includes interactive **Write** and **Preview** tabs when creating or editing models.
-- **Default Material Setting for Print Logging:** You can now configure your default material (e.g. PLA) under **Settings -> Materials**. New print logs will automatically pre-select your preferred material.
+- **Organized `/library` Storage:** Model files are stored directly inside the model's subfolder within your mounted `/library` path, keeping your disk storage organized and eliminating lingering upload caches.
+- **Autodesk Fusion 360 (`.f3d`) and STEP (`.stp`) Support:** You can store, organize, filter, and download `.f3d` CAD files and `.stp` models directly in GyroidVault alongside your STLs and 3MFs.
+- **Markdown Support in Model Descriptions:** Model descriptions support full GitHub-flavored Markdown formatting (headings, bold/italic text, lists, blockquotes, code blocks, links, and images).
+- **Default Material Setting for Print Logging:** Configure your default material under **Settings -> Materials**. New print logs automatically pre-select your preferred material.
 
 ## Bug Fixes and Improvements
-- **Persistent Default Categories:** Fixed an issue where container restarts or reloads would re-add previously deleted default categories. Category seeding is now guarded by a persistent `seeded_defaults` system flag.
-- **Light / Dark Mode Toggle Fix:** Added a complete, polished Light Mode theme and fixed the top-right theme toggle so users can easily switch between Dark/Glass and Light mode with immediate visual icon updates.
+- **Persistent Default Categories:** Fixed an SQLite aggregate query bug and category persistence issues across container restarts.
+- **Light / Dark Mode Toggle Fix:** Added a complete Light Mode theme and fixed the top-right theme toggle.
 
-### v1.4.1 (2026-07-26)  
-Welcome to version 1.4.1. This update introduces interactive 3D G-code layer slicing inspection, dynamic build plate scaling, IP rate-limit administration, duplicate file detection, and redesigned security and maintenance panels.
+### v1.4.1 (2026-07-26)
+- **Interactive 3D G-Code Layer Inspection**
+- **Dynamic Build Volume Grid and Filament Colors**
+- **Auto-Centered 3D Camera Framing**
+- **Duplicate File Finder**
+- **IP Auto-Block and Rate-Limit Management**
+- **Redesigned Settings Tabs**
+- **Global Search Shortcut**
+- **Smart Printer UI**
 
-## New Features
-- **Interactive 3D G-Code Layer Inspection:** You can now inspect parsed G-Code files layer by layer directly in your browser! The built-in 3D viewer features an interactive layer slider showing real-time layer numbers (`Layer X / Y`) and live Z-height readouts in mm.
-- **Dynamic Build Volume Grid and Filament Colors:** The G-code 3D previewer automatically detects your printer model from metadata and resizes the build volume grid accordingly (supporting Bambu Lab 256x256, Prusa 250x210, Creality Ender 220x220, Voron 300x300, and more). It also matches the highlight colors to your specified filament.
-- **Auto-Centered 3D Camera Framing:** The 3D camera automatically calculates the exact bounding box of parsed G-Code models, centering the camera target and framing the view perfectly regardless of slicer bed offsets.
-- **Duplicate File Finder:** A brand new duplicate model scanner under **Settings -> Maintenance**. It uses SHA-256 file hashing to quickly discover duplicate STL, 3MF, or G-Code files across your library.
-- **IP Auto-Block and Rate-Limit Management:** Administrators can now monitor IP addresses flagged for failed login attempts under **Settings -> Security** and unblock them with a single click without restarting the server.
-- **Redesigned Settings Tabs:** The settings area has been reorganized with dedicated **Security** and **Maintenance** tabs, featuring modern iOS-style toggle switches for Open Registration and Private Instance Mode.
-- **Global Search Shortcut (`Ctrl + K` / `Cmd + K`):** Easily trigger the global search bar from anywhere in the application by pressing `Ctrl+K` on Windows/Linux or `Cmd+K` on macOS.
-- **Smart Printer UI:** The "Send to Printer" button now cleanly hides itself when no printers are configured, preventing unnecessary clicks.
-
-## Bug Fixes
-- **Terabyte Library Size Formatting:** Fixed a formatting issue where library storage sizes exceeding 1 TB were displayed as `"1.1 undefined"`. Units now correctly support TB and PB scale.
-- **Deletion Security Guards:** Enforced strict authentication and role-based guards on model and file deletion API endpoints to prevent unauthorized actions.
-- **Docker Workflow Stability:** Upgraded the container build pipeline to Node 22 LTS, resolving registry timeout issues during multi-architecture image builds.
-
-### v1.4.0 (2026-07-02)  
-Welcome to version 1.4.0. This update focuses on integrating 3D printers, expanding customization, and bringing quality of life improvements to the library interface.
-
-## New Features
-- **New Application Theme:** We've introduced a brand new, polished theme! The updated visual design offers a more modern and cohesive look across the entire application, making your library look better than ever. You can even choose a highlight color!
-- **Custom Meta Boxes:** You can now add and manage custom metadata fields for your models. This gives you ultimate flexibility to track specific model details that matter most to your workflow.
-- **Extended G-Code Analysis:** We now extract much more data from your G-Code files. In addition to print time and weight, you can now view infill percentage and pattern, number of walls, nozzle/bed temperatures, print costs, and slicer/printer specifications.
-- **Redesigned G-Code View:** The entire G-Code section in the model view has been redesigned and is conveniently located above Print History.
-- **Library Grid / List Toggle:** Easily switch between a large grid view and a compact list view.
-
-## Moonraker / Klipper Integration (BETA)
-- **Printer Configuration:** Connect Klipper / Moonraker printers under Settings -> Printers with Name, URL, and optional API Key.
-- **1-Click Send to Printer:** Send files directly to the gcodes directory of your machine.
-
-## Bug Fixes
-- **UI Stability:** Resolved template string edge cases that could affect interface stability.
-- **Dropdown Visibility:** Fixed UI layout overlapping issues with dropdown menus.
-- **Port Configuration:** Corrected port assignments.
-- **File Management:** Resolved edge-case issues related to editing and processing files.
-- **Legacy Inline Data:** Cleaned up duplicate in-line G-Code metadata.
+### v1.4.0 (2026-07-02)
+- **New Application Theme**
+- **Custom Meta Boxes**
+- **Extended G-Code Analysis**
+- **Redesigned G-Code View**
+- **Library Grid / List Toggle**
+- **Moonraker / Klipper Integration (BETA)**
 
 ### v1.3.4 (2026-06-13)
-- **Role-Based Access Control (RBAC):** Admin, Uploader, and Viewer roles.
-- **Bulk Selection &amp; Tagging:** Select multiple models with Ctrl+Click or Shift+Click.
+- **Role-Based Access Control (RBAC)**
+- **Bulk Selection &amp; Tagging**
 - **Bug Fixes:** Nested folder collage rendering and API security ownership guards.
 
 ### v1.3.3 (2026-06-09)
-- **1-Click Slicer Opening:** Set preferred slicer in User Profile.
-- **Dynamic Folder Collages:** 2x2 image collages for folders in library view.
+- **1-Click Slicer Opening**
+- **Dynamic Folder Collages**
 - **Bug Fixes:** Elegoo Slicer URL compatibility and version checker fixes.
 
 ### v1.3.2 (2026-06-06)
@@ -148,12 +130,20 @@ Welcome to version 1.4.0. This update focuses on integrating 3D printers, expand
 ### v1.1.0 (2026-05-23)
 - Folder View introduction and scanner performance optimizations.
   </Changes>
+
   <Config Name="WebUI Port" Target="3000" Default="3457" Mode="tcp" Description="The port for the GyroidVault web interface." Type="Port" Display="always" Required="true" Mask="false"/>
+
   <Config Name="AppData" Target="/app/data" Default="/mnt/user/appdata/gyroidvault" Mode="rw" Description="Storage for database and settings." Type="Path" Display="always" Required="true" Mask="false"/>
+
   <Config Name="3D Models Library" Target="/library" Default="/mnt/user/3Dprints" Mode="rw" Description="Path to your 3D models and prints library." Type="Path" Display="always" Required="true" Mask="false"/>
+
   <Config Name="PUID" Target="PUID" Default="99" Mode="" Description="User ID (PUID)." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+
   <Config Name="PGID" Target="PGID" Default="100" Mode="" Description="Group ID (PGID)." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+
   <Config Name="UMASK" Target="UMASK" Default="022" Mode="" Description="Umask value." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+
   <Config Name="Timezone" Target="TZ" Default="Europe/Amsterdam" Mode="" Description="Container Timezone" Type="Variable" Display="advanced" Required="false" Mask="false"/>
+
   <Config Name="Library Path (Internal)" Target="LIBRARY_PATH" Default="/library" Mode="" Description="Internal container path for the library. Must match the 3D Models Library Target path." Type="Variable" Display="advanced" Required="false" Mask="false"/>
 </Container>
