@@ -2136,7 +2136,7 @@ const App = {
       writeTab.classList.remove('active');
       input.style.display = 'none';
       preview.style.display = 'block';
-      preview.innerHTML = UI.renderMarkdown(input.value) || '<div style="color:var(--text-muted);font-style:italic">No description entered yet.</div>';
+      preview.innerHTML = UI.renderMarkdown(input.value) || '<div style="color:var(--text-muted);font-style:italic">Nenhuma descrição foi ainda inserida.</div>';
     }
   },
 
