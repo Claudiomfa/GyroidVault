@@ -214,8 +214,8 @@ const UI = {
       `<span class="badge badge-${t}">${t}</span>`
     ).join('');
     const printed = m.has_printed
-      ? '<span class="badge badge-printed">✓ Printed</span>'
-      : '<span class="badge badge-not-printed">Not printed</span>';
+      ? '<span class="badge badge-printed">✓ Impresso</span>'
+      : '<span class="badge badge-not-printed">Não Impresso</span>';
     const cat = m.category_name
       ? `<span class="badge badge-category" style="background:${m.category_color}20;color:${m.category_color};border:1px solid ${m.category_color}33">${m.category_name}</span>`
       : '';
@@ -235,7 +235,7 @@ const UI = {
         <div class="model-card-meta">${cat} ${printed}</div>
       </div>
       <div class="model-card-footer">
-        <span style="font-size:.75rem;color:var(--text-muted)">${m.file_count || 0} files</span>
+        <span style="font-size:.75rem;color:var(--text-muted)">${m.file_count || 0} ficheiros</span>
         <span style="font-size:.75rem;color:var(--text-muted)">${this.formatDate(m.updated_at)}</span>
       </div>
     </div>`;
@@ -244,11 +244,11 @@ const UI = {
   bulkActionBar(count) {
     return `
       <div class="bulk-action-bar ${count > 0 ? 'active' : ''}">
-        <div class="bulk-count">${count} items selected</div>
+        <div class="bulk-count">${count} itens selecionados</div>
         <div class="bulk-actions">
-          <button class="btn btn-secondary btn-sm" onclick="App.openBulkTag()" style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Tag</button>
-          <button class="btn btn-secondary btn-sm" onclick="App.openBulkAddToCollection()" style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>Collection</button>
-          <button class="btn btn-danger btn-sm" onclick="App.openBulkDelete()" style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>
+          <button class="btn btn-secondary btn-sm" onclick="App.openBulkTag()" style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Etiqueta</button>
+          <button class="btn btn-secondary btn-sm" onclick="App.openBulkAddToCollection()" style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>Coleção</button>
+          <button class="btn btn-danger btn-sm" onclick="App.openBulkDelete()" style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Excluir</button>
           <button class="btn btn-ghost btn-sm" onclick="App.clearSelection()">✕ Clear</button>
         </div>
       </div>`;
@@ -262,7 +262,7 @@ const UI = {
           <button class="btn btn-secondary btn-sm" onclick="App.toggleBrowseSelectAll()">${isAllSelected ? '✕ Deselect All' : '✓ Select All'}</button>
           <button class="btn btn-secondary btn-sm" onclick="App.openBulkBrowseMove()" style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Move</button>
           <button class="btn btn-secondary btn-sm" onclick="App.openBulkBrowseTag()" style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Tag</button>
-          <button class="btn btn-danger btn-sm" onclick="App.openBulkBrowseDelete()" style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>
+          <button class="btn btn-danger btn-sm" onclick="App.openBulkBrowseDelete()" style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Excluir</button>
           <button class="btn btn-ghost btn-sm" onclick="App.clearBrowseSelection()">✕ Clear</button>
         </div>
       </div>`;
@@ -272,18 +272,18 @@ const UI = {
     return `
       <form id="bulk-delete-form" onsubmit="App.handleBulkDelete(event)">
         <div style="margin-bottom: 20px; color: var(--text-secondary)">
-          Are you sure you want to delete <strong>${count} models</strong>?<br>
-          This action cannot be undone.
+          Tem a certeza que pretende eliminar <strong>${count} modelos</strong>?</strong>?<br>
+          Esta ação não pode ser anulada.
         </div>
         <div class="form-group" style="padding: 12px; background: rgba(239, 68, 68, 0.1); border-radius: 6px; border: 1px solid rgba(239, 68, 68, 0.2)">
           <label class="form-checkbox" style="color: #ef4444; font-weight: 600; margin: 0">
             <input type="checkbox" name="delete_disk"> 
-            Also permanently delete physical files from disk
+            Também elimina permanentemente os ficheiros físicos do disco.
           </label>
         </div>
         <div class="form-actions" style="margin-top: 24px">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
-          <button type="submit" class="btn btn-danger">Delete ${count} Models</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-danger">Excluir ${count} Modelos</button>
         </div>
       </form>`;
   },
@@ -293,15 +293,15 @@ const UI = {
     return `
       <form onsubmit="App.handleBulkMove(event)">
         <div class="form-group">
-          <label class="form-label">Select Category</label>
+          <label class="form-label">Selecione a categoria</label>
           <select class="form-select" name="category_id">
-            <option value="">(None)</option>
+            <option value="">(Nenhum)</option>
             ${options}
           </select>
         </div>
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Move Models</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Mover modelos</button>
         </div>
       </form>`;
   },
@@ -311,14 +311,14 @@ const UI = {
     return `
       <form onsubmit="App.handleBulkAddToCollectionSubmit(event)">
         <div class="form-group">
-          <label class="form-label">Select Collection</label>
+          <label class="form-label">Selecione a Coleção</label>
           <select class="form-select" name="project_id">
             ${options}
           </select>
         </div>
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Add to Collection</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Adicionar à coleção</button>
         </div>
       </form>`;
   },
@@ -328,8 +328,8 @@ const UI = {
       return `
         <div style="text-align:center;padding:24px 10px;color:var(--text-muted)">
           <div style="font-size:1.5rem;margin-bottom:8px">📁</div>
-          <p style="font-size:.9rem;margin-bottom:14px">No collections found.</p>
-          <button type="button" class="btn btn-primary btn-sm" onclick="App.closeModal();App.showCreateProject()">Create Collection</button>
+          <p style="font-size:.9rem;margin-bottom:14px">Nenhuma coleção encontrada.</p>
+          <button type="button" class="btn btn-primary btn-sm" onclick="App.closeModal();App.showCreateProject()">Criar coleção</button>
         </div>`;
     }
 
@@ -339,7 +339,7 @@ const UI = {
         <label class="collection-checkbox-item" style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:6px;cursor:pointer;user-select:none;transition:background 0.15s ease;">
           <input type="checkbox" name="project_ids" value="${p.id}" ${isChecked} style="accent-color:var(--accent-primary);width:16px;height:16px;cursor:pointer;">
           <span style="font-weight:500;font-size:.88rem;color:var(--text-primary);flex:1">${this.escapeHtml(p.name)}</span>
-          ${p.visibility === 'private' ? '<span style="font-size:.7rem;color:var(--text-muted);background:var(--bg-tertiary);padding:2px 6px;border-radius:4px;border:1px solid var(--border)">🔒 Private</span>' : ''}
+          ${p.visibility === 'private' ? '<span style="font-size:.7rem;color:var(--text-muted);background:var(--bg-tertiary);padding:2px 6px;border-radius:4px;border:1px solid var(--border)">🔒 Privado</span>' : ''}
         </label>
       `;
     }).join('');
@@ -347,14 +347,14 @@ const UI = {
     return `
       <form onsubmit="App.handleCollectionSelectionSubmit(event, ${modelId ? Number(modelId) : 'null'})">
         <div style="margin-bottom:12px">
-          <input type="text" class="form-input" placeholder="Search collections..." oninput="App.filterCollectionList(this.value)" style="width:100%;font-size:.85rem;padding:8px 12px">
+          <input type="text" class="form-input" placeholder="Pesquisar coleções..." oninput="App.filterCollectionList(this.value)" style="width:100%;font-size:.85rem;padding:8px 12px">
         </div>
         <div style="max-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:2px;margin-bottom:18px;border:1px solid var(--border);border-radius:8px;padding:6px;background:var(--bg-secondary)">
           ${items}
         </div>
         <div class="form-actions" style="display:flex;justify-content:flex-end;gap:10px">
           <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Save Collections</button>
+          <button type="submit" class="btn btn-primary">Guardar coleções</button>
         </div>
       </form>`;
   },
@@ -364,12 +364,12 @@ const UI = {
     return `
       <form onsubmit="App.handleBulkBrowseMoveSubmit(event)">
         <div class="form-group">
-          <label class="form-label">Destination Path</label>
+          <label class="form-label">Caminho de destino</label>
           <input type="text" class="form-input" name="target_path" placeholder="e.g. /3dprints/toys" required>
         </div>
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Move Items</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Mover itens</button>
         </div>
       </form>`;
   },
@@ -378,12 +378,12 @@ const UI = {
     return `
       <form onsubmit="App.handleBulkBrowseDeleteSubmit(event)">
         <div style="margin-bottom: 20px; color: var(--text-secondary)">
-          Are you sure you want to delete <strong>${count} items</strong>?<br>
-          This action cannot be undone.
+          Tem a certeza que pretende eliminar <strong>${count} itens</strong></strong>?<br>
+          Esta ação não pode ser anulada.
         </div>
         <div class="form-actions" style="margin-top: 24px">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
-          <button type="submit" class="btn btn-danger">Delete ${count} Items</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-danger">Apagar ${count} itens</button>
         </div>
       </form>`;
   },
@@ -399,17 +399,17 @@ const UI = {
     return `
       <form onsubmit="App.handleBulkBrowseTagSubmit(event)">
         <div class="form-group">
-          <label class="form-label">Tags</label>
+          <label class="form-label">Etiquetas</label>
           <div id="bulk-browse-tags-container" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px">
             ${tagCheckboxes}
           </div>
           <div class="add-inline" style="max-width:250px;margin-top:4px">
-            <input type="text" id="new-bulk-tag-input" class="form-input" placeholder="Add new tag (comma separated)...">
+            <input type="text" id="new-bulk-tag-input" class="form-input" placeholder="Adicionar nova etiqueta (separada por vírgulas)...">
           </div>
         </div>
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Tag Items</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Itens de etiqueta</button>
         </div>
       </form>`;
   },
@@ -425,17 +425,17 @@ const UI = {
     return `
       <form onsubmit="App.handleBulkTagSubmit(event)">
         <div class="form-group">
-          <label class="form-label">Tags</label>
+          <label class="form-label">Etiquetas</label>
           <div id="bulk-tags-container" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px">
             ${tagCheckboxes}
           </div>
           <div class="add-inline" style="max-width:250px;margin-top:4px">
-            <input type="text" id="new-bulk-tag-input" class="form-input" placeholder="Add new tag (comma separated)...">
+            <input type="text" id="new-bulk-tag-input" class="form-input" placeholder="Adicionar nova etiqueta (separada por vírgulas)...">
           </div>
         </div>
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Tag Models</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Modelos de etiqueta</button>
         </div>
       </form>`;
   },
@@ -447,8 +447,8 @@ const UI = {
       : '';
     const tags = (model.tags || []).map(t => `<span class="badge badge-tag">${t.name}</span>`).join('');
     const printed = model.has_printed
-      ? '<span class="badge badge-printed">✓ Printed</span>'
-      : '<span class="badge badge-not-printed">Not printed</span>';
+      ? '<span class="badge badge-printed">✓ Impresso</span>'
+      : '<span class="badge badge-not-printed">Não Impresso</span>';
     const cleanSourceUrl = this.safeUrl(model.source_url);
     const sourceLink = cleanSourceUrl
       ? `<a href="${this.escapeHtml(cleanSourceUrl)}" target="_blank" rel="noopener noreferrer" class="badge badge-category" style="background:var(--bg-tertiary);color:var(--accent-cyan);text-decoration:none;border:1px solid var(--border)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Source</a>`
@@ -505,7 +505,7 @@ const UI = {
       gcodeHtml = `
         <div class="glass-panel" style="margin-bottom:16px; border: 1px solid var(--accent-cyan); box-shadow: 0 0 10px rgba(0, 212, 255, 0.1);">
           <div class="panel-header">
-            <div class="panel-title" style="color:var(--accent-cyan)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>G-Code Profiles</div>
+            <div class="panel-title" style="color:var(--accent-cyan)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Perfis G-Code</div>
           </div>
           <div class="panel-body no-pad">
             ${gcodeFiles.map(f => {
@@ -627,7 +627,7 @@ const UI = {
               <div class="dropdown">
                 <button class="btn btn-ghost btn-xs" style="color:var(--accent-purple);border:1px solid var(--accent-purple);padding:3px 6px;border-radius:0 4px 4px 0;height:100%;display:flex;align-items:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
                 <div class="dropdown-content">
-                  <div class="dropdown-header">Other Slicers</div>
+                  <div class="dropdown-header">Outros fatiadores</div>
                   ${Object.entries(slicerLinks).filter(([k]) => k !== pref).map(([_, s]) => `<a href="${s.url}">${s.name}</a>`).join('')}
                 </div>
               </div>
@@ -775,12 +775,12 @@ const UI = {
           ${viewerHtml}
           ${model.description ? `
           <div class="glass-panel" style="margin-bottom:24px">
-            <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Description</div></div>
+            <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Descrição</div></div>
             <div class="panel-body"><div class="detail-description">${this.renderMarkdown(model.description)}</div></div>
           </div>` : ''}
           ${(tags || sourceLink) ? `
           <div class="glass-panel" style="margin-bottom:24px">
-            <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Tags & Links</div></div>
+            <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Etiquetas e links</div></div>
             <div class="panel-body">
               <div style="display:flex;gap:8px;flex-wrap:wrap">
                 ${tags}
@@ -794,7 +794,7 @@ const UI = {
           ${gcodeHtml}
           <div class="glass-panel">
             <div class="panel-header">
-              <div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print History</div>
+              <div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Histórico de Impressão</div>
               <button class="btn btn-secondary btn-sm" onclick="App.showLogPrint(${model.id})">+ Log Print</button>
             </div>
             <div class="panel-body">
@@ -818,13 +818,13 @@ const UI = {
                   </div>` : ''}
                 </div>
                 <div style="padding:12px 16px">
-                  ${canEdit ? `<button class="btn btn-primary btn-xs" onclick="App.showUploadFiles(${model.id})" style="display:inline-flex;align-items:center;gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Upload</button>` : ''}
+                  ${canEdit ? `<button class="btn btn-primary btn-xs" onclick="App.showUploadFiles(${model.id})" style="display:inline-flex;align-items:center;gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Carregar</button>` : ''}
                 </div>
               </div>
             </div>
             <div class="panel-body no-pad" style="overflow:visible">
               <div id="tab-content-files">
-                ${filesHtml || '<div class="empty-state" style="padding:30px"><div class="empty-state-text">No files yet</div><div class="empty-state-sub">Upload STL, Gcode, or 3MF files</div></div>'}
+                ${filesHtml || '<div class="empty-state" style="padding:30px"><div class="empty-state-text">Ainda não há ficheiros.</div><div class="empty-state-sub">Faça o upload de ficheiros STL, Gcode ou 3MF.</div></div>'}
               </div>
               ${docsHtml ? `
               <div id="tab-content-docs" style="display:none">
@@ -835,13 +835,13 @@ const UI = {
 
           ${model.versions?.length ? `
           <div class="glass-panel" style="margin-top:16px">
-            <div class="panel-header"><div class="panel-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>Other Versions</div></div>
+            <div class="panel-header"><div class="panel-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>Outras versões</div></div>
             <div class="panel-body no-pad">
               ${model.versions.map(v => `
                 <div class="activity-item" style="cursor:pointer;padding:12px" onclick="App.navigate('/models/${v.id}')">
                   <div style="flex:1">
                     <div style="font-weight:600;font-size:.85rem">${v.name}</div>
-                    <div style="font-size:.7rem;color:var(--text-muted)">${this.formatDateShort(v.created_at)} · ${v.file_count} files</div>
+                    <div style="font-size:.7rem;color:var(--text-muted)">${this.formatDateShort(v.created_at)} · ${v.file_count} ficheiros</div>
                   </div>
                   <div style="color:var(--accent-cyan);font-size:.8rem">View →</div>
                 </div>`).join('')}
@@ -849,7 +849,7 @@ const UI = {
           </div>` : ''}
           ${model.print_tips ? `
           <div class="glass-panel" style="margin-top:16px">
-            <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg>Print Tips</div></div>
+            <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg>Dicas de impressão</div></div>
             <div class="panel-body"><div class="detail-tips">${this.escapeHtml(model.print_tips)}</div></div>
           </div>` : ''}
         </div>
@@ -873,61 +873,61 @@ const UI = {
     return `
       <form id="model-form" onsubmit="App.handleModelSubmit(event,${model?.id || 'null'})">
         <div class="form-group">
-          <label class="form-label">Name *</label>
+          <label class="form-label">Nome *</label>
           <input class="form-input" name="name" required value="${model?.name || ''}" placeholder="e.g. Phone Stand v2" id="model-name-input">
         </div>
         <div class="form-group">
-          <label class="form-label">Category</label>
+          <label class="form-label">Categoria</label>
           <select class="form-select" name="category_id">
             <option value="">No category</option>${catOptions}
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">Source URL (optional)</label>
+          <label class="form-label">URL de origem (opcional)</label>
           <input class="form-input" type="url" name="source_url" value="${model?.source_url || ''}" placeholder="e.g. https://www.printables.com/...">
         </div>
         <div class="form-group">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-            <label class="form-label" style="margin-bottom:0">Description (Markdown)</label>
+            <label class="form-label" style="margin-bottom:0">Descrição (Markdown)</label>
             <div style="display:flex;gap:4px">
-              <button type="button" class="btn btn-ghost btn-xs active" id="desc-tab-write" onclick="App.toggleDescTab('write')" style="padding:2px 8px;font-size:0.75rem">Write</button>
-              <button type="button" class="btn btn-ghost btn-xs" id="desc-tab-preview" onclick="App.toggleDescTab('preview')" style="padding:2px 8px;font-size:0.75rem">Preview</button>
+              <button type="button" class="btn btn-ghost btn-xs active" id="desc-tab-write" onclick="App.toggleDescTab('write')" style="padding:2px 8px;font-size:0.75rem">Escrever</button>
+              <button type="button" class="btn btn-ghost btn-xs" id="desc-tab-preview" onclick="App.toggleDescTab('preview')" style="padding:2px 8px;font-size:0.75rem">Pré-visualizar</button>
             </div>
           </div>
           <textarea class="form-textarea" id="model-description-input" name="description" placeholder="Describe this model using Markdown formatting, lists, links, images..." rows="4">${model?.description || ''}</textarea>
           <div id="model-description-preview" class="glass-panel" style="display:none;padding:12px;min-height:90px;max-height:220px;overflow-y:auto;background:var(--bg-input)"></div>
         </div>
         <div class="form-group">
-          <label class="form-label">Print Tips</label>
-          <textarea class="form-textarea" name="print_tips" placeholder="Recommended settings, supports needed, etc...">${model?.print_tips || ''}</textarea>
+          <label class="form-label">Dicas de impressão</label>
+          <textarea class="form-textarea" name="print_tips" placeholder="Configurações recomendadas, suportes necessários, etc...">${model?.print_tips || ''}</textarea>
         </div>
         <div class="form-group">
-          <label class="form-label">Tags</label>
+          <label class="form-label">Etiqueta</label>
           <div id="model-tags-container" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px">
             ${tagCheckboxes}
           </div>
           <div class="add-inline" style="max-width:250px;margin-top:4px">
-            <input type="text" id="new-tag-input" class="form-input" placeholder="Add new tag..." onkeydown="if(event.key==='Enter'){event.preventDefault();App.addInlineTag();}">
-            <button type="button" class="btn btn-secondary btn-sm" onclick="App.addInlineTag()">Add</button>
+            <input type="text" id="new-tag-input" class="form-input" placeholder="Adicionar nova etiqueta..." onkeydown="if(event.key==='Enter'){event.preventDefault();App.addInlineTag();}">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="App.addInlineTag()">Adicionar</button>
           </div>
         </div>
         ${!isEdit ? `
         <div class="form-group">
-          <label class="form-label">Files (Optional)</label>
+          <label class="form-label">Ficheiros (Opcional)</label>
           <div class="upload-zone" id="create-upload-zone" onclick="document.getElementById('create-file-input').click()"
             ondragover="event.preventDefault();this.classList.add('dragover')"
             ondragleave="this.classList.remove('dragover')"
             ondrop="event.preventDefault();this.classList.remove('dragover');App.handleCreateFileDrop(event)">
             <div class="upload-zone-icon" style="color:var(--accent-cyan);opacity:0.8"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-            <div class="upload-zone-text"><strong>Click to browse</strong> or drag & drop files</div>
-            <div style="color:var(--text-muted);font-size:.7rem;margin-top:4px">STL · Gcode · BGCODE · 3MF · OBJ · STEP · F3D · Images · Documents</div>
+            <div class="upload-zone-text"><strong>Clique para navegar</strong> ou arraste e largue os ficheiros</div>
+            <div style="color:var(--text-muted);font-size:.7rem;margin-top:4px">STL · Gcode · BGCODE · 3MF · OBJ · STEP · F3D · Images · Documentos</div>
             <input type="file" id="create-file-input" multiple accept=".stl,.gcode,.bgcode,.3mf,.obj,.step,.stp,.f3d,.png,.jpg,.jpeg,.gif,.webp,.pdf,.txt,.md" onchange="App.handleCreateFileSelect(event)">
           </div>
           <div id="create-file-list" class="upload-file-list" style="display:none"></div>
           <div id="create-upload-progress" style="margin-top:12px"></div>
         </div>` : ''}
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancel</button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal()">Cancelar</button>
           <button type="submit" class="btn btn-primary" id="model-submit-btn">${isEdit ? 'Save Changes' : 'Create Model'}</button>
         </div>
       </form>`;
@@ -941,8 +941,8 @@ const UI = {
         ondragleave="this.classList.remove('dragover')"
         ondrop="event.preventDefault();this.classList.remove('dragover');App.handleFileDrop(event,${modelId})">
         <div class="upload-zone-icon" style="color:var(--accent-cyan);opacity:0.8"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-        <div class="upload-zone-text"><strong>Click to browse</strong> or drag & drop files</div>
-        <div style="color:var(--text-muted);font-size:.75rem;margin-top:6px">STL · Gcode · BGCODE · 3MF · OBJ · STEP · F3D · Images · Documents</div>
+        <div class="upload-zone-text"><strong>Clique para navegar</strong> ou arraste e largue os ficheiros</div>
+        <div style="color:var(--text-muted);font-size:.75rem;margin-top:6px">STL · Gcode · BGCODE · 3MF · OBJ · STEP · F3D · Images · Documentos</div>
         <input type="file" id="file-input" multiple accept=".stl,.gcode,.bgcode,.3mf,.obj,.step,.stp,.f3d,.png,.jpg,.jpeg,.gif,.webp,.pdf,.txt,.md" onchange="App.handleFileSelect(event,${modelId})">
       </div>
       <div id="upload-progress" style="margin-top:14px"></div>`;
@@ -1127,7 +1127,7 @@ const UI = {
   settingsPanel(title, items, type) {
     const listHtml = items.map(item => {
       const color = item.color ? `<span class="color-dot" style="background:${item.color}"></span>` : '';
-      const preset = item.is_preset ? '<span style="font-size:.7rem;color:var(--text-muted);margin-left:4px">(preset)</span>' : '';
+      const preset = item.is_preset ? '<span style="font-size:.7rem;color:var(--text-muted);margin-left:4px">(predefinido)</span>' : '';
       const count = item.model_count != null ? `<span style="font-size:.75rem;color:var(--text-muted)">${item.model_count || item.usage_count || 0}</span>` : '';
       const canDelete = type === 'materials' ? !item.is_preset : true;
       const isAdmin = App.currentUser?.role === 'admin';
@@ -1153,7 +1153,7 @@ const UI = {
 
     const defaultMatBlock = type === 'materials' ? `
       <div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)">
-        <label class="form-label" style="margin-bottom:6px">Default Print Material</label>
+        <label class="form-label" style="margin-bottom:6px">Material de impressão standard</label>
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
           <select class="form-select" id="default-material-select" onchange="App.setDefaultMaterial(this.value)" style="max-width:220px">
             ${items.map(m => {
@@ -1162,7 +1162,7 @@ const UI = {
               return `<option value="${m.id}" ${isSel ? 'selected' : ''}>${m.name}</option>`;
             }).join('')}
           </select>
-          <span style="font-size:0.75rem;color:var(--text-muted)">Pre-selected when logging new prints</span>
+          <span style="font-size:0.75rem;color:var(--text-muted)">Pré-selecionado ao registar novas impressões</span>
         </div>
       </div>` : '';
 
@@ -1173,9 +1173,9 @@ const UI = {
         ${listHtml || '<div style="color:var(--text-muted);font-size:.875rem;padding:8px 0">Nenhuns</div>'}
         ${App.currentUser?.role === 'admin' ? `
         <div class="add-inline" style="margin-top:14px">
-          <input class="form-input" id="add-${type}-input" placeholder="Add new ${type.slice(0,-1)}...">
+          <input class="form-input" id="add-${type}-input" placeholder="Adicionar novo ${type.slice(0,-1)}...">
           ${colorInput}
-          <button class="btn btn-primary btn-sm" onclick="App.addSettingsItem('${type}')">Add</button>
+          <button class="btn btn-primary btn-sm" onclick="App.addSettingsItem('${type}')">Adicionar</button>
         </div>` : ''}
       </div>
     </div>`;
@@ -1376,7 +1376,7 @@ const UI = {
           </div>
         </div>
         <div class="form-group">
-          <label>Auto-Scan Interval (Hours)</label>
+          <label>Intervalo de varrimento automático (horas)</label>
           <input type="number" name="auto_scan_interval" value="${config.auto_scan_interval !== undefined ? config.auto_scan_interval : 24}" min="0" max="168" class="form-input">
           <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Defina para 0 para desativar a verificação em segundo plano. O valor predefinido é 24.</p>
         </div>
@@ -1417,7 +1417,7 @@ const UI = {
       </form>
 
       <div style="margin-top:32px; border-top:1px solid var(--border); padding-top:20px">
-        <h3 style="margin-bottom:12px; font-size:1.1rem; color:var(--text-primary); display:flex; align-items:center; gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent-purple)"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Blocked IP Addresses</h3>
+        <h3 style="margin-bottom:12px; font-size:1.1rem; color:var(--text-primary); display:flex; align-items:center; gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent-purple)"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Endereços IP bloqueados</h3>
         <div id="blocked-ips-container">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
             <button type="button" class="btn btn-secondary btn-sm" onclick="App.loadBlockedIps()">Atualizar IPs bloqueados</button>
@@ -1520,7 +1520,7 @@ const UI = {
     return `
       <div class="page-header">
         <div><h1 class="page-title">Collections</h1><p class="page-subtitle">Agrupe os modelos em coleções.</p></div>
-        ${App.currentUser?.role !== 'viewer' ? '<button class="btn btn-primary" onclick="App.showCreateProject()">+ New Collection</button>' : ''}
+        ${App.currentUser?.role !== 'viewer' ? '<button class="btn btn-primary" onclick="App.showCreateProject()">+ Nova Coleção</button>' : ''}
       </div>
       <div class="model-grid">
         ${list || '<div class="empty-state" style="grid-column: 1/-1">Ainda não há coleções.</div>'}
@@ -1535,7 +1535,7 @@ const UI = {
         </div>
         <div class="model-card-body">
           <div class="model-card-title">${p.visibility === 'private' ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;color:var(--accent-purple)"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' : ''}${p.name}</div>
-          <div class="model-card-meta">${p.model_count} models</div>
+          <div class="model-card-meta">${p.model_count} modelos</div>
         </div>
       </div>`;
   },
