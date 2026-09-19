@@ -584,7 +584,7 @@ const App = {
     const toolbar = UI.toolbar(this.cache.categories, this.cache.tags, this.cache.users, activeFormat);
     this.el.innerHTML = `
       <div class="page-header">
-        <div><h1 class="page-title">Models</h1><p class="page-subtitle">Manage your 3D model library</p></div>
+        <div><h1 class="page-title">Modelos</h1><p class="page-subtitle">Gira a sua biblioteca de modelos 3D.</p></div>
       </div>
       ${toolbar}
       <div id="models-grid"><div class="model-grid">${'<div class="model-card"><div class="model-card-thumb"><div class="skeleton" style="width:100%;height:100%"></div></div><div class="model-card-body"><div class="skeleton" style="width:70%;height:18px;margin-bottom:8px"></div><div class="skeleton" style="width:40%;height:14px"></div></div></div>'.repeat(6)}</div></div>`;
@@ -616,7 +616,7 @@ const App = {
     const toolbar = UI.toolbar(this.cache.categories, this.cache.tags, this.cache.users);
     this.el.innerHTML = `
       <div class="page-header">
-        <div><h1 class="page-title">Browse Library</h1><p class="page-subtitle">Explore your files on disk</p></div>
+        <div><h1 class="page-title">Navegue pela Biblioteca</h1><p class="page-subtitle">Explore os seus ficheiros no disco.</p></div>
       </div>
       ${toolbar}
       <div id="browse-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; min-height:36px;"></div>
@@ -643,12 +643,12 @@ const App = {
         headerEl.innerHTML = `
           <div style="flex:1;display:flex;align-items:center;gap:12px">
             ${UI.breadcrumbs(data.currentPath)}
-            ${this.currentUser ? `<button class="btn btn-secondary btn-sm" onclick="App.handleCreateFolder('${data.currentPath}')">+ New Folder</button>` : ''}
+            ${this.currentUser ? `<button class="btn btn-secondary btn-sm" onclick="App.handleCreateFolder('${data.currentPath}')">+ Nova pasta</button>` : ''}
           </div>
           <div style="display:flex;align-items:center;gap:12px">
-            <span style="font-size:0.85rem;color:var(--text-muted);white-space:nowrap" id="browse-counter">Showing ${data.folders.length} Folders / ${fileCount} Files</span>
+            <span style="font-size:0.85rem;color:var(--text-muted);white-space:nowrap" id="browse-counter">A apresentar ${data.folders.length} pastas/${fileCount} ficheiros</span>
             <div style="width:250px">
-              <input type="text" id="browse-search" placeholder="Filter this folder..." class="form-input" onkeyup="App.handleBrowseSearch(event)" style="padding:6px 12px; font-size:.9rem;">
+              <input type="text" id="browse-search" placeholder="Filtrar esta pasta..." class="form-input" onkeyup="App.handleBrowseSearch(event)" style="padding:6px 12px; font-size:.9rem;">
             </div>
           </div>
         `;
@@ -670,7 +670,7 @@ const App = {
 
       if (!data.folders.length && !data.files.length) {
         container.innerHTML = `
-          <div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><div class="empty-state-text">This folder is empty</div><div class="empty-state-sub">No 3D files or subfolders found here</div></div>`;
+          <div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><div class="empty-state-text">This folder is empty</div><div class="empty-state-sub">Nenhum ficheiro 3D ou subpasta encontrado aqui.</div></div>`;
         return;
       }
 
@@ -821,7 +821,7 @@ const App = {
       const grid = document.getElementById('models-grid');
       if (!grid) return;
       if (!models.length) {
-        grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><div class="empty-state-text">No models found</div><div class="empty-state-sub">Try changing your filters or create a new model</div></div>';
+        grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><div class="empty-state-text">No models found</div><div class="empty-state-sub">Tente alterar os seus filtros ou criar um novo modelo.</div></div>';
         return;
       }
       
@@ -1251,7 +1251,7 @@ const App = {
   },
 
   async deleteUser(userId) {
-    if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) return;
+    if (!confirm('Tem a certeza de que pretende eliminar este utilizador? Esta ação não pode ser anulada.')) return;
     try {
       await API.deleteUser(userId);
       this.toast('User deleted successfully', 'success');
@@ -1337,7 +1337,7 @@ const App = {
     try {
       await API.saveSystemSettings(data);
       await this.loadViewMode(); // refresh the cached view mode
-      this.toast('System settings saved');
+      this.toast('Configurações do sistema guardadas');
     } catch(e) { this.toast(e.message, 'error'); }
   },
 
@@ -1468,12 +1468,12 @@ const App = {
     
     this.el.innerHTML = `
       <div class="page-header">
-        <div><h1 class="page-title">My Profile</h1><p class="page-subtitle">Manage your account settings and preferences</p></div>
+        <div><h1 class="page-title">O meu perfil</h1><p class="page-subtitle">Gira as definições e preferências da sua conta.</p></div>
       </div>
       <div class="settings-tabs" style="display:flex;gap:8px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:1px">
-        <button class="tab-btn active" data-tab="account" style="background:none;border:none;color:var(--text-secondary);padding:10px 20px;cursor:pointer;font-weight:600;border-bottom:2px solid transparent;transition:all .2s">Account Details</button>
-        <button class="tab-btn" data-tab="appearance" style="background:none;border:none;color:var(--text-secondary);padding:10px 20px;cursor:pointer;font-weight:600;border-bottom:2px solid transparent;transition:all .2s">Local Appearance</button>
-        <button class="tab-btn" data-tab="api" style="background:none;border:none;color:var(--text-secondary);padding:10px 20px;cursor:pointer;font-weight:600;border-bottom:2px solid transparent;transition:all .2s">API & Integrations</button>
+        <button class="tab-btn active" data-tab="account" style="background:none;border:none;color:var(--text-secondary);padding:10px 20px;cursor:pointer;font-weight:600;border-bottom:2px solid transparent;transition:all .2s">Detalhes da conta</button>
+        <button class="tab-btn" data-tab="appearance" style="background:none;border:none;color:var(--text-secondary);padding:10px 20px;cursor:pointer;font-weight:600;border-bottom:2px solid transparent;transition:all .2s">Aparência local</button>
+        <button class="tab-btn" data-tab="api" style="background:none;border:none;color:var(--text-secondary);padding:10px 20px;cursor:pointer;font-weight:600;border-bottom:2px solid transparent;transition:all .2s">API e integrações</button>
       </div>
       <div id="profile-content"></div>`;
 
@@ -1491,7 +1491,7 @@ const App = {
       if (tab === 'account') {
         content.innerHTML = `
           <div class="glass-panel">
-            <div class="panel-header"><div class="panel-title">Account Details</div></div>
+            <div class="panel-header"><div class="panel-title">Detalhes da conta</div></div>
             <div class="panel-body">
               <form onsubmit="App.handleUpdateProfile(event)" class="form-grid">
                 <div class="form-group">
@@ -1503,22 +1503,22 @@ const App = {
                   <input type="email" name="email" value="${user.email || ''}" required class="form-input">
                 </div>
                 <div class="form-group">
-                  <label class="form-label">New Password</label>
+                  <label class="form-label">Nova Password</label>
                   <input type="password" name="password" placeholder="Leave blank to keep current" class="form-input">
-                  <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">Must be at least 8 characters and contain letters and numbers.</p>
+                  <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">Deve ter no mínimo 8 caracteres e conter letras e números.</p>
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Preferred Slicer</label>
+                  <label class="form-label">Fatiador preferido</label>
                   <select name="preferred_slicer" class="form-select">
-                    <option value="" ${!user.preferred_slicer ? 'selected' : ''}>None (Ask every time)</option>
+                    <option value="" ${!user.preferred_slicer ? 'selected' : ''}>Nenhum (Pergunte sempre)</option>
+                    <option value="bambustudio" ${user.preferred_slicer === 'bambustudio' ? 'selected' : ''}>Bambu Studio</option>
                     <option value="orcaslicer" ${user.preferred_slicer === 'orcaslicer' ? 'selected' : ''}>OrcaSlicer</option>
                     <option value="elegooslicer" ${user.preferred_slicer === 'elegooslicer' ? 'selected' : ''}>Elegoo Slicer</option>
                     <option value="cura" ${user.preferred_slicer === 'cura' ? 'selected' : ''}>Ultimaker Cura</option>
-                    <option value="bambustudio" ${user.preferred_slicer === 'bambustudio' ? 'selected' : ''}>Bambu Studio</option>
                   </select>
                 </div>
                 <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--border); display:flex; justify-content:flex-end;">
-                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                  <button type="submit" class="btn btn-primary">Guardar alterações</button>
                 </div>
               </form>
             </div>
@@ -1527,27 +1527,27 @@ const App = {
       } else if (tab === 'appearance') {
         content.innerHTML = `
           <div class="glass-panel">
-            <div class="panel-header"><div class="panel-title">Local Appearance</div></div>
+            <div class="panel-header"><div class="panel-title">Aparência local</div></div>
             <div class="panel-body">
-              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">These UI settings are saved only to your current browser context.</p>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">Estas definições da interface do utilizador são guardadas apenas no contexto atual do seu navegador.</p>
               <div class="form-grid">
                 <div class="form-group">
-                  <label class="form-label">App Theme</label>
+                  <label class="form-label">Tema da aplicação</label>
                   <select id="theme-selector" class="form-select" onchange="App.previewTheme()">
-                    <option value="glass" ${localStorage.getItem('gv_theme') === 'glass' || !localStorage.getItem('gv_theme') ? 'selected' : ''}>Glass (Default)</option>
+                    <option value="glass" ${localStorage.getItem('gv_theme') === 'glass' || !localStorage.getItem('gv_theme') ? 'selected' : ''}>Vidro (Padrão)</option>
                     <option value="industrial" ${localStorage.getItem('gv_theme') === 'industrial' ? 'selected' : ''}>Industrial</option>
                   </select>
                 </div>
                 <div class="form-group" style="margin-bottom:0">
-                  <label class="form-label">Accent Color</label>
-                  <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px">Choose your preferred studio accent color</p>
+                  <label class="form-label">Cor de destaque</label>
+                  <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px">Escolha a cor de destaque que preferir para o seu estúdio.</p>
                   <div style="display:flex; gap:12px; margin-top:6px; flex-wrap:wrap;">
-                    <button type="button" class="accent-color-btn" style="background:#3b82f6; outline: ${(localStorage.getItem('gv_accent') === 'blue' || localStorage.getItem('gv_accent') === 'cyan' || !localStorage.getItem('gv_accent')) ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('blue'); App.renderProfile();" title="Studio Blue (Default)"></button>
-                    <button type="button" class="accent-color-btn" style="background:#10b981; outline: ${localStorage.getItem('gv_accent') === 'emerald' || localStorage.getItem('gv_accent') === 'green' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('emerald'); App.renderProfile();" title="Emerald Green"></button>
-                    <button type="button" class="accent-color-btn" style="background:#f59e0b; outline: ${localStorage.getItem('gv_accent') === 'amber' || localStorage.getItem('gv_accent') === 'orange' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('amber'); App.renderProfile();" title="Amber Gold"></button>
-                    <button type="button" class="accent-color-btn" style="background:#f43f5e; outline: ${localStorage.getItem('gv_accent') === 'rose' || localStorage.getItem('gv_accent') === 'red' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('rose'); App.renderProfile();" title="Coral Rose"></button>
-                    <button type="button" class="accent-color-btn" style="background:#8b5cf6; outline: ${localStorage.getItem('gv_accent') === 'violet' || localStorage.getItem('gv_accent') === 'purple' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('violet'); App.renderProfile();" title="Studio Violet"></button>
-                    <button type="button" class="accent-color-btn" style="background:#14b8a6; outline: ${localStorage.getItem('gv_accent') === 'teal' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('teal'); App.renderProfile();" title="Teal Sage"></button>
+                    <button type="button" class="accent-color-btn" style="background:#3b82f6; outline: ${(localStorage.getItem('gv_accent') === 'blue' || localStorage.getItem('gv_accent') === 'cyan' || !localStorage.getItem('gv_accent')) ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('blue'); App.renderProfile();" title="Studio Blue (Standard)"></button>
+                    <button type="button" class="accent-color-btn" style="background:#10b981; outline: ${localStorage.getItem('gv_accent') === 'emerald' || localStorage.getItem('gv_accent') === 'green' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('emerald'); App.renderProfile();" title="Verde Esmeralda"></button>
+                    <button type="button" class="accent-color-btn" style="background:#f59e0b; outline: ${localStorage.getItem('gv_accent') === 'amber' || localStorage.getItem('gv_accent') === 'orange' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('amber'); App.renderProfile();" title="Âmbar Dourado"></button>
+                    <button type="button" class="accent-color-btn" style="background:#f43f5e; outline: ${localStorage.getItem('gv_accent') === 'rose' || localStorage.getItem('gv_accent') === 'red' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('rose'); App.renderProfile();" title="Rosa Coral"></button>
+                    <button type="button" class="accent-color-btn" style="background:#8b5cf6; outline: ${localStorage.getItem('gv_accent') === 'violet' || localStorage.getItem('gv_accent') === 'purple' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('violet'); App.renderProfile();" title="Estúdio Violeta"></button>
+                    <button type="button" class="accent-color-btn" style="background:#14b8a6; outline: ${localStorage.getItem('gv_accent') === 'teal' ? '2px solid #ffffff' : 'none'}" onclick="App.setAccent('teal'); App.renderProfile();" title="Verde-azulado Sálvia"></button>
                   </div>
                 </div>
               </div>
@@ -1669,14 +1669,14 @@ const App = {
   async bulkDeleteCollections() {
     if (!this.selectedCollectionIds?.length) return;
     const count = this.selectedCollectionIds.length;
-    if (!confirm(`Are you sure you want to delete ${count} collection${count > 1 ? 's' : ''}? Models inside them will remain safely in your library.`)) return;
+    if (!confirm(`Tem a certeza de que pretende eliminar a coleção ${count}? Os modelos dentro da mesma permanecerão em segurança na sua biblioteca.`)) return;
     try {
       await API.bulkDeleteProjects(this.selectedCollectionIds);
       this.toast(`Deleted ${count} collection${count > 1 ? 's' : ''}`);
       this.selectedCollectionIds = [];
       this.renderProjects();
     } catch (e) {
-      this.toast(e.message || 'Failed to delete collections', 'error');
+      this.toast(e.message || 'Falha ao eliminar coleções', 'error');
     }
   },
 
@@ -1905,7 +1905,7 @@ const App = {
   },
 
   async deleteProject(id) {
-    if (!confirm('Are you sure you want to delete this collection? Models will not be deleted.')) return;
+    if (!confirm('Tem a certeza de que pretende eliminar esta coleção? Os modelos não serão eliminados.')) return;
     try {
       await API.deleteProject(id);
       this.toast('Collection deleted');
@@ -2270,7 +2270,7 @@ const App = {
       const btn = document.getElementById('scan-btn');
       if (btn) {
         btn.disabled = true;
-        btn.innerHTML = `<span class="btn-icon rotating"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg></span> ${status.foldersScanned || 0} folders (${status.filesAdded || 0} files)`;
+        btn.innerHTML = `<span class="btn-icon rotating"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg></span> ${status.foldersScanned || 0} pastas (${status.filesAdded || 0} ficheiros)`;
       }
     };
 
@@ -2386,7 +2386,7 @@ const App = {
     this.el.innerHTML = `
       <div class="page-header" style="margin-bottom:20px">
         <div>
-          <h1 class="page-title">Settings</h1>
+          <h1 class="page-title">Configurações</h1>
           <p class="page-subtitle">Configure e personalize a sua instância do RedPOISON 3d 2.0.</p>
         </div>
       </div>
@@ -2395,18 +2395,18 @@ const App = {
         <!-- Modern Left Navigation Sub-Sidebar -->
         <aside class="settings-nav-sidebar">
           <div class="settings-nav-group">
-            <div class="settings-nav-group-title">Taxonomies</div>
+            <div class="settings-nav-group-title">Taxonomias</div>
             <button class="settings-nav-btn active" data-tab="categories">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-              <span>Categories</span>
+              <span>Categorias</span>
             </button>
             <button class="settings-nav-btn" data-tab="tags">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-              <span>Tags</span>
+              <span>Etiquetas</span>
             </button>
             <button class="settings-nav-btn" data-tab="materials">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-              <span>Materials</span>
+              <span>Materiais</span>
             </button>
           </div>
 
@@ -2415,37 +2415,37 @@ const App = {
               <div class="settings-nav-group-title">Hardware</div>
               <button class="settings-nav-btn" data-tab="printers">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-                <span>3D Printers</span>
+                <span>Impressoras 3D</span>
               </button>
               <button class="settings-nav-btn" data-tab="smtp">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                <span>SMTP & Mail</span>
+                <span>SMTP e Correio</span>
               </button>
             </div>
 
             <div class="settings-nav-group">
-              <div class="settings-nav-group-title">Administration</div>
+              <div class="settings-nav-group-title">Administração</div>
               <button class="settings-nav-btn" data-tab="security">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                <span>Security</span>
+                <span>Segurança</span>
               </button>
               <button class="settings-nav-btn" data-tab="users">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                <span>Users & Roles</span>
+                <span>Utilizadores e funções</span>
               </button>
               <button class="settings-nav-btn" data-tab="system">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                <span>System</span>
+                <span>Sistema</span>
               </button>
               <button class="settings-nav-btn" data-tab="maintenance">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <span>Maintenance & Logs</span>
+                <span>Manutenção e Registos</span>
               </button>
             </div>
           ` : ''}
 
           <div class="settings-nav-group">
-            <div class="settings-nav-group-title">System Info</div>
+            <div class="settings-nav-group-title">Informações do sistema</div>
             <button class="settings-nav-btn" data-tab="about">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
               <span>Sobre o RedPOISON 3d</span>
@@ -2482,14 +2482,14 @@ const App = {
           try { if (config.printers) printers = JSON.parse(config.printers); } catch(e){}
           content.innerHTML = `
             <div class="glass-panel">
-              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>3D Printers (Moonraker)</div></div>
+              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Impressoras 3D (Moonraker)</div></div>
               <div class="panel-body">${UI.printersSettingsForm(printers)}</div>
             </div>`;
         } else if (tab === 'security') {
           const config = await API.getSystemSettings();
           content.innerHTML = `
             <div class="glass-panel">
-              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Security & Access Control</div></div>
+              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Segurança e Controlo de Acesso</div></div>
               <div class="panel-body">${UI.securitySettingsForm(config)}</div>
             </div>`;
           setTimeout(() => App.loadBlockedIps(), 50);
@@ -2497,13 +2497,13 @@ const App = {
           const logs = await API.getSystemLogs();
           content.innerHTML = `
             <div class="glass-panel" style="margin-bottom:24px">
-              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Maintenance & Duplicates</div></div>
+              <div class="panel-header"><div class="panel-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Manutenção e Duplicatas</div></div>
               <div class="panel-body">${UI.maintenanceSettingsForm()}</div>
             </div>
             <div class="glass-panel">
               <div class="panel-header">
-                <div class="panel-title">System Event Logs</div>
-                <button class="btn btn-ghost btn-xs" onclick="App.handleClearLogs()" style="color:var(--error)">Clear Logs</button>
+                <div class="panel-title">Registos de eventos do sistema</div>
+                <button class="btn btn-ghost btn-xs" onclick="App.handleClearLogs()" style="color:var(--error)">Limpar registos</button>
               </div>
               <div class="panel-body no-pad">
                 <div id="system-logs-list" style="max-height:400px;overflow-y:auto;font-family:monospace;font-size:.75rem">
@@ -2521,14 +2521,14 @@ const App = {
           const config = await API.getSMTPSettings();
           content.innerHTML = `
             <div class="glass-panel">
-              <div class="panel-header"><div class="panel-title">SMTP Mail Configuration</div></div>
+              <div class="panel-header"><div class="panel-title">Configuração de e-mail SMTP</div></div>
               <div class="panel-body">${UI.smtpSettingsForm(config)}</div>
             </div>`;
         } else if (tab === 'system') {
           const config = await API.getSystemSettings();
           content.innerHTML = `
             <div class="glass-panel">
-              <div class="panel-header"><div class="panel-title">System Settings</div></div>
+              <div class="panel-header"><div class="panel-title">Configurações do sistema</div></div>
               <div class="panel-body">${UI.systemSettingsForm(config)}</div>
             </div>`;
         } else if (tab === 'users') {
@@ -2539,12 +2539,12 @@ const App = {
               <div class="panel-body">
                 <form onsubmit="App.handleInviteUser(event)" style="display:flex;gap:10px;flex-wrap:wrap">
                   <input type="email" name="email" required placeholder="Email address to invite" class="form-input" style="max-width:320px">
-                  <button type="submit" class="btn btn-primary">Send Invite</button>
+                  <button type="submit" class="btn btn-primary">Enviar convite</button>
                 </form>
               </div>
             </div>
             <div class="glass-panel">
-              <div class="panel-header"><div class="panel-title">User Accounts & Roles</div></div>
+              <div class="panel-header"><div class="panel-title">Contas de utilizador e funções</div></div>
               <div class="panel-body no-pad" style="overflow-x:auto">
                 <table class="settings-table">
                   <thead>
@@ -2553,7 +2553,7 @@ const App = {
                       <th>Username</th>
                       <th>Email</th>
                       <th>Role</th>
-                      <th style="text-align:right">Actions</th>
+                      <th style="text-align:right">Ações</th>
                     </tr>
                   </thead>
                   <tbody>${users.map(u => `
@@ -2570,7 +2570,7 @@ const App = {
                         ${u.id === 1 ? '<span style="font-size:0.7rem;color:var(--accent-cyan);margin-left:6px;font-weight:600">Master Admin</span>' : ''}
                       </td>
                       <td style="text-align:right">
-                        ${u.id !== 1 ? `<button class="btn btn-danger btn-xs" onclick="App.deleteUser(${u.id})" style="display:inline-flex;align-items:center;gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>` : ''}
+                        ${u.id !== 1 ? `<button class="btn btn-danger btn-xs" onclick="App.deleteUser(${u.id})" style="display:inline-flex;align-items:center;gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Excluir</button>` : ''}
                       </td>
                     </tr>`).join('')}
                   </tbody>
@@ -2597,7 +2597,7 @@ const App = {
       const folderOptionsHtml = `
         <div class="form-group">
           <input type="hidden" name="parent_folder" value="${this.currentBrowsePath}">
-          <label><input type="checkbox" name="create_subfolder" value="true" checked> Create subfolder for this model</label>
+          <label><input type="checkbox" name="create_subfolder" value="true" checked> Criar subpasta para este modelo</label>
         </div>
       `;
       // Inject before form-actions
@@ -2643,7 +2643,7 @@ const App = {
     const validFiles = [];
     for (const f of files) {
       if (f.size > MAX_SIZE) {
-        this.toast(`File "${f.name}" exceeds the 500MB size limit.`, 'error');
+        this.toast(`O ficheiro "${f.name}" excede o limite de tamanho de 500 MB.`, 'error');
       } else {
         validFiles.push(f);
       }
@@ -2835,7 +2835,7 @@ const App = {
 
   confirmDeleteModel(id, name) {
     if (!this.currentUser || this.currentUser.role === 'viewer') {
-      return this.toast('You must be logged in to delete models', 'error');
+      return this.toast('Precisa de estar conectado para excluir modelos.', 'error');
     }
     const modelName = name || this.currentModel?.name || '';
     this.openModal('Delete Model', UI.deleteModelForm(id, modelName));
@@ -2919,7 +2919,7 @@ const App = {
 
   confirmDeleteFile(fileId, filename, modelId) {
     if (!this.currentUser || this.currentUser.role === 'viewer') {
-      return this.toast('You must be logged in to delete files', 'error');
+      return this.toast('Precisa de estar conectado para excluir modelos.', 'error');
     }
     this.openModal('Delete File', UI.deleteFileForm(fileId, filename, modelId));
   },
@@ -2995,7 +2995,7 @@ const App = {
   },
 
   async deletePrint(printId, modelId) {
-    if (!confirm('Delete this print entry?')) return;
+    if (!confirm('Apagar esta entrada de impressão?')) return;
     try {
       await API.deletePrint(printId);
       this.toast('Print entry deleted');
@@ -3025,7 +3025,7 @@ const App = {
   },
 
   async deleteSettingsItem(type, id, name) {
-    if (!confirm(`Delete "${name}"?`)) return;
+    if (!confirm(`Eliminar "${name}"?`)) return;
     try {
       if (type === 'categories') await API.deleteCategory(id);
       else if (type === 'tags') await API.deleteTag(id);
@@ -3057,29 +3057,29 @@ const App = {
   async loadBlockedIps() {
     const el = document.getElementById('blocked-ips-list');
     if (!el) return;
-    el.innerHTML = '<div style="color:var(--text-muted);font-size:.85rem">Loading blocked IPs...</div>';
+    el.innerHTML = '<div style="color:var(--text-muted);font-size:.85rem">Carregamento de IPs bloqueados...</div>';
     try {
       const ips = await API.getBlockedIps();
       if (!ips || ips.length === 0) {
-        el.innerHTML = '<div style="color:var(--text-muted);font-size:.85rem;padding:8px 0">No IP addresses are currently blocked.</div>';
+        el.innerHTML = '<div style="color:var(--text-muted);font-size:.85rem;padding:8px 0">Nenhum endereço IP está bloqueado de momento.</div>';
         return;
       }
       el.innerHTML = `
         <table class="table" style="width:100%;font-size:.85rem">
-          <thead><tr><th>IP Address</th><th>Failed Attempts</th><th>Blocked At</th><th>Action</th></tr></thead>
+          <thead><tr><th>Endereço IP</th><th>Tentativas Falhadas</th><th>Bloqueado em</th><th>Ação</th></tr></thead>
           <tbody>
             ${ips.map(item => `
               <tr>
                 <td><strong>${item.ip}</strong></td>
                 <td>${item.attempts}</td>
                 <td>${UI.formatDate(item.blockedAt)}</td>
-                <td><button type="button" class="btn btn-danger btn-xs" onclick="App.unblockIp('${item.ip}')">Unblock</button></td>
+                <td><button type="button" class="btn btn-danger btn-xs" onclick="App.unblockIp('${item.ip}')">Desbloquear</button></td>
               </tr>
             `).join('')}
           </tbody>
         </table>`;
     } catch (e) {
-      el.innerHTML = `<div style="color:var(--error);font-size:.85rem">${e.message || 'Failed to fetch blocked IPs'}</div>`;
+      el.innerHTML = `<div style="color:var(--error);font-size:.85rem">${e.message || 'Falha ao obter os IPs bloqueados.'}</div>`;
     }
   },
 
@@ -3096,15 +3096,15 @@ const App = {
   async scanForDuplicates() {
     const el = document.getElementById('duplicates-results');
     if (!el) return;
-    el.innerHTML = '<div style="color:var(--accent-cyan);font-size:.85rem">⏳ Scanning library using SHA-256 hashes... Please wait.</div>';
+    el.innerHTML = '<div style="color:var(--accent-cyan);font-size:.85rem">⏳ Analisando a biblioteca usando hashes SHA-256... Aguarde.</div>';
     try {
       const res = await API.scanDuplicates();
       if (!res.groups || res.groups.length === 0) {
-        el.innerHTML = '<div style="color:var(--accent-green);font-size:.85rem;padding:8px 0">✓ Great news! No duplicate 3D model files found in your library.</div>';
+        el.innerHTML = '<div style="color:var(--accent-green);font-size:.85rem;padding:8px 0">✓ Ótima notícia! Nenhum ficheiro de modelo 3D duplicado foi encontrado na sua biblioteca.</div>';
         return;
       }
       el.innerHTML = `
-        <div style="margin-bottom:10px;font-weight:600;color:var(--error)">Found ${res.duplicatesCount} group(s) of identical files:</div>
+        <div style="margin-bottom:10px;font-weight:600;color:var(--error)">Foram encontrados ${res. duplicatesCount} grupos de ficheiros idênticos:</div>
         <div style="display:flex;flex-direction:column;gap:12px">
           ${res.groups.map(group => `
             <div style="background:var(--bg-input);padding:12px;border-radius:6px;border:1px solid var(--border)">
@@ -3113,7 +3113,7 @@ const App = {
                 ${group.files.map(f => `
                   <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.85rem">
                     <span style="display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><strong>${f.original_name}</strong> in model <a href="#/models/${f.model_id}" style="color:var(--accent-cyan)">${f.model_name || 'Model #'+f.model_id}</a></span>
-                    <a href="#/models/${f.model_id}" class="btn btn-ghost btn-xs">View Model</a>
+                    <a href="#/models/${f.model_id}" class="btn btn-ghost btn-xs">Ver modelo</a>
                   </div>
                 `).join('')}
               </div>
@@ -3121,7 +3121,7 @@ const App = {
           `).join('')}
         </div>`;
     } catch (e) {
-      el.innerHTML = `<div style="color:var(--error);font-size:.85rem">${e.message || 'Failed to scan duplicates'}</div>`;
+      el.innerHTML = `<div style="color:var(--error);font-size:.85rem">${e.message || 'Falha ao digitalizar duplicados'}</div>`;
     }
   }
 };
