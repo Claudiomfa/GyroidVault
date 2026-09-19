@@ -85,7 +85,6 @@ const App = {
     await this.loadViewMode();
     this.renderSidebarCategories();
     this.renderSidebarCollections();
-    this.checkUpdates();
     this.updateUserNav();
     this.updateThemeIcon();
     this.initPrinters();
