@@ -12,12 +12,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
 
-      - name: Update Unraid XML
+      - name: Update Unraid Template
         shell: bash
         env:
           VERSION: ${{ github.event.release.tag_name }}
@@ -28,29 +29,33 @@ jobs:
           XML_FILE="templates/GyroidVault.xml"
           DATE=$(date -u +'%Y-%m-%d')
 
-          echo "Updating $XML_FILE"
+          echo "======================================"
+          echo "Updating Unraid Template"
           echo "Version: $VERSION"
           echo "Date: $DATE"
+          echo "File: $XML_FILE"
+          echo "======================================"
 
-          # Check XML exists
+          # Verify XML exists
           if [ ! -f "$XML_FILE" ]; then
-            echo "ERROR: $XML_FILE not found."
+            echo "ERROR: $XML_FILE does not exist."
             exit 1
           fi
 
-          # Update Version
+          # Update version
           sed -i \
             "s|<Version>[^<]*</Version>|<Version>$VERSION</Version>|" \
             "$XML_FILE"
 
-          # Update Date
+          # Update date
           sed -i \
             "s|<Date>[^<]*</Date>|<Date>$DATE</Date>|" \
             "$XML_FILE"
 
-          # Create new Changes entry
+          # Create new release notes
           {
             echo "### $VERSION ($DATE)"
+            echo ""
 
             if [ -n "$RELEASE_BODY" ]; then
               printf '%s\n' "$RELEASE_BODY"
@@ -61,7 +66,7 @@ jobs:
             echo ""
           } > new_changes.txt
 
-          # Insert the new release notes immediately after <Changes>
+          # Insert release notes immediately after <Changes>
           awk '
             /<Changes>/ {
               print
@@ -72,20 +77,35 @@ jobs:
               next
             }
             { print }
-          ' "$XML_FILE" > temp.xml
+          ' "$XML_FILE" > "$XML_FILE.tmp"
 
-          mv temp.xml "$XML_FILE"
+          mv "$XML_FILE.tmp" "$XML_FILE"
 
           rm -f new_changes.txt
 
-          echo "XML updated successfully."
+          echo ""
+          echo "Template updated successfully."
+          echo ""
 
-      - name: Show changes
+          grep -E '<Version>|<Date>' "$XML_FILE"
+
+      - name: Validate XML
+        shell: bash
         run: |
-          git diff -- templates/GyroidVault.xml
+          set -e
+
+          if command -v xmllint >/dev/null 2>&1; then
+            xmllint --noout templates/GyroidVault.xml
+            echo "XML validation: OK"
+          else
+            echo "xmllint not available, skipping XML validation."
+          fi
 
       - name: Commit changes
+        shell: bash
         run: |
+          set -e
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
@@ -98,4 +118,4 @@ jobs:
 
           git commit -m "update: Unraid template for ${{ github.event.release.tag_name }}"
 
-          git push
+          git push origin HEAD:main
